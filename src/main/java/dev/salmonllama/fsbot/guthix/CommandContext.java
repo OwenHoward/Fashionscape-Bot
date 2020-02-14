@@ -28,15 +28,15 @@ public class CommandContext {
     private String usedAlias;
     private String[] args;
 
-    CommandContext(DiscordApi api, Message message, MessageAuthor author, TextChannel channel, Server server, String alias, Command cmd, String[] args) {
-        this.api = api;
-        this.message = message;
-        this.author = author;
-        this.channel = channel;
-        this.server = server;
-        this.usedCommand = cmd;
-        this.usedAlias = alias;
-        this.args = args;
+    private CommandContext(CommandContextBuilder builder) {
+        this.api = builder.api;
+        this.message = builder.message;
+        this.author = builder.author;
+        this.channel = builder.channel;
+        this.server = builder.server;
+        this.usedCommand = builder.usedCommand;
+        this.usedAlias = builder.usedAlias;
+        this.args = builder.args;
     }
 
     public DiscordApi getApi() {
@@ -95,5 +95,40 @@ public class CommandContext {
 
     public CompletableFuture<Message> reply(EmbedBuilder embed) {
         return channel.sendMessage(embed);
+    }
+
+    public static class CommandContextBuilder {
+        private DiscordApi api;
+        private Message message;
+        private MessageAuthor author;
+        private TextChannel channel;
+        private Server server;
+        private Command usedCommand;
+        private String usedAlias;
+        private String[] args;
+
+        public CommandContextBuilder(
+                DiscordApi api,
+                Message message,
+                MessageAuthor author,
+                TextChannel channel,
+                Server server,
+                Command usedCommand,
+                String usedAlias,
+                String[] args
+        ) {
+            this.api = api;
+            this.message = message;
+            this.author = author;
+            this.channel = channel;
+            this.server = server;
+            this.usedCommand = usedCommand;
+            this.usedAlias = usedAlias;
+            this.args = args;
+        }
+
+        public CommandContext build() {
+            return new CommandContext(this);
+        }
     }
 }

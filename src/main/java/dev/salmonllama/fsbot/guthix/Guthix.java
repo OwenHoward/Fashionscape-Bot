@@ -123,15 +123,17 @@ public class Guthix implements MessageCreateListener {
         String[] cmdArgs = registry.getCmdArgs(content);
 
         Command cmd = registry.findCommand(cmdString).orElse(null); // TODO: default command here
-        CommandContext ctx = new ContextBuilder().setApi(api)
-                .setServer(server)
-                .setAuthor(author)
-                .setChannel(channel)
-                .setMessage(msg)
-                .setArgs(cmdArgs)
-                .setUsedAlias(cmdString)
-                .setUsedCommand(cmd)
-                .build();
+
+        CommandContext ctx = new CommandContext.CommandContextBuilder(
+                api,
+                msg,
+                author,
+                channel,
+                server,
+                cmd,
+                cmdString,
+                cmdArgs
+        ).build();
 
         if (manager.hasPermission(cmd.permission(), ctx)) {
 
