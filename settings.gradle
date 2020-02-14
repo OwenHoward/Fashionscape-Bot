@@ -1,0 +1,8 @@
+/*
+ * Developed by Alek Gryczewski on 10/18/18 1:39 PM
+ * Last modified 8/27/18 6:45 PM
+ * Copyright (c) 2018. All rights reserved.
+ */
+
+rootProject.name = 'fsbot'
+

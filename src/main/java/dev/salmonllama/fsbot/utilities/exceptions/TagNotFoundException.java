@@ -1,0 +1,14 @@
+/*
+ * Copyright (c) 2020. Aleksei Gryczewski
+ * All rights reserved.
+ */
+
+package dev.salmonllama.fsbot.utilities.exceptions;
+
+public class TagNotFoundException extends Exception {
+
+    @Override
+    public String getMessage() {
+        return "That tag was not found, check your spelling and try again.";
+    }
+}
