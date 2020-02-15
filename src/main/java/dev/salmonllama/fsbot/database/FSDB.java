@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2020. Aleksei Gryczewski
+ * All rights reserved.
+ */
+
+// Heavily inspired by Kaaz's Emily database connection: https://github.com/Kaaz/DiscordBot/tree/master/src/main/java/emily/db
+package dev.salmonllama.fsbot.database;
+
+import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.models.OutfitModel;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+
+public class FSDB {
+    private static final String DEFAULT_CONNECTION = "fsbot";
+    private static final HashMap<String, DatabaseProvider> connections = new HashMap<>();
+
+    public static DatabaseProvider get(String key) {
+        if (connections.containsKey(key)) {
+            return connections.get(key);
+        }
+
+        System.out.println(String.format("Specified connection %s has not been set.", key));
+        return null;
+    }
+
+    public static DatabaseProvider get() {
+        return connections.get(DEFAULT_CONNECTION);
+    }
+
+    public static void init() {
+        connections.clear();
+        connections.put(DEFAULT_CONNECTION, new DatabaseProvider(BotConfig.DB_NAME));
+
+        prepareTables();
+    }
+
+    private static void prepareTables() {
+        try {
+            get().query(OutfitModel.schema());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

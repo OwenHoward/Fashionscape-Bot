@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 
+// Shoutout to Kaaz (again) for a kickass config service: https://github.com/Kaaz/ConfigurationBuilder
 package dev.salmonllama.fsbot.config;
 
 import com.kaaz.configuration.ConfigurationBuilder;
@@ -15,10 +16,10 @@ public class BotConfig {
     public static String TOKEN = "token-goes-here";
 
     @ConfigurationOption
-    public static String DB_HOST = "localhost";
+    public static String DB_ADDR = "fsbot.db";
 
     @ConfigurationOption
-    public static int DB_PORT = 28015;
+    public static String DB_NAME = "fsbot";
 
     @ConfigurationOption
     public static String DEFAULT_PREFIX = "~";

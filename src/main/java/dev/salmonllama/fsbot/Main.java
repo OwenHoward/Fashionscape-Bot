@@ -8,6 +8,7 @@ package dev.salmonllama.fsbot;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
 import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.FSDB;
 import dev.salmonllama.fsbot.guthix.Guthix;
 import dev.salmonllama.fsbot.listeners.*;
 import org.javacord.api.DiscordApiBuilder;
@@ -25,9 +26,11 @@ public class Main {
         String configLocation = Constants.BOT_FOLDER.concat(Constants.CONFIG_NAME);
         BotConfig.initConfig(configLocation);
 
+        FSDB.init();
+
         // Initialise the database with values from the bot's config file
         RethinkDB r = RethinkDB.r;
-        Connection conn = r.connection().hostname(BotConfig.DB_HOST).port(BotConfig.DB_PORT).connect();
+        Connection conn = r.connection().hostname("localhost").port(28015).connect();
 
         new DiscordApiBuilder().setToken(BotConfig.TOKEN).login().thenAccept(api -> {
             DatabaseUtilities db = new DatabaseUtilities(r, conn, api);
