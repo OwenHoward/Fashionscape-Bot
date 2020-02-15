@@ -6,7 +6,7 @@
 // Heavily inspired by Kaaz's Emily database connection: https://github.com/Kaaz/DiscordBot/tree/master/src/main/java/emily/db
 package dev.salmonllama.fsbot.database;
 
-import dev.salmonllama.exceptions.UnknownParameterException;
+import dev.salmonllama.fsbot.exceptions.UnknownParameterException;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.utilities.Constants;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;

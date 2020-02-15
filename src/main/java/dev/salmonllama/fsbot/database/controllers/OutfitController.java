@@ -32,7 +32,7 @@ public class OutfitController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 

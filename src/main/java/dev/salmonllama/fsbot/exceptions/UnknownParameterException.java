@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package dev.salmonllama.exceptions;
+package dev.salmonllama.fsbot.exceptions;
 
 import java.sql.SQLException;
 
