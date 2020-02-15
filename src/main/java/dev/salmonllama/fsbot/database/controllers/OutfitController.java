@@ -21,7 +21,7 @@ public class OutfitController {
     }
 
     public static OutfitModel findById(String id) throws SQLException {
-        OutfitModel outfit = null;
+        OutfitModel outfit = new OutfitModel();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE id = ?", id)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -34,7 +34,7 @@ public class OutfitController {
     }
 
     public static OutfitModel findRandom() throws SQLException {
-        OutfitModel outfit = null;
+        OutfitModel outfit = new OutfitModel();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits ORDERBY random() LIMIT 1")) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -47,7 +47,7 @@ public class OutfitController {
     }
 
     public static OutfitModel findRandomByTag(String tag) {
-        OutfitModel outfit = null;
+        OutfitModel outfit = new OutfitModel();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? ORDERBY random() LIMIT 1", tag)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -60,7 +60,7 @@ public class OutfitController {
     }
 
     public static OutfitModel findRandomBySubmitter(String submitterId) {
-        OutfitModel outfit = null;
+        OutfitModel outfit = new OutfitModel();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? ORDERBY random() LIMIT 1", submitterId)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -99,18 +99,17 @@ public class OutfitController {
     }
 
     private static OutfitModel mapObject(ResultSet rs) throws SQLException {
-        return new OutfitModel.OutfitBuilder(
-                rs.getString("link"),
-                rs.getString("submitter"),
-                rs.getString("tag")
-        )
-                .setId(rs.getString("id"))
-                .setCreated(rs.getTimestamp("created"))
-                .setUpdated(rs.getTimestamp("updated"))
-                .setDeleted(rs.getBoolean("deleted"))
-                .setFeatured(rs.getBoolean("featured"))
-                .setDisplayCount(rs.getInt("display_count"))
-                .setDeletionHash(rs.getString("deletion_hash"))
-                .build();
+        OutfitModel outfit = new OutfitModel();
+        outfit.id = rs.getString("id");
+        outfit.link = rs.getString("link");
+        outfit.tag = rs.getString("tag");
+        outfit.submitter = rs.getString("submitter");
+        outfit.created = rs.getTimestamp("created");
+        outfit.updated = rs.getTimestamp("updated");
+        outfit.deleted = rs.getBoolean("deleted");
+        outfit.featured = rs.getBoolean("featured");
+        outfit.displayCount = rs.getInt("display_count");
+        outfit.deletionHash = rs.getString("deletion_hash");
+        return outfit;
     }
 }
