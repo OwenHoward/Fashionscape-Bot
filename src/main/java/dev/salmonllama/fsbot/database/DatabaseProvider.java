@@ -50,6 +50,9 @@ public class DatabaseProvider {
             if (p instanceof String) {
                 query.setString(index, (String) p);
             }
+            else if (p instanceof Integer) {
+                query.setInt(index, (int) p);
+            }
             else if (p instanceof Boolean) {
                 query.setBoolean(index, (boolean) p);
             }
