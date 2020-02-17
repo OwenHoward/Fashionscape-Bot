@@ -35,7 +35,7 @@ public class OutfitController {
 
     public static OutfitModel findRandom() throws SQLException {
         OutfitModel outfit = new OutfitModel();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits ORDERBY random() LIMIT 1")) {
+        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDERBY random() LIMIT 1")) {
             if (rs.next()) {
                 outfit = mapObject(rs);
             }
@@ -48,7 +48,7 @@ public class OutfitController {
 
     public static OutfitModel findRandomByTag(String tag) {
         OutfitModel outfit = new OutfitModel();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? ORDERBY random() LIMIT 1", tag)) {
+        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDERBY random() LIMIT 1", tag)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
             }
@@ -61,7 +61,7 @@ public class OutfitController {
 
     public static OutfitModel findRandomBySubmitter(String submitterId) {
         OutfitModel outfit = new OutfitModel();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? ORDERBY random() LIMIT 1", submitterId)) {
+        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDERBY random() LIMIT 1", submitterId)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
             }
@@ -74,7 +74,7 @@ public class OutfitController {
 
     public static int countOutfits() {
         int count = 0;
-        try (ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits")) {
+        try (ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE deleted = 0")) {
             if (rs.next()) {
                 count = rs.getInt("count");
             }
@@ -87,7 +87,7 @@ public class OutfitController {
 
     public static int countOutfitsBySubmitter(String submitterId) {
         int count = 0;
-        try (ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE submitter = ?", submitterId)) {
+        try (ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE submitter = ? AND deleted = 0", submitterId)) {
             if (rs.next()) {
                 count = rs.getInt("count");
             }
