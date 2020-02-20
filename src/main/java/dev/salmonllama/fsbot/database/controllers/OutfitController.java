@@ -10,9 +10,18 @@ import dev.salmonllama.fsbot.database.models.Outfit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class OutfitController {
     public static void insert(Outfit outfit) {
+        if (outfit.created == null) {
+            outfit.created = new Timestamp(System.currentTimeMillis());
+        }
+
+        if (outfit.updated == null) {
+            outfit.updated = new Timestamp(System.currentTimeMillis());
+        }
+
         try {
             FSDB.get().insert(
                     "INSERT INTO " +
@@ -118,8 +127,8 @@ public class OutfitController {
         outfit.link = rs.getString("link");
         outfit.tag = rs.getString("tag");
         outfit.submitter = rs.getString("submitter");
-        outfit.created = rs.getTimestamp("created");
-        outfit.updated = rs.getTimestamp("updated");
+        outfit.created = new Timestamp(rs.getLong("created"));
+        outfit.updated = new Timestamp(rs.getLong("updated"));
         outfit.deleted = rs.getBoolean("deleted");
         outfit.featured = rs.getBoolean("featured");
         outfit.displayCount = rs.getInt("display_count");
