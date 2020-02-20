@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class OutfitController {
+public class OutfitController { // TODO: Refactor for closing via FSDB.get(). SQLExceptions should be elevated; thrown in the command for logging.
     public static void insert(Outfit outfit) {
         if (outfit.created == null) {
             outfit.created = new Timestamp(System.currentTimeMillis());
