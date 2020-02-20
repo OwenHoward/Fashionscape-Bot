@@ -92,4 +92,9 @@ public class DatabaseProvider {
         resolveParameters(query, params);
         return query.executeQuery();
     }
+
+    public void close(ResultSet rs) throws SQLException {
+        rs.getStatement().close();
+        rs.close();
+    }
 }
