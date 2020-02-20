@@ -7,6 +7,7 @@
 package dev.salmonllama.fsbot.database;
 
 import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.database.models.Outfit;
 
 import java.sql.SQLException;
@@ -39,6 +40,7 @@ public class FSDB {
     private static void prepareTables() {
         try {
             get().query(Outfit.schema());
+            get().query(GalleryChannel.schema());
         } catch (SQLException e) {
             e.printStackTrace();
         }
