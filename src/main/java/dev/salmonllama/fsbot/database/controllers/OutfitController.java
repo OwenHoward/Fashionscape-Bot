@@ -49,7 +49,7 @@ public class OutfitController {
 
     public static Outfit findRandom() throws SQLException {
         Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDERBY random() LIMIT 1")) {
+        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDER BY random() LIMIT 1")) {
             if (rs.next()) {
                 outfit = mapObject(rs);
             }
@@ -62,7 +62,7 @@ public class OutfitController {
 
     public static Outfit findRandomByTag(String tag) {
         Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDERBY random() LIMIT 1", tag)) {
+        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDER BY random() LIMIT 1", tag)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
             }
@@ -75,7 +75,7 @@ public class OutfitController {
 
     public static Outfit findRandomBySubmitter(String submitterId) {
         Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDERBY random() LIMIT 1", submitterId)) {
+        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDER BY random() LIMIT 1", submitterId)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
             }
