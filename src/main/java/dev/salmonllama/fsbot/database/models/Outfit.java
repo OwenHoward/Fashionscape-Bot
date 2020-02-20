@@ -41,7 +41,7 @@ public class Outfit extends DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("Outfit: [id: %s, link: %s, submitter: %s, tag: %s, created: %s, updated: %s, deleted: %s, featured: %s, display count: %s, deletion hash: %s",
+        return String.format("Outfit: [id: %s, link: %s, submitter: %s, tag: %s, created: %s, updated: %s, deleted: %s, featured: %s, display count: %s, deletion hash: %s]",
                 id, link, submitter, tag, created, updated, deleted, featured, displayCount, deletionHash
         );
     }
