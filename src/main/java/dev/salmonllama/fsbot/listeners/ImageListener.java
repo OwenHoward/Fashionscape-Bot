@@ -146,6 +146,11 @@ public class ImageListener implements MessageCreateListener {
                 });
             });
 
+            if (dbTable.equals("disaster")) {
+                // Add custom panda emoji: <:PandaWut:433045737245376522>
+                message.addReaction("PandaWut:433045737245376522");
+            }
+
             message.addReaction(EmojiParser.parseToUnicode(":heartpulse:"));
         }
     }
