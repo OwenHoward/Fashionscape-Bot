@@ -6,22 +6,36 @@
 package dev.salmonllama.fsbot.database.controllers;
 
 import dev.salmonllama.fsbot.database.FSDB;
-import dev.salmonllama.fsbot.database.models.OutfitModel;
+import dev.salmonllama.fsbot.database.models.Outfit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class OutfitController {
-    public static void insert(OutfitModel outfit) {
+    public static void insert(Outfit outfit) {
         try {
-            FSDB.get().insert("INSERT INTO outfits('id', 'link') VALUES (?, ?)", outfit.id, outfit.link);
+            FSDB.get().insert(
+                    "INSERT INTO " +
+                            "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'deletion_hash') " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    outfit.id,
+                    outfit.link,
+                    outfit.submitter,
+                    outfit.tag,
+                    outfit.created,
+                    outfit.updated,
+                    outfit.deleted,
+                    outfit.featured,
+                    outfit.displayCount,
+                    outfit.deletionHash
+                    );
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static OutfitModel findById(String id) throws SQLException {
-        OutfitModel outfit = new OutfitModel();
+    public static Outfit findById(String id) throws SQLException {
+        Outfit outfit = new Outfit();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE id = ?", id)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -33,8 +47,8 @@ public class OutfitController {
         return outfit;
     }
 
-    public static OutfitModel findRandom() throws SQLException {
-        OutfitModel outfit = new OutfitModel();
+    public static Outfit findRandom() throws SQLException {
+        Outfit outfit = new Outfit();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDERBY random() LIMIT 1")) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -46,8 +60,8 @@ public class OutfitController {
         return outfit;
     }
 
-    public static OutfitModel findRandomByTag(String tag) {
-        OutfitModel outfit = new OutfitModel();
+    public static Outfit findRandomByTag(String tag) {
+        Outfit outfit = new Outfit();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDERBY random() LIMIT 1", tag)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -59,8 +73,8 @@ public class OutfitController {
         return outfit;
     }
 
-    public static OutfitModel findRandomBySubmitter(String submitterId) {
-        OutfitModel outfit = new OutfitModel();
+    public static Outfit findRandomBySubmitter(String submitterId) {
+        Outfit outfit = new Outfit();
         try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDERBY random() LIMIT 1", submitterId)) {
             if (rs.next()) {
                 outfit = mapObject(rs);
@@ -98,8 +112,8 @@ public class OutfitController {
         return count;
     }
 
-    private static OutfitModel mapObject(ResultSet rs) throws SQLException {
-        OutfitModel outfit = new OutfitModel();
+    private static Outfit mapObject(ResultSet rs) throws SQLException {
+        Outfit outfit = new Outfit();
         outfit.id = rs.getString("id");
         outfit.link = rs.getString("link");
         outfit.tag = rs.getString("tag");
