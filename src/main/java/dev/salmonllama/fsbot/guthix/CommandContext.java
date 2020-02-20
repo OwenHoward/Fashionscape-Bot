@@ -125,6 +125,7 @@ public class CommandContext {
                 String usedAlias,
                 String[] args
         ) {
+            this.event = event;
             this.api = event.getApi();
             this.message = event.getMessage();
             this.author = event.getMessageAuthor();

@@ -31,7 +31,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override public String usage() { return "creategallery <String tag>"; }
     @Override public String category() { return "Developer"; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "addgall")); }
+    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
 
     static final RethinkDB R = RethinkDB.r;
     static final Connection CONN = R.connection().hostname("localhost").port(28015).connect();
@@ -40,6 +40,10 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     public void onCommand(CommandContext ctx) { // TODO: Might need some logic help...
         if (ctx.isPrivateMessage()) {
             ctx.reply("This command can only be used in a server!"); // TODO: Stop this. Turn this into a preset no-no embed.
+            return;
+        }
+        if (ctx.getArgs().length != 1) {
+            ctx.reply("Args are incorrect");
             return;
         }
         // Check if the channel is already a registered gallery channel.
@@ -53,12 +57,15 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
                 return;
             }
         } catch (SQLException e) {
-            ctx.reply("An error occurred"); // TODO: error logging.
+            ctx.reply(String.format("Error: %s", e.getMessage())); // TODO: error logging.
+            return;
         }
+
+        String tag = ctx.getArgs()[0];
 
         GalleryChannel gallery = new GalleryChannel();
         gallery.channelId = channelId;
-        String tag = ctx.getArgs()[0];
+        gallery.tag = tag;
 
         ctx.getServer().ifPresent(server -> {
             gallery.serverId = server.getIdAsString();
@@ -70,16 +77,17 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
         try {
             GalleryController.insert(gallery);
         } catch(SQLException e) {
-            ctx.reply("An error occurred."); // TODO: error logging.
+            ctx.reply(String.format("Error: %s", e.getMessage())); // TODO: error logging.
+            return;
         }
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(Color.GREEN)
-                .addField("Success", "Channel added to storage with the following values:")
+                .addField("Success", "Gallery has been created:")
                 .addField("Channel Name:", gallery.channelName)
                 .addField("Channel Id:", gallery.channelId)
                 .addField("Tag:", tag)
-                .addField("End:", String.format("Table \"%s\" created for images in this channel", tag));
+                .addField("End:", String.format("This channel is now being tracked under: %s", tag));
         ctx.getChannel().sendMessage(embed);
         }
 }

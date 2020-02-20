@@ -38,9 +38,9 @@ public class GalleryController {
     }
 
     public static boolean galleryExists(String channelId) throws SQLException {
-        ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 AS exists FROM galleries WHERE channel_id = ?", channelId);
+        ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM galleries WHERE channel_id = ?) AS hmm", channelId);
 
-        boolean exists = rs.getBoolean("exists");
+        boolean exists = rs.getBoolean("hmm");
 
         FSDB.get().close(rs);
         return exists;
