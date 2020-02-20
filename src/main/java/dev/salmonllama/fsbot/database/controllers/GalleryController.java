@@ -33,7 +33,17 @@ public class GalleryController {
             galleries.add(mapObject(rs));
         }
 
+        FSDB.get().close(rs);
         return galleries;
+    }
+
+    public static boolean galleryExists(String channelId) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 AS exists FROM galleries WHERE channel_id = ?", channelId);
+
+        boolean exists = rs.getBoolean("exists");
+
+        FSDB.get().close(rs);
+        return exists;
     }
 
     private static GalleryChannel mapObject(ResultSet rs) throws SQLException {

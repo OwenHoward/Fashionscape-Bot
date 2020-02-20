@@ -8,6 +8,8 @@ package dev.salmonllama.fsbot.commands.developer;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
 import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.controllers.GalleryController;
+import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
@@ -17,6 +19,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,63 +37,50 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     static final Connection CONN = R.connection().hostname("localhost").port(28015).connect();
 
     @Override
-    public void onCommand(CommandContext ctx) {
-        Optional<Server> opServer = ctx.getServer();
-        TextChannel channel = ctx.getChannel();
-        String[] args = ctx.getArgs();
-        String targetChannelId = channel.getIdAsString();
-        String targetChannelName = channel.asServerChannel().get().getName(); // TODO: un-band-aid this.
-
-        if (!opServer.isPresent()) {
-            ctx.reply("This command can only be used in a server");
+    public void onCommand(CommandContext ctx) { // TODO: Might need some logic help...
+        if (ctx.isPrivateMessage()) {
+            ctx.reply("This command can only be used in a server!"); // TODO: Stop this. Turn this into a preset no-no embed.
             return;
         }
+        // Check if the channel is already a registered gallery channel.
+        // Create a gallery channel of the current channel.
+        // Store the gallery channel in the database.
 
-        Server server = opServer.get();
-        String targetServerName = server.getName();
-        String targetServerId = server.getIdAsString();
-
-        if (!server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
-            channel.sendMessage("Fashion galleries can only be created in the Fashionscape server");
-            return;
+        String channelId = ctx.getChannel().getIdAsString();
+        try {
+            if (GalleryController.galleryExists(channelId)) {
+                ctx.reply("A gallery already exists in this channel, can not create a new one.");
+                return;
+            }
+        } catch (SQLException e) {
+            ctx.reply("An error occurred"); // TODO: error logging.
         }
 
-        if (args.length < 1) {
-            channel.sendMessage("No Arguments provided");
-            return;
-        }
-        else if (args.length > 1) {
-            channel.sendMessage("Too many arguments provided.");
-            return;
+        GalleryChannel gallery = new GalleryChannel();
+        gallery.channelId = channelId;
+        String tag = ctx.getArgs()[0];
+
+        ctx.getServer().ifPresent(server -> {
+            gallery.serverId = server.getIdAsString();
+            gallery.serverName = server.getName();
+        });
+
+        ctx.getChannel().asServerTextChannel().ifPresent(channel -> gallery.channelName = channel.getName());
+
+        try {
+            GalleryController.insert(gallery);
+        } catch(SQLException e) {
+            ctx.reply("An error occurred."); // TODO: error logging.
         }
 
-        String tag = args[0];
-
-        if (R.db("fsbot").table("channels").getField("cId").contains(targetChannelId).run(CONN)) {
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setColor(Color.RED)
-                    .addField("ERROR", "This channel is already gathering images");
-            channel.sendMessage(embed);
+        EmbedBuilder embed = new EmbedBuilder()
+                .setColor(Color.GREEN)
+                .addField("Success", "Channel added to storage with the following values:")
+                .addField("Channel Name:", gallery.channelName)
+                .addField("Channel Id:", gallery.channelId)
+                .addField("Tag:", tag)
+                .addField("End:", String.format("Table \"%s\" created for images in this channel", tag));
+        ctx.getChannel().sendMessage(embed);
         }
-        else {
-            R.db("fsbot").table("channels").insert(
-                    R.hashMap("sName", targetServerName)
-                            .with("sId", targetServerId)
-                            .with("cName", targetChannelName)
-                            .with("cId", targetChannelId)
-                            .with("tag", tag)
-            ).run(CONN);
-
-            R.db("fsbot").tableCreate(tag).run(CONN);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setColor(Color.GREEN)
-                    .addField("Success", "Channel added to storage with the following values:")
-                    .addField("Channel Name:", targetChannelName)
-                    .addField("Channel Id:", targetChannelId)
-                    .addField("Tag:", tag)
-                    .addField("End:", String.format("Table \"%s\" created for images in this channel", tag));
-            channel.sendMessage(embed);
-        }
-    }
 }
+
