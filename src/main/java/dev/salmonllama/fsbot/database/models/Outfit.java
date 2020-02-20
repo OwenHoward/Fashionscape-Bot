@@ -9,7 +9,7 @@ import dev.salmonllama.fsbot.database.DatabaseModel;
 
 import java.sql.Timestamp;
 
-public class OutfitModel extends DatabaseModel {
+public class Outfit extends DatabaseModel {
     public String id = "";
     public String link = "";
     public String submitter = "";
@@ -21,7 +21,7 @@ public class OutfitModel extends DatabaseModel {
     public int displayCount = 0;
     public String deletionHash = "";
 
-    public OutfitModel() {
+    public Outfit() {
 
     }
 
@@ -35,7 +35,7 @@ public class OutfitModel extends DatabaseModel {
                 "updated TEXT," +
                 "deleted TEXT," +
                 "featured TEXT," +
-                "display_count INT" +
+                "display_count INT," +
                 "deletion_hash TEXT)";
     }
 }
