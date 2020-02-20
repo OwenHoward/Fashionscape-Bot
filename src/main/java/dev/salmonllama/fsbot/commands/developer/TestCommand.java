@@ -5,11 +5,14 @@
 
 package dev.salmonllama.fsbot.commands.developer;
 
+import dev.salmonllama.fsbot.database.controllers.OutfitController;
+import dev.salmonllama.fsbot.database.models.Outfit;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,6 +27,11 @@ public class TestCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        ctx.getChannel().sendMessage("Test Command has been invoked");
+        try {
+            Outfit outfit = OutfitController.findRandom();
+            ctx.reply(outfit.toString());
+        } catch (SQLException e) {
+            ctx.reply(e.getSQLState());
+        }
     }
 }
