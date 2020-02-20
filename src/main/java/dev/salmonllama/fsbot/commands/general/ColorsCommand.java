@@ -28,7 +28,11 @@ public class ColorsCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        Server server = ctx.getServer();
+        if (!ctx.getServer().isPresent()) {
+            ctx.reply("This command must be used in a server.");
+            return;
+        }
+        Server server = ctx.getServer().get();
         TextChannel channel = ctx.getChannel();
 
         if (!server.getIdAsString().equals(BotConfig.HOME_SERVER)) {

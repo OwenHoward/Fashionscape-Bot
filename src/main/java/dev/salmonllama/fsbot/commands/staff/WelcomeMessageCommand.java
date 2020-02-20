@@ -31,9 +31,13 @@ public class WelcomeMessageCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
+        if (!ctx.getServer().isPresent()) {
+            ctx.reply("You must use this command in a server");
+            return;
+        }
         String[] args = ctx.getArgs();
         TextChannel channel = ctx.getChannel();
-        Server server = ctx.getServer();
+        Server server = ctx.getServer().get();
 
         if (!server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
             return;

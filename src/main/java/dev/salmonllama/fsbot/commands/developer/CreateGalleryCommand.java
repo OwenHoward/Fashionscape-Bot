@@ -20,6 +20,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 
 public class CreateGalleryCommand extends Command { // TODO: This command needs help.
     @Override public String name() { return "Create Gallery"; }
@@ -34,11 +35,18 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
 
     @Override
     public void onCommand(CommandContext ctx) {
-        Server server = ctx.getServer();
+        Optional<Server> opServer = ctx.getServer();
         TextChannel channel = ctx.getChannel();
         String[] args = ctx.getArgs();
         String targetChannelId = channel.getIdAsString();
         String targetChannelName = channel.asServerChannel().get().getName(); // TODO: un-band-aid this.
+
+        if (!opServer.isPresent()) {
+            ctx.reply("This command can only be used in a server");
+            return;
+        }
+
+        Server server = opServer.get();
         String targetServerName = server.getName();
         String targetServerId = server.getIdAsString();
 
