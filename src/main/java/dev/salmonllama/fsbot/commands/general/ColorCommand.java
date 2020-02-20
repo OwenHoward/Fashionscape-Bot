@@ -36,9 +36,13 @@ public class ColorCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
+        if (!ctx.getServer().isPresent()) {
+            ctx.reply("This command must be used inside a server.");
+            return;
+        }
         String[] args = ctx.getArgs();
         DiscordApi api = ctx.getApi();
-        Server server = ctx.getServer();
+        Server server = ctx.getServer().get();
         User user = ctx.getUser();
         TextChannel channel = ctx.getChannel();
 

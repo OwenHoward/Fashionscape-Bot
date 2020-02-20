@@ -33,7 +33,11 @@ public class PermissionManager {
     }
 
     private boolean roleHandler(String roleId, CommandContext ctx) {
-        return ctx.getUserRoles().stream().anyMatch(role -> role.getIdAsString().equals(roleId));
+        if (!ctx.getUserRoles().isPresent()) {
+            ctx.reply("This command can only be used in a server");
+            return false;
+        }
+        return ctx.getUserRoles().get().stream().anyMatch(role -> role.getIdAsString().equals(roleId));
     }
 
     private boolean ownerHandler(CommandContext ctx) {

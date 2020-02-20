@@ -125,11 +125,7 @@ public class Guthix implements MessageCreateListener {
         Command cmd = registry.findCommand(cmdString).orElse(null); // TODO: default command here
 
         CommandContext ctx = new CommandContext.CommandContextBuilder(
-                api,
-                msg,
-                author,
-                channel,
-                server,
+                event,
                 cmd,
                 cmdString,
                 cmdArgs

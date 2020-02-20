@@ -14,21 +14,25 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import dev.salmonllama.fsbot.config.BotConfig;
+import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class CommandContext {
+    private MessageCreateEvent event;
     private DiscordApi api;
     private Message message;
     private MessageAuthor author;
     private TextChannel channel;
-    private Server server;
+    private Optional<Server> server;
     private Command usedCommand;
     private String usedAlias;
     private String[] args;
 
     private CommandContext(CommandContextBuilder builder) {
+        this.event = builder.event;
         this.api = builder.api;
         this.message = builder.message;
         this.author = builder.author;
@@ -55,7 +59,7 @@ public class CommandContext {
         return channel;
     }
 
-    public Server getServer() {
+    public Optional<Server> getServer() {
         return server;
     }
 
@@ -80,13 +84,20 @@ public class CommandContext {
         return null;
     }
 
-    public Collection<Role> getUserRoles() {
+    public Optional<Collection<Role>> getUserRoles() {
         User user = getUser();
-        return user.getRoles(getServer());
+        if (getServer().isPresent()) {
+            return Optional.of(user.getRoles(getServer().get()));
+        }
+        return Optional.empty();
     }
 
     public boolean isUserOwner() {
         return getUser().getIdAsString().equals(BotConfig.BOT_OWNER);
+    }
+
+    public boolean isPrivateMessage() {
+        return event.isPrivateMessage();
     }
 
     public CompletableFuture<Message> reply(String msg) {
@@ -98,30 +109,27 @@ public class CommandContext {
     }
 
     public static class CommandContextBuilder {
+        private MessageCreateEvent event;
         private DiscordApi api;
         private Message message;
         private MessageAuthor author;
         private TextChannel channel;
-        private Server server;
+        private Optional<Server> server;
         private Command usedCommand;
         private String usedAlias;
         private String[] args;
 
         public CommandContextBuilder(
-                DiscordApi api,
-                Message message,
-                MessageAuthor author,
-                TextChannel channel,
-                Server server,
+                MessageCreateEvent event,
                 Command usedCommand,
                 String usedAlias,
                 String[] args
         ) {
-            this.api = api;
-            this.message = message;
-            this.author = author;
-            this.channel = channel;
-            this.server = server;
+            this.api = event.getApi();
+            this.message = event.getMessage();
+            this.author = event.getMessageAuthor();
+            this.channel = event.getChannel();
+            this.server = event.getServer();
             this.usedCommand = usedCommand;
             this.usedAlias = usedAlias;
             this.args = args;
