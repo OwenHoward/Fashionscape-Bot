@@ -29,7 +29,7 @@ public class DatabaseUtilities {
     }
 
     private Table getTable(String table) {
-        if (this.r.db("fsbot").tableList().contains(table).run(this.conn)) {
+        if (this.r.db("fsbot").tableList().contains(table).run(this.conn) != null) {
             return this.r.db("fsbot").table(table);
         }
         else {
@@ -164,83 +164,83 @@ public class DatabaseUtilities {
                 .run(conn);
     }
 
-    public void newServerProcess(Server server) {
+    // public void newServerProcess(Server server) {
 
-        if (this.r.db("fsbot").table("serverConf").contains(server.getIdAsString()).run(this.conn)) {
-            return;
-        }
+    //     if (this.r.db("fsbot").table("serverConf").contains(server.getIdAsString()).run(this.conn)) {
+    //         return;
+    //     }
 
-        String serverName = server.getName();
-        String serverId = server.getIdAsString();
-        String logChannel = "null";
-        String giveawayChannel = "null";
-        String welcomeChannel = "null";
-        String defaultWelcome = "welcome to the server";
+    //     String serverName = server.getName();
+    //     String serverId = server.getIdAsString();
+    //     String logChannel = "null";
+    //     String giveawayChannel = "null";
+    //     String welcomeChannel = "null";
+    //     String defaultWelcome = "welcome to the server";
 
-        this.r.db("fsbot").table("serverConf").insert(
-                this.r.hashMap("id", serverId)
-                .with("name", serverName)
-                .with("logChannel", logChannel)
-                .with("giveawayChannel", giveawayChannel)
-                .with("welcomeMsg", defaultWelcome)
-                .with("welcomeChannel", welcomeChannel)
-                .with("prefix", "~")
-        ).run(this.conn);
-    }
+    //     this.r.db("fsbot").table("serverConf").insert(
+    //             this.r.hashMap("id", serverId)
+    //             .with("name", serverName)
+    //             .with("logChannel", logChannel)
+    //             .with("giveawayChannel", giveawayChannel)
+    //             .with("welcomeMsg", defaultWelcome)
+    //             .with("welcomeChannel", welcomeChannel)
+    //             .with("prefix", "~")
+    //     ).run(this.conn);
+    // }
 
-    public void tableSetup() { // TODO: Fix this -- invert conditionals, just create the tables. -> if *not* exist then create
-        // Check for database existence, if not, create
-        if (r.dbList().contains("fsbot").run(conn)) {
-//            System.out.println("database 'fsbot' already exists.");
-        }
-        else {
-            r.dbCreate("fsbot").run(conn);
-            System.out.println("database fsbot did not exist, and has been created");
-        }
+//     public void tableSetup() { // TODO: Fix this -- invert conditionals, just create the tables. -> if *not* exist then create
+//         // Check for database existence, if not, create
+//         if (r.dbList().contains("fsbot").run(conn)) {
+// //            System.out.println("database 'fsbot' already exists.");
+//         }
+//         else {
+//             r.dbCreate("fsbot").run(conn);
+//             System.out.println("database fsbot did not exist, and has been created");
+//         }
 
-        // Check for channels table existence, if not, create
-        if (r.db("fsbot").tableList().contains("channels").run(conn)) {
-//            System.out.println("table channels already exists");
-        }
-        else {
-            r.db("fsbot").tableCreate("channels").run(conn);
-            System.out.println("table channels did not exist, and has been created.");
-        }
+//         // Check for channels table existence, if not, create
+//         if (r.db("fsbot").tableList().contains("channels").run(conn)) {
+// //            System.out.println("table channels already exists");
+//         }
+//         else {
+//             r.db("fsbot").tableCreate("channels").run(conn);
+//             System.out.println("table channels did not exist, and has been created.");
+//         }
 
-        // Check for serverconf table existence, if not, create
-        if (r.db("fsbot").tableList().contains("serverConf").run(conn)) {
-//            System.out.println("table serverConf already exists");
-        }
-        else {
-            r.db("fsbot").tableCreate("serverConf").run(conn);
-            System.out.println("table serverConf did not exist, and has been created");
-        }
+//         // Check for serverconf table existence, if not, create
+//         if (r.db("fsbot").tableList().contains("serverConf").run(conn)) {
+// //            System.out.println("table serverConf already exists");
+//         }
+//         else {
+//             r.db("fsbot").tableCreate("serverConf").run(conn);
+//             System.out.println("table serverConf did not exist, and has been created");
+//         }
 
-        // Check for permissions table existene, if not, create
-        if (r.db("fsbot").tableList().contains("permissions").run(conn)) {
-//            System.out.println("table permissions already exists");
-        }
-        else {
-            r.db("fsbot").tableCreate("permissions").run(conn);
-            System.out.println("table permissions did not exist and has been created");
-        }
+//         // Check for permissions table existene, if not, create
+//         if (r.db("fsbot").tableList().contains("permissions").run(conn)) {
+// //            System.out.println("table permissions already exists");
+//         }
+//         else {
+//             r.db("fsbot").tableCreate("permissions").run(conn);
+//             System.out.println("table permissions did not exist and has been created");
+//         }
 
-        // Check for outfits table existence, if not, create
-        if (r.db("fsbot").tableList().contains("outfits").run(conn)) {
-//            System.out.println("table outfits already exists");
-        }
-        else {
-            r.db("fsbot").tableCreate("outfits").run(conn);
-            System.out.println("table outfits did not exist and has been created");
-        }
+//         // Check for outfits table existence, if not, create
+//         if (r.db("fsbot").tableList().contains("outfits").run(conn)) {
+// //            System.out.println("table outfits already exists");
+//         }
+//         else {
+//             r.db("fsbot").tableCreate("outfits").run(conn);
+//             System.out.println("table outfits did not exist and has been created");
+//         }
 
-        // Check for colourRoles table existence, if not, create
-        if (r.db("fsbot").tableList().contains("colourRoles").run(conn)) {
-//            System.out.println("table colourRoles already exists");
-        }
-        else {
-            r.db("fsbot").tableCreate("colourRoles").run(conn);
-            System.out.println("table colourRoles did not exist and has been created");
-        }
-    }
+//         // Check for colourRoles table existence, if not, create
+//         if (r.db("fsbot").tableList().contains("colourRoles").run(conn)) {
+// //            System.out.println("table colourRoles already exists");
+//         }
+//         else {
+//             r.db("fsbot").tableCreate("colourRoles").run(conn);
+//             System.out.println("table colourRoles did not exist and has been created");
+//         }
+//     }
 }

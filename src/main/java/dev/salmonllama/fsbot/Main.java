@@ -34,7 +34,6 @@ public class Main {
 
         new DiscordApiBuilder().setToken(BotConfig.TOKEN).login().thenAccept(api -> {
             DatabaseUtilities db = new DatabaseUtilities(r, conn, api);
-            db.tableSetup();
 
             Guthix guthix = new Guthix(api, db);
 
