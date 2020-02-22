@@ -25,4 +25,17 @@ public class CommandPermission {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("Command Permission: [PermissionType: %s", type.toString()));
+
+        if (this.value != null) {
+            builder.append(String.format(", Value: %s", value));
+        }
+
+        builder.append("]");
+        return builder.toString();
+    }
 }

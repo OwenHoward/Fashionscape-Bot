@@ -104,7 +104,7 @@ public class HelpCommand extends Command {
         Collection<String> targetedAliases = null;
         String targetedDescription = null;
         String targetedUsage = null;
-        CommandPermission targetedPermissions = null; // TODO: Make a toString() method for this eh?
+        CommandPermission targetedPermissions = null;
 
         for (Command cmd : guthix.listCommands()) {
             for (String alias : cmd.aliases()) {
@@ -136,7 +136,7 @@ public class HelpCommand extends Command {
         if (!targetedUsage.equals("")) {
             builder.append(String.format("- Usage: %s\n", targetedUsage));
         }
-        builder.append(String.format("- Permissions: %s\n", targetedPermissions));
+        builder.append(String.format("- Permissions: %s\n", targetedPermissions.toString()));
 
         builder.append("```");
 
