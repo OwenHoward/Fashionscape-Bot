@@ -29,7 +29,7 @@ public class ShowGalleriesCommand extends Command {
     @Override public String description() { return "Shows registered gallery channels in the current server"; }
     @Override public String usage() { return "showgalleries"; }
     @Override public String category() { return "General"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("showgalleries", "listgalleries")); }
 
     @Override public void onCommand(CommandContext ctx) {
