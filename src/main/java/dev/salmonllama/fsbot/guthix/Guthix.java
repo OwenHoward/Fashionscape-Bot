@@ -5,16 +5,11 @@
 
 package dev.salmonllama.fsbot.guthix;
 
-import dev.salmonllama.fsbot.commands.general.HelpCommand;
-import dev.salmonllama.fsbot.commands.general.SpecificOutfitCommand;
+import dev.salmonllama.fsbot.commands.general.*;
 import dev.salmonllama.fsbot.commands.staff.OutfitInfoCommand;
-import dev.salmonllama.fsbot.commands.general.OutfitCommand;
 import dev.salmonllama.fsbot.commands.staff.*;
 import dev.salmonllama.fsbot.commands.developer.InviteCommand;
 import dev.salmonllama.fsbot.commands.developer.CreateGalleryCommand;
-import dev.salmonllama.fsbot.commands.general.ColorsCommand;
-import dev.salmonllama.fsbot.commands.general.ColorCommand;
-import dev.salmonllama.fsbot.commands.general.PingCommand;
 import dev.salmonllama.fsbot.commands.developer.EvalCommand;
 import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
 import org.javacord.api.DiscordApi;

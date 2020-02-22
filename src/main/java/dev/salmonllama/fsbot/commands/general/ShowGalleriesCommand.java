@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package dev.salmonllama.fsbot.commands.staff;
+package dev.salmonllama.fsbot.commands.general;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class ShowGalleriesCommand extends Command {
     @Override public String name() { return "Show Galleries"; }
     @Override public String description() { return "Shows registered gallery channels in the current server"; }
     @Override public String usage() { return "showgalleries"; }
-    @Override public String category() { return "Staff"; }
+    @Override public String category() { return "General"; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("showgalleries", "listgalleries")); }
 
