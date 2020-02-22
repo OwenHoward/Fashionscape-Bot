@@ -23,13 +23,13 @@ public class ServerJoined implements ServerJoinListener {
         this.db = db;
     }
 
-    public void onServerJoin(ServerJoinEvent event) {
-        db.newServerProcess(event.getServer());
+    public void onServerJoin(ServerJoinEvent event) { // TODO: This needs fixing yo
+    //     db.newServerProcess(event.getServer());
 
-        EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Server joined")
-                .setColor(Color.GREEN)
-                .addInlineField("Server name:", event.getServer().getName())
-                .addInlineField("Server Id:", event.getServer().getIdAsString());
+    //     EmbedBuilder embed = new EmbedBuilder()
+    //             .setTitle("Server joined")
+    //             .setColor(Color.GREEN)
+    //             .addInlineField("Server name:", event.getServer().getName())
+    //             .addInlineField("Server Id:", event.getServer().getIdAsString());
     }
 }
