@@ -18,6 +18,26 @@ public class GalleryChannel extends DatabaseModel {
 
     }
 
+    public String getServerId() {
+        return serverId;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
     public static String schema() {
         return "CREATE TABLE IF NOT EXISTS galleries (" +
                 "server_id TEXT," +
