@@ -10,6 +10,7 @@ import dev.salmonllama.fsbot.database.models.Outfit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +37,7 @@ public class OutfitController {
         });
     }
 
-    public static CompletableFuture<Outfit> findRandom() {
+    public static CompletableFuture<Optional<Outfit>> findRandom() {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return findRandomExec();
@@ -87,28 +88,28 @@ public class OutfitController {
     }
 
     private static void insertExec(Outfit outfit) throws SQLException {
-        if (outfit.created == null) {
-            outfit.created = new Timestamp(System.currentTimeMillis());
+        if (outfit.getCreated() == null) {
+            outfit.setCreated(new Timestamp(System.currentTimeMillis()));
         }
 
-        if (outfit.updated == null) {
-            outfit.updated = new Timestamp(System.currentTimeMillis());
+        if (outfit.getUpdated() == null) {
+            outfit.setUpdated(new Timestamp(System.currentTimeMillis()));
         }
 
         FSDB.get().insert(
                 "INSERT INTO " +
-                        "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'deletion_hash') " +
+                        "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'delete_hash') " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                outfit.id,
-                outfit.link,
-                outfit.submitter,
-                outfit.tag,
-                outfit.created,
-                outfit.updated,
-                outfit.deleted,
-                outfit.featured,
-                outfit.displayCount,
-                outfit.deletionHash
+                outfit.getId(),
+                outfit.getLink(),
+                outfit.getSubmitter(),
+                outfit.getTag(),
+                outfit.getCreated(),
+                outfit.getUpdated(),
+                outfit.isDeleted(),
+                outfit.isFeatured(),
+                outfit.getDisplayCount(),
+                outfit.getDeleteHash()
                 );
     }
 
@@ -125,16 +126,17 @@ public class OutfitController {
         return Optional.empty();
     }
 
-    private static Outfit findRandomExec() throws SQLException {
+    private static Optional<Outfit> findRandomExec() throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDER BY random() LIMIT 1");
 
-        Outfit outfit = new Outfit();
         if (rs.next()) {
-            outfit = mapObject(rs);
+            Outfit outfit = mapObject(rs);
+            FSDB.get().close(rs);
+            return Optional.of(outfit);
         }
+
         FSDB.get().close(rs);
-        
-        return outfit;
+        return Optional.empty();
     }
 
     private static Optional<Outfit> findRandomByTagExec(String tag) throws SQLException {
@@ -188,17 +190,13 @@ public class OutfitController {
     }
 
     private static Outfit mapObject(ResultSet rs) throws SQLException {
-        Outfit outfit = new Outfit();
-        outfit.id = rs.getString("id");
-        outfit.link = rs.getString("link");
-        outfit.tag = rs.getString("tag");
-        outfit.submitter = rs.getString("submitter");
-        outfit.created = new Timestamp(rs.getLong("created"));
-        outfit.updated = new Timestamp(rs.getLong("updated"));
-        outfit.deleted = rs.getBoolean("deleted");
-        outfit.featured = rs.getBoolean("featured");
-        outfit.displayCount = rs.getInt("display_count");
-        outfit.deletionHash = rs.getString("deletion_hash");
-        return outfit;
+        return new Outfit.OutfitBuilder(rs.getString("id"), rs.getString("link"), rs.getString("submitter"), rs.getString("tag"))
+                .setCreated(new Timestamp(rs.getLong("created")))
+                .setUpdated(new Timestamp((rs.getLong("updated"))))
+                .setDeleted(rs.getBoolean("deleted"))
+                .setFeatured(rs.getBoolean("featured"))
+                .setDisplayCount(rs.getInt("display_count"))
+                .setDeleteHash(rs.getString("delete_hash"))
+                .build();
     }
 }
