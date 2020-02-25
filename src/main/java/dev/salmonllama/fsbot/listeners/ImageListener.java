@@ -41,12 +41,12 @@ public class ImageListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) { // TODO: This needs immediate help
-        // Check for valid source -> DONE
-        // Check for gallery channel presence
-        // Check for images (attached files and links from approved sources)
-        // Upload the image(s) to imgur
-        // Store the image in the database
-        // Send confirmation && log event
+        // Check for valid source -> DONE -> WORKING
+        // Check for gallery channel presence -> DONE -> WORKING
+        // Check for images (attached files and links from approved sources) -> DONE -> WORKING (approved links to be added later)
+        // Upload the image(s) to imgur -> DONE -> WORKING
+        // Store the image in the database -> DONE -> WORKING
+        // Send confirmation && log event -> IN PROGRESS (waiting for logger upgrade)
 
         if (!event.getMessageAuthor().isRegularUser()) {
             // Ignore anything that is a webhook or a bot message
