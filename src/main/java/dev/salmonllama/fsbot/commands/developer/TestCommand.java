@@ -10,10 +10,12 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
+import org.javacord.api.entity.message.MessageAttachment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class TestCommand extends Command {
     @Override public String name() { return "Test"; }
@@ -25,8 +27,8 @@ public class TestCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-            OutfitController.findRandom().thenAccept(outfit -> {
-                ctx.reply(outfit.toString());
-            });
+        OutfitController.findRandom().thenAccept(outfit -> {
+            ctx.reply(outfit.toString());
+        });
     }
 }
