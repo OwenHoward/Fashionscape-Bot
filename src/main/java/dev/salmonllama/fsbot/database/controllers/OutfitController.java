@@ -10,7 +10,6 @@ import dev.salmonllama.fsbot.database.models.Outfit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;

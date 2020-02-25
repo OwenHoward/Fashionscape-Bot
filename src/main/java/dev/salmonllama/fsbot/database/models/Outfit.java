@@ -10,16 +10,16 @@ import dev.salmonllama.fsbot.database.DatabaseModel;
 import java.sql.Timestamp;
 
 public class Outfit extends DatabaseModel {
-    private String id = "";
-    private String link = "";
-    private String submitter = "";
-    private String tag = "";
-    private Timestamp created = null;
-    private Timestamp updated = null;
-    private boolean deleted = false;
-    private boolean featured = false;
-    private int displayCount = 0;
-    private String deleteHash = "";
+    private String id;
+    private String link;
+    private String submitter;
+    private String tag;
+    private Timestamp created;
+    private Timestamp updated;
+    private boolean deleted;
+    private boolean featured;
+    private int displayCount;
+    private String deleteHash;
 
     public Outfit(OutfitBuilder builder) {
         id = builder.id;

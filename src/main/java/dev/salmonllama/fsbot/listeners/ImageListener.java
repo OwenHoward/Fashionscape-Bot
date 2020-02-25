@@ -7,27 +7,16 @@ package dev.salmonllama.fsbot.listeners;
 
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
-import com.rethinkdb.net.Cursor;
-import com.vdurmont.emoji.EmojiParser;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.database.models.Outfit;
 import dev.salmonllama.fsbot.endpoints.imgur.ImgurAPIConnection;
-import okhttp3.*;
-import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAttachment;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.util.logging.ExceptionLogger;
-import org.json.JSONObject;
-import dev.salmonllama.fsbot.config.BotConfig;
 
-import java.awt.*;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ImageListener implements MessageCreateListener {
 
