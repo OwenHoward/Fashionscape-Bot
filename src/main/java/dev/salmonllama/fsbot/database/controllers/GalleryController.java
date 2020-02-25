@@ -64,13 +64,14 @@ public class GalleryController {
         while (rs.next()) {
             galleries.add(mapObject(rs));
         }
-        rs.getStatement().close();
+        FSDB.get().close(rs);
 
         return galleries;
     }
 
     private static boolean galleryExistsExec(String channelId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM galleries WHERE channel_id = ?) AS hmm", channelId);
+        FSDB.get().close(rs);
 
         return rs.getBoolean("hmm");
     }
