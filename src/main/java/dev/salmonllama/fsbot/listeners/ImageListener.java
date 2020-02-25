@@ -9,17 +9,25 @@ import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
 import com.rethinkdb.net.Cursor;
 import com.vdurmont.emoji.EmojiParser;
+import dev.salmonllama.fsbot.database.controllers.GalleryController;
+import dev.salmonllama.fsbot.database.controllers.OutfitController;
+import dev.salmonllama.fsbot.database.models.Outfit;
+import dev.salmonllama.fsbot.endpoints.imgur.ImgurAPIConnection;
 import okhttp3.*;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAttachment;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
+import org.javacord.api.util.logging.ExceptionLogger;
 import org.json.JSONObject;
 import dev.salmonllama.fsbot.config.BotConfig;
 
 import java.awt.*;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ImageListener implements MessageCreateListener {
 
@@ -33,125 +41,53 @@ public class ImageListener implements MessageCreateListener {
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) { // TODO: This needs immediate help
+        // Check for valid source -> DONE
+        // Check for gallery channel presence
+        // Check for images (attached files and links from approved sources)
+        // Upload the image(s) to imgur
+        // Store the image in the database
+        // Send confirmation && log event
 
-        // event.getMessage().getUserAuthor().ifPresent(author -> {
-        //     if (author.isBot()) {
-        //         return;
-        //     }
-        // });
+        if (!event.getMessageAuthor().isRegularUser()) {
+            // Ignore anything that is a webhook or a bot message
+            return;
+        }
 
-        // Message message = event.getMessage();
-        // String channel = event.getChannel().getIdAsString();
-        // String submitter = event.getMessage().getAuthor().getIdAsString();
+        // Only works in Server Text Channels
+        event.getChannel().asServerTextChannel().ifPresent(channel -> {
+            // Only works in registered Gallery Channels
+            GalleryController.galleryExists(channel.getIdAsString()).thenAccept(exists -> {
+                if (exists) {
+                    // Check the message for images
+                    if (event.getMessageAttachments().stream().anyMatch(MessageAttachment::isImage)) {
+                        // Upload the image(s) to Imgur, store in database, log the stored images.
+                        ImgurAPIConnection imgur = new ImgurAPIConnection();
 
-        // if (message.getAttachments().stream().noneMatch(MessageAttachment::isImage)) {
-        //     return;
-        // }
+                        event.getMessageAttachments()
+                                .stream()
+                                .filter(MessageAttachment::isImage)
+                                .forEach(image -> {
+                                    // Upload to Imgur
+                                    imgur.uploadImage(image.getUrl().toString()).thenAccept(upload -> {
+                                        // Store in the database
+                                        Outfit.OutfitBuilder outfitBuilder = new Outfit.OutfitBuilder()
+                                                .setId(upload.getId())
+                                                .setLink(upload.getLink())
+                                                .setSubmitter(event.getMessageAuthor().getIdAsString())
+                                                .setCreated(new Timestamp(upload.getDateTime()));
 
-        // // If the message contains an image, check if the channel is being listened to for image storage
+                                        GalleryController.getTag(channel.getIdAsString()).thenAccept(outfitBuilder::setTag).join();
 
-        // String dbTable = null;
+                                        Outfit outfit = outfitBuilder.build();
+                                        OutfitController.insert(outfit).join();
 
-        // if(r.db("fsbot").table("channels").g("cId").contains(channel).run(conn)) {
-        //     Cursor cursor = r.db("fsbot")
-        //             .table("channels")
-        //             .filter(row -> row.getField("cId").eq(channel))
-        //             .getField("tag")
-        //             .run(conn);
-
-        //     List tags = cursor.toList();
-
-        //     for (Object tag : tags) {
-        //         dbTable = tag.toString();
-        //     }
-        // }
-        // else {
-        //     return;
-        // }
-
-        // List<MessageAttachment> attachments = message.getAttachments();
-
-        // for (MessageAttachment attachment : attachments) {
-        //     String discordLink = attachment.getUrl().toString();
-        //     String imgurLink = null;
-
-        //     // Upload the image to imgur
-        //     try {
-        //         OkHttpClient client = new OkHttpClient();
-
-        //         MediaType mediaType = MediaType.parse("multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW");
-
-        //         RequestBody body = RequestBody.create(
-        //                 mediaType,
-        //                 String.format("------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\n%s\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--", discordLink));
-
-        //         Request request = new Request.Builder()
-        //                 .url("https://api.imgur.com/3/image")
-        //                 .method("POST", body)
-        //                 .header("Authorization", BotConfig.IMGUR_ID)
-        //                 .header("Authorization", BotConfig.IMGUR_BEARER)
-        //                 .build();
-
-        //         Response response = client.newCall(request).execute();
-
-        //         if (response.body() == null) {
-        //             event.getChannel().sendMessage("Something went wrong!");
-        //             return;
-        //         }
-
-        //         String jsonData = response.body().string();
-        //         imgurLink = new JSONObject(jsonData).getJSONObject("data").getString("link");
-
-        //         if (imgurLink == null) {
-        //             event.getChannel().sendMessage("Something went wrong!");
-        //             return;
-        //         }
-
-        //     }
-        //     catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
-
-        //     r.db("fsbot").table("outfits").insert(
-        //             r.hashMap("link", imgurLink)
-        //                     .with("submitter", submitter)
-        //                     .with("tag", dbTable)
-        //     ).run(conn);
-
-        //     final String finalLink = imgurLink;
-        //     Cursor imgId = r.db("fsbot")
-        //             .table("outfits")
-        //             .filter(row -> row.getField("link").eq(finalLink))
-        //             .getField("id")
-        //             .run(conn);
-
-        //     String embedId = null;
-        //     List imgIds = imgId.toList();
-        //     for (Object id : imgIds) {
-        //         embedId = id.toString();
-        //     }
-
-        //     EmbedBuilder embed = new EmbedBuilder()
-        //             .setTitle("Added an entry of tag " + dbTable)
-        //             .setColor(Color.GREEN)
-        //             .setThumbnail(imgurLink)
-        //             .setAuthor("Placeholder")
-        //             .setFooter(embedId);
-
-        //     event.getApi().getUserById(submitter).thenAccept(user -> embed.setAuthor(user.getDiscriminatedName()));
-
-        //     event.getApi().getChannelById(BotConfig.OUTFIT_LOG).ifPresent(chnl -> {
-        //         chnl.asTextChannel().ifPresent(txtchnl -> {
-        //             txtchnl.sendMessage(embed).join();
-        //         });
-        //     });
-
-        //     if (dbTable.equals("disaster")) {
-        //         // Add custom panda emoji: <:PandaWut:433045737245376522>
-        //         message.addReaction("PandaWut:433045737245376522");
-        //     }
-
-        //     message.addReaction(EmojiParser.parseToUnicode(":heartpulse:"));
-        // }
+                                        // Log the event
+                                        // event.getChannel().sendMessage("Outfit stored: " + outfit.toString()); // TODO: Logging. Log this to OutfitLog
+                                    }).exceptionally(ExceptionLogger.get());
+                                });
+                    }
+                }
+            }).exceptionally(ExceptionLogger.get());
+        });
     }
 }
