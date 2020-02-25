@@ -46,6 +46,16 @@ public class GalleryController {
         });
     }
 
+    public static CompletableFuture<String> getTag(String channelId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return getTagExec(channelId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     private static void insertExec(GalleryChannel gallery) throws SQLException {
         FSDB.get().insert("INSERT INTO galleries('server_id', 'server_name', 'channel_id', 'channel_name', 'tag')" +
                         "VALUES(?, ?, ?, ?, ?)",
@@ -64,16 +74,25 @@ public class GalleryController {
         while (rs.next()) {
             galleries.add(mapObject(rs));
         }
-        FSDB.get().close(rs);
 
+        FSDB.get().close(rs);
         return galleries;
     }
 
     private static boolean galleryExistsExec(String channelId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM galleries WHERE channel_id = ?) AS hmm", channelId);
-        FSDB.get().close(rs);
+        boolean exists = rs.getBoolean("hmm");
 
-        return rs.getBoolean("hmm");
+        FSDB.get().close(rs);
+        return exists;
+    }
+
+    private static String getTagExec(String channelId) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE channel_id = ?", channelId);
+        String tag = rs.getString("tag");
+
+        FSDB.get().close(rs);
+        return tag;
     }
 
     private static GalleryChannel mapObject(ResultSet rs) throws SQLException {
