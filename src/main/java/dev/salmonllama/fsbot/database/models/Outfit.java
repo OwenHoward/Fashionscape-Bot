@@ -115,11 +115,27 @@ public class Outfit extends DatabaseModel {
         private int displayCount = 0;
         private String deleteHash = "";
 
-        public OutfitBuilder(String id, String link, String submitter, String tag) {
+        public OutfitBuilder() {
+        }
+
+        public OutfitBuilder setId(String id) {
             this.id = id;
+            return this;
+        }
+
+        public OutfitBuilder setLink(String link) {
             this.link = link;
+            return this;
+        }
+
+        public OutfitBuilder setSubmitter(String submitter) {
             this.submitter = submitter;
+            return this;
+        }
+
+        public OutfitBuilder setTag(String tag) {
             this.tag = tag;
+            return this;
         }
 
         public OutfitBuilder setCreated(Timestamp created) {

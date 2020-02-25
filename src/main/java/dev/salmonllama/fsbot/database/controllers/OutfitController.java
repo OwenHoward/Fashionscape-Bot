@@ -172,8 +172,8 @@ public class OutfitController {
         if (rs.next()) {
             count = rs.getInt("count");
         }
-        FSDB.get().close(rs);
 
+        FSDB.get().close(rs);
         return count;
     }
 
@@ -184,13 +184,17 @@ public class OutfitController {
         if (rs.next()) {
             count = rs.getInt("count");
         }
-        FSDB.get().close(rs);
 
+        FSDB.get().close(rs);
         return count;
     }
 
     private static Outfit mapObject(ResultSet rs) throws SQLException {
-        return new Outfit.OutfitBuilder(rs.getString("id"), rs.getString("link"), rs.getString("submitter"), rs.getString("tag"))
+        return new Outfit.OutfitBuilder()
+                .setId(rs.getString("id"))
+                .setLink(rs.getString("link"))
+                .setSubmitter(rs.getString("submitter"))
+                .setTag(rs.getString("tag"))
                 .setCreated(new Timestamp(rs.getLong("created")))
                 .setUpdated(new Timestamp((rs.getLong("updated"))))
                 .setDeleted(rs.getBoolean("deleted"))
