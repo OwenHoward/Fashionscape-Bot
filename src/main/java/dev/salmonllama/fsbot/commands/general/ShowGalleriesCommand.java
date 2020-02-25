@@ -23,6 +23,7 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 public class ShowGalleriesCommand extends Command {
     @Override public String name() { return "Show Galleries"; }
@@ -39,13 +40,11 @@ public class ShowGalleriesCommand extends Command {
         }
 
         ctx.getServer().ifPresent(server -> {
-            try {
-                Collection<GalleryChannel> galleries = GalleryController.getGalleriesByServer(server.getIdAsString());
+            GalleryController.getGalleriesByServer(server.getIdAsString())
+                    .exceptionally(ExceptionLogger.get())
+                    .thenAccept(galleries -> {
                 ctx.reply(galleryEmbed(galleries, server));
-            } catch (SQLException e) {
-                ctx.reply("An exception has occurred: " + e.getMessage());
-            }
-            
+            });
         });
     }
 

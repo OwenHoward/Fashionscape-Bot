@@ -17,6 +17,7 @@ import dev.salmonllama.fsbot.guthix.PermissionType;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -51,13 +52,8 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
         // Store the gallery channel in the database.
 
         String channelId = ctx.getChannel().getIdAsString();
-        try {
-            if (GalleryController.galleryExists(channelId)) {
-                ctx.reply("A gallery already exists in this channel, can not create a new one.");
-                return;
-            }
-        } catch (SQLException e) {
-            ctx.reply(String.format("Error: %s", e.getMessage())); // TODO: error logging.
+        if (GalleryController.galleryExists(channelId).join()) { // This is a value that is needed immediately.
+            ctx.reply("A gallery already exists in this channel, can not create a new one.");
             return;
         }
 
@@ -74,12 +70,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
 
         ctx.getChannel().asServerTextChannel().ifPresent(channel -> gallery.channelName = channel.getName());
 
-        try {
-            GalleryController.insert(gallery);
-        } catch(SQLException e) {
-            ctx.reply(String.format("Error: %s", e.getMessage())); // TODO: error logging.
-            return;
-        }
+        GalleryController.insert(gallery).exceptionally(ExceptionLogger.get()); // Make a discord exception logger for the thingos
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(Color.GREEN)
