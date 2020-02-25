@@ -12,11 +12,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 public class GalleryController {
-    public static void insert(GalleryChannel gallery) throws SQLException {
+    public static CompletableFuture<Void> insert(GalleryChannel gallery) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                insertExec(gallery);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Collection<GalleryChannel>> getGalleriesByServer(String serverId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return getGalleriesByServerExec(serverId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Boolean> galleryExists(String channelId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return galleryExistsExec(channelId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    private static void insertExec(GalleryChannel gallery) throws SQLException {
         FSDB.get().insert("INSERT INTO galleries('server_id', 'server_name', 'channel_id', 'channel_name', 'tag')" +
-                "VALUES(?, ?, ?, ?, ?)",
+                        "VALUES(?, ?, ?, ?, ?)",
                 gallery.serverId,
                 gallery.serverName,
                 gallery.channelId,
@@ -25,25 +57,22 @@ public class GalleryController {
         );
     }
 
-    public static Collection<GalleryChannel> getGalleriesByServer(String serverId) throws SQLException {
+    private static Collection<GalleryChannel> getGalleriesByServerExec(String serverId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE server_id = ?", serverId);
 
         Collection<GalleryChannel> galleries = new ArrayList<>();
         while (rs.next()) {
             galleries.add(mapObject(rs));
         }
+        rs.getStatement().close();
 
-        FSDB.get().close(rs);
         return galleries;
     }
 
-    public static boolean galleryExists(String channelId) throws SQLException {
+    private static boolean galleryExistsExec(String channelId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM galleries WHERE channel_id = ?) AS hmm", channelId);
 
-        boolean exists = rs.getBoolean("hmm");
-
-        FSDB.get().close(rs);
-        return exists;
+        return rs.getBoolean("hmm");
     }
 
     private static GalleryChannel mapObject(ResultSet rs) throws SQLException {
