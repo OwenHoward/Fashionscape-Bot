@@ -11,9 +11,82 @@ import dev.salmonllama.fsbot.database.models.Outfit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
-public class OutfitController { // TODO: Refactor for closing via FSDB.get(). SQLExceptions should be elevated; thrown in the command for logging.
-    public static void insert(Outfit outfit) {
+public class OutfitController {
+    public static CompletableFuture<Void> insert(Outfit outfit) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                insertExec(outfit);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Optional<Outfit>> findById(String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findByIdExec(id);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Outfit> findRandom() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findRandomExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Optional<Outfit>> findRandomByTag(String tag) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findRandomByTagExec(tag);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Optional<Outfit>> findRandomBySubmitter(String submitterId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findRandomBySubmitterExec(submitterId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> countOutfits() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return countOutfitsExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> countOutfitsBySubmitter(String submitterId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return countOutfitsBySubmitterExec(submitterId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    private static void insertExec(Outfit outfit) throws SQLException {
         if (outfit.created == null) {
             outfit.created = new Timestamp(System.currentTimeMillis());
         }
@@ -22,102 +95,95 @@ public class OutfitController { // TODO: Refactor for closing via FSDB.get(). SQ
             outfit.updated = new Timestamp(System.currentTimeMillis());
         }
 
-        try {
-            FSDB.get().insert(
-                    "INSERT INTO " +
-                            "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'deletion_hash') " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    outfit.id,
-                    outfit.link,
-                    outfit.submitter,
-                    outfit.tag,
-                    outfit.created,
-                    outfit.updated,
-                    outfit.deleted,
-                    outfit.featured,
-                    outfit.displayCount,
-                    outfit.deletionHash
-                    );
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        FSDB.get().insert(
+                "INSERT INTO " +
+                        "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'deletion_hash') " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                outfit.id,
+                outfit.link,
+                outfit.submitter,
+                outfit.tag,
+                outfit.created,
+                outfit.updated,
+                outfit.deleted,
+                outfit.featured,
+                outfit.displayCount,
+                outfit.deletionHash
+                );
     }
 
-    public static Outfit findById(String id) throws SQLException {
-        Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE id = ?", id)) {
-            if (rs.next()) {
-                outfit = mapObject(rs);
-            }
-            rs.getStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private static Optional<Outfit> findByIdExec(String id) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE id = ?", id);
+
+        if (rs.next()) {
+            Outfit outfit = mapObject(rs);
+            FSDB.get().close(rs);
+            return Optional.of(outfit);
         }
+
+        FSDB.get().close(rs);
+        return Optional.empty();
+    }
+
+    private static Outfit findRandomExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDER BY random() LIMIT 1");
+
+        Outfit outfit = new Outfit();
+        if (rs.next()) {
+            outfit = mapObject(rs);
+        }
+        FSDB.get().close(rs);
+        
         return outfit;
     }
 
-    public static Outfit findRandom() throws SQLException {
-        Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDER BY random() LIMIT 1")) {
-            if (rs.next()) {
-                outfit = mapObject(rs);
-            }
-            rs.getStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private static Optional<Outfit> findRandomByTagExec(String tag) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDER BY random() LIMIT 1", tag);
+
+        if (rs.next()) {
+            Outfit outfit = mapObject(rs);
+            FSDB.get().close(rs);
+            return Optional.of(outfit);
         }
-        return outfit;
+
+        FSDB.get().close(rs);
+        return Optional.empty();
     }
 
-    public static Outfit findRandomByTag(String tag) {
-        Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDER BY random() LIMIT 1", tag)) {
-            if (rs.next()) {
-                outfit = mapObject(rs);
-            }
-            rs.getStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    private static Optional<Outfit> findRandomBySubmitterExec(String submitterId) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDER BY random() LIMIT 1", submitterId);
+
+        if (rs.next()) {
+            Outfit outfit = mapObject(rs);
+            FSDB.get().close(rs);
+            return Optional.of(outfit);
         }
-        return outfit;
+
+        FSDB.get().close(rs);
+        return Optional.empty();
     }
 
-    public static Outfit findRandomBySubmitter(String submitterId) {
-        Outfit outfit = new Outfit();
-        try (ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDER BY random() LIMIT 1", submitterId)) {
-            if (rs.next()) {
-                outfit = mapObject(rs);
-            }
-            rs.getStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return outfit;
-    }
+    private static int countOutfitsExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE deleted = 0");
 
-    public static int countOutfits() {
         int count = 0;
-        try (ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE deleted = 0")) {
-            if (rs.next()) {
-                count = rs.getInt("count");
-            }
-            rs.getStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (rs.next()) {
+            count = rs.getInt("count");
         }
+        FSDB.get().close(rs);
+
         return count;
     }
 
-    public static int countOutfitsBySubmitter(String submitterId) {
+    private static int countOutfitsBySubmitterExec(String submitterId) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE submitter = ? AND deleted = 0", submitterId);
+
         int count = 0;
-        try (ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE submitter = ? AND deleted = 0", submitterId)) {
-            if (rs.next()) {
-                count = rs.getInt("count");
-            }
-            rs.getStatement().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (rs.next()) {
+            count = rs.getInt("count");
         }
+        FSDB.get().close(rs);
+
         return count;
     }
 
