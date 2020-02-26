@@ -11,6 +11,8 @@ import dev.salmonllama.fsbot.database.models.Outfit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -80,6 +82,16 @@ public class OutfitController {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return countOutfitsBySubmitterExec(submitterId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Collection<String>> getDistinctTags() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return getDistinctTagsExec();
             } catch (SQLException e) {
                 throw new CompletionException(e);
             }
@@ -186,6 +198,18 @@ public class OutfitController {
 
         FSDB.get().close(rs);
         return count;
+    }
+
+    private static Collection<String> getDistinctTagsExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT DISTINCT tag FROM outfits");
+
+        Collection<String> tags = new ArrayList<>();
+        while (rs.next()) {
+            tags.add(rs.getString("tag"));
+        }
+
+        FSDB.get().close(rs);
+        return tags;
     }
 
     private static Outfit mapObject(ResultSet rs) throws SQLException {
