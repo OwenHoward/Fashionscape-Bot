@@ -73,14 +73,20 @@ class Registry {
         if (input.contains(" ")) {
             input = removePrefix(input);
             String[] splits = input.split(" ");
-            return new ArrayList<>(Arrays.asList(splits));
+            return cleanSpaces(splits);
         } else {
             input = removePrefix(input);
             return new ArrayList<>(Collections.singletonList(input));
         }
     }
 
-    String[] getCmdArgs(String input) {
+    List<String> cleanSpaces(String[] input) {
+        List<String> list = new ArrayList<>(Arrays.asList(input));
+        list.removeIf(""::equals);
+        return list;
+    }
+
+    String[] getCmdArgs(String input) { // TODO: Make an object to encap these; stop the double call to splitArgs()
         List<String> splits = splitArgs(input);
         splits.remove(0);
         return splits.toArray(new String[0]);
