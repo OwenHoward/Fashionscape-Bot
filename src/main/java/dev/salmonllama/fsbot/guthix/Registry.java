@@ -73,21 +73,25 @@ class Registry {
         if (input.contains(" ")) {
             input = removePrefix(input);
             String[] splits = input.split(" ");
-            return new ArrayList<>(Arrays.asList(splits));
+            System.out.println(Arrays.toString(splits));
+            return cleanSpaces(splits);
         } else {
             input = removePrefix(input);
             return new ArrayList<>(Collections.singletonList(input));
         }
     }
 
-    String[] getCmdArgs(String input) {
-        List<String> splits = splitArgs(input);
-        splits.remove(0);
-        return splits.toArray(new String[0]);
+    List<String> cleanSpaces(String[] input) {
+        List<String> list = new ArrayList<>(Arrays.asList(input));
+        list.removeIf(""::equals);
+        return list;
     }
 
-    String commandString(String input) {
-        // Cleans the string of the prefix and any args, returning only the command
-        return splitArgs(input).get(0);
+    RegistryCommand getCommandInfo(String input) {
+        List<String> args = splitArgs(input);
+        String command = args.get(0);
+        args.remove(0);
+
+        return new RegistryCommand(command, args.toArray(new String[0]));
     }
 }
