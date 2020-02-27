@@ -73,7 +73,6 @@ class Registry {
         if (input.contains(" ")) {
             input = removePrefix(input);
             String[] splits = input.split(" ");
-            System.out.println(Arrays.toString(splits));
             return cleanSpaces(splits);
         } else {
             input = removePrefix(input);
