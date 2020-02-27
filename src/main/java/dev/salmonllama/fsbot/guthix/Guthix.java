@@ -13,10 +13,7 @@ import dev.salmonllama.fsbot.commands.developer.CreateGalleryCommand;
 import dev.salmonllama.fsbot.commands.developer.EvalCommand;
 import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
 import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
-import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import dev.salmonllama.fsbot.commands.developer.TestCommand;
@@ -70,7 +67,6 @@ public class Guthix implements MessageCreateListener {
         addCommand(new ColorCommand());
         addCommand(new ColorsCommand());
         addCommand(new OutfitCommand());
-        addCommand(new SpecificOutfitCommand(db));
         addCommand(new HelpCommand(this));
     }
 
@@ -97,16 +93,17 @@ public class Guthix implements MessageCreateListener {
             return;
         }
 
-        String content = event.getMessageContent().toLowerCase();
+        String content = event.getMessageContent();
+        String contentLower = content.toLowerCase();
 
-        if (registry.startsWithPrefix(content)) {
+        if (registry.startsWithPrefix(contentLower)) {
 
         } else {
             return;
         }
 
         RegistryCommand rComm = registry.getCommandInfo(content);
-        String cmdString = rComm.getCommand();
+        String cmdString = rComm.getCommand().toLowerCase();
 
         if (registry.isCommandAlias(cmdString)) {
 
@@ -114,9 +111,6 @@ public class Guthix implements MessageCreateListener {
             return;
         }
 
-        Message msg = event.getMessage();
-        TextChannel channel = event.getChannel();
-        Server server = event.getServer().orElse(null);
         String[] cmdArgs = rComm.getArgs();
 
         Command cmd = registry.findCommand(cmdString).orElse(null); // TODO: default command here
