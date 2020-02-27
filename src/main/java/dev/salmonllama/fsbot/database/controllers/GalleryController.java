@@ -67,7 +67,7 @@ public class GalleryController {
         );
     }
 
-    private static Collection<GalleryChannel> getGalleriesByServerExec(String serverId) throws SQLException {
+    private static Collection<GalleryChannel> getGalleriesByServerExec(String serverId) throws SQLException { // TODO: What if the server has no galleries eh?
         ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE server_id = ?", serverId);
 
         Collection<GalleryChannel> galleries = new ArrayList<>();
