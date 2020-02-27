@@ -48,6 +48,16 @@ public class OutfitController {
         });
     }
 
+    public static CompletableFuture<Optional<Collection<Outfit>>> findRandom(int amount) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findRandomExec(amount);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     public static CompletableFuture<Optional<Outfit>> findRandomByTag(String tag) {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -58,10 +68,30 @@ public class OutfitController {
         });
     }
 
+    public static CompletableFuture<Optional<Collection<Outfit>>> findRandomByTag(String tag, int amount) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findRandomByTagExec(tag, amount);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     public static CompletableFuture<Optional<Outfit>> findRandomBySubmitter(String submitterId) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return findRandomBySubmitterExec(submitterId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Optional<Collection<Outfit>>> findRandomBySubmitter(String submitterId, int amount) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return findRandomBySubmitterExec(submitterId, amount);
             } catch (SQLException e) {
                 throw new CompletionException(e);
             }
@@ -150,6 +180,12 @@ public class OutfitController {
         return Optional.empty();
     }
 
+    private static Optional<Collection<Outfit>> findRandomExec(int amount) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE deleted = 0 ORDER BY random() LIMIT ?", amount);
+
+        return extractMultiple(rs);
+    }
+
     private static Optional<Outfit> findRandomByTagExec(String tag) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE tag = ? AND deleted = 0 ORDER BY random() LIMIT 1", tag);
 
@@ -163,6 +199,12 @@ public class OutfitController {
         return Optional.empty();
     }
 
+    private static Optional<Collection<Outfit>> findRandomByTagExec(String tag, int amount) throws SQLException { // Still has to be an optional, the tag may not exist. It is user-supplied.
+        ResultSet rs = FSDB.get().select("SELECT  * FROM outfits WHERE tag = ? AND deleted = 0 ORDER BY  random() LIMIT ?", tag, amount);
+
+        return extractMultiple(rs);
+    }
+
     private static Optional<Outfit> findRandomBySubmitterExec(String submitterId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDER BY random() LIMIT 1", submitterId);
 
@@ -174,6 +216,12 @@ public class OutfitController {
 
         FSDB.get().close(rs);
         return Optional.empty();
+    }
+
+    private static Optional<Collection<Outfit>> findRandomBySubmitterExec(String submitterId, int amount) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM outfits WHERE submitter = ? AND deleted = 0 ORDER BY random() LIMIT ?", submitterId, amount);
+
+        return extractMultiple(rs);
     }
 
     private static int countOutfitsExec() throws SQLException {
@@ -210,6 +258,20 @@ public class OutfitController {
 
         FSDB.get().close(rs);
         return tags;
+    }
+
+    private static Optional<Collection<Outfit>> extractMultiple(ResultSet rs) throws SQLException {
+        Collection<Outfit> outfits = new ArrayList<>();
+        if (rs.next()) { // I don't see a better way to wrap this. If results exist -> iterate through them, return the optional.
+            while (rs.next()) {
+                outfits.add(mapObject(rs));
+            }
+            FSDB.get().close(rs);
+            return Optional.of(outfits);
+        }
+
+        FSDB.get().close(rs);
+        return Optional.empty();
     }
 
     private static Outfit mapObject(ResultSet rs) throws SQLException {
