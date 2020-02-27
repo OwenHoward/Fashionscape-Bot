@@ -8,7 +8,7 @@ plugins {
     id 'application'
 }
 
-group 'studio.spiderling'
+group 'dev.salmonllama'
 version '1.1.11'
 
 sourceCompatibility = 1.8
