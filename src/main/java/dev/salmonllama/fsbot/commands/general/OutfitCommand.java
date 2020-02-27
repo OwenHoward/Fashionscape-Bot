@@ -41,6 +41,7 @@ public class OutfitCommand extends Command {
                 handleTagCommand(command, args, ctx);
             } else if (NON_TAG_ALIASES.contains(command)) {
                 // args parsing and command logic with name as caller
+                handleNameCommand(command, args, ctx);
             }
         });
     }
@@ -68,8 +69,42 @@ public class OutfitCommand extends Command {
         }
     }
 
-    private void handleNameCommand() {
+    private void handleNameCommand(String command, String[] args, CommandContext ctx) {
+        switch (args.length) {
+            case 0:
+                // Send one truly random outfit
+                OutfitController.findRandom().thenAccept(outfit -> {
+                    ctx.reply(outfit.toString());
+                });
+            case 1:
+                // Send the given number of outfits, not to exceed 5 for ratelimit reasons
+                if (isNumeric(args[0])) {
+                    int num = Math.min(Integer.parseInt(args[0]), MAX_OUTFITS);
 
+                    OutfitController.findRandom(num).thenAccept(outfitsOpt -> {
+                        outfitsOpt.ifPresent(outfits -> {
+                            outfits.forEach(outfit -> ctx.reply(outfit.toString()));
+                        });
+                    });
+                } else {
+                    // First arg is not a number, send an outfit of the given tag
+                    String tag = args[0];
+                    OutfitController.findRandomByTag(tag).thenAccept(outfitOpt -> {
+                        outfitOpt.ifPresent(outfit -> ctx.reply(outfit.toString()));
+                    });
+                }
+            case 2:
+                // Send the given number of outfits of the given tag
+                if (isNumeric(args[1])) {
+                    int num = Math.min(Integer.parseInt(args[1]), MAX_OUTFITS);
+
+                    OutfitController.findRandomByTag(args[0], num).thenAccept(outfitsOpt -> {
+                        outfitsOpt.ifPresent(outfits -> {
+                            outfits.forEach(outfit -> ctx.reply(outfit.toString()));
+                        });
+                    });
+                }
+        }
     }
 
     private Collection<String> initAliases() {
@@ -84,7 +119,7 @@ public class OutfitCommand extends Command {
         }
 
         try {
-            double number = Double.parseDouble(input);
+            Double.parseDouble(input);
         } catch (NumberFormatException e) {
             return false;
         }
