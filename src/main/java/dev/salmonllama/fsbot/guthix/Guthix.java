@@ -69,7 +69,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new PingCommand());
         addCommand(new ColorCommand());
         addCommand(new ColorsCommand());
-        addCommand(new OutfitCommand(db));
+        addCommand(new OutfitCommand());
         addCommand(new SpecificOutfitCommand(db));
         addCommand(new HelpCommand(this));
     }
