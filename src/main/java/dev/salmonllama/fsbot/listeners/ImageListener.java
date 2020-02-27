@@ -65,7 +65,7 @@ public class ImageListener implements MessageCreateListener {
                                                 .setSubmitter(event.getMessageAuthor().getIdAsString())
                                                 .setCreated(new Timestamp(upload.getDateTime()));
 
-                                        GalleryController.getTag(channel.getIdAsString()).thenAccept(outfitBuilder::setTag).join();
+                                        GalleryController.getTag(channel.getIdAsString()).thenAccept(outfitBuilder::setTag).join(); // TODO: Wrap this around the insert, don't join no moah
 
                                         Outfit outfit = outfitBuilder.build();
                                         OutfitController.insert(outfit).join();
