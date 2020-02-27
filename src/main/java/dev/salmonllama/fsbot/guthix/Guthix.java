@@ -37,7 +37,7 @@ public class Guthix implements MessageCreateListener {
 
         this.db = db;
 
-        manager = new PermissionManager(api);
+        manager = new PermissionManager();
         registry = new Registry();
 
         initCommands();

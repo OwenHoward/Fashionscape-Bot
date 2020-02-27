@@ -5,14 +5,11 @@
 
 package dev.salmonllama.fsbot.guthix;
 
-import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.MessageAuthor;
 
 public class PermissionManager {
-    private DiscordApi api;
 
-    public PermissionManager(DiscordApi api) {
-        this.api = api;
+    public PermissionManager() {
     }
 
     public boolean hasPermission(CommandPermission reqPerm, CommandContext ctx) {

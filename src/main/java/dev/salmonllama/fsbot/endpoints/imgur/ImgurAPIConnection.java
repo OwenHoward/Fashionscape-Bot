@@ -13,11 +13,6 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 public class ImgurAPIConnection {
-    // No idea what these are or what they do, but the request doesn't work without them.
-    private final String MEDIA_TYPE = "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW";
-    // To be used with String.format() and a link to the image. It will populate automatically.
-    private final String BODY_THING = "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"image\"\r\n\r\n%s\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--";
-
     private final String REQUEST_URL = "https://api.imgur.com/3/image/";
 
     private final String CLIENT_ID; // Required for uploading
