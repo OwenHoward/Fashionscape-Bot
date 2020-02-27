@@ -262,16 +262,18 @@ public class OutfitController {
 
     private static Optional<Collection<Outfit>> extractMultiple(ResultSet rs) throws SQLException {
         Collection<Outfit> outfits = new ArrayList<>();
-        if (rs.next()) { // I don't see a better way to wrap this. If results exist -> iterate through them, return the optional.
-            while (rs.next()) {
-                outfits.add(mapObject(rs));
-            }
-            FSDB.get().close(rs);
-            return Optional.of(outfits);
+        
+        while (rs.next()) {
+            outfits.add(mapObject(rs));
         }
 
         FSDB.get().close(rs);
-        return Optional.empty();
+
+        if (outfits.size() == 0) {
+            return Optional.empty();
+        }
+        
+        return Optional.of(outfits);
     }
 
     private static Outfit mapObject(ResultSet rs) throws SQLException {
