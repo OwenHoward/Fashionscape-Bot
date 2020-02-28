@@ -98,10 +98,50 @@ public class OutfitController {
         });
     }
 
-    public static CompletableFuture<Integer> countOutfits() {
+    public static CompletableFuture<Integer> countTotalOutfits() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return countOutfitsExec();
+                return countTotalOutfitsExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> countDeletedOutfits() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return countDeletedOutfitsExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> countActiveOutfits() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return countActiveOutfitsExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> countFeaturedOutfits() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return countFeaturedOutfitsExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> countOutfits(boolean deleted, boolean featured) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return countOutfitsExec(deleted, featured);
             } catch (SQLException e) {
                 throw new CompletionException(e);
             }
@@ -224,28 +264,40 @@ public class OutfitController {
         return extractMultiple(rs);
     }
 
-    private static int countOutfitsExec() throws SQLException {
+    private static int countTotalOutfitsExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits");
+
+        return extractCount(rs);
+    }
+
+    private static int countDeletedOutfitsExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE deleted = 1");
+
+        return extractCount(rs);
+    }
+
+    private static int countActiveOutfitsExec() throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE deleted = 0");
 
-        int count = 0;
-        if (rs.next()) {
-            count = rs.getInt("count");
-        }
+        return extractCount(rs);
+    }
 
-        FSDB.get().close(rs);
-        return count;
+    private static int countFeaturedOutfitsExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE featured = 1");
+
+        return extractCount(rs);
+    }
+
+    private static int countOutfitsExec(boolean deleted, boolean featured) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE deleted = ? AND featured = ?", deleted, featured);
+
+        return extractCount(rs);
     }
 
     private static int countOutfitsBySubmitterExec(String submitterId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM outfits WHERE submitter = ? AND deleted = 0", submitterId);
 
-        int count = 0;
-        if (rs.next()) {
-            count = rs.getInt("count");
-        }
-
-        FSDB.get().close(rs);
-        return count;
+        return extractCount(rs);
     }
 
     private static Collection<String> getDistinctTagsExec() throws SQLException {
@@ -274,6 +326,16 @@ public class OutfitController {
         }
         
         return Optional.of(outfits);
+    }
+
+    private static int extractCount(ResultSet rs) throws SQLException {
+        int count = 0;
+        if (rs.next()) {
+            count = rs.getInt("count");
+        }
+
+        FSDB.get().close(rs);
+        return count;
     }
 
     private static Outfit mapObject(ResultSet rs) throws SQLException {
