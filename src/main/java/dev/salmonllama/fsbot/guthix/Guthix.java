@@ -22,9 +22,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 /*
-* Guthix is Fashionscape Bot's command repository and dispatcher
+ * Guthix is Fashionscape Bot's command repository and dispatcher
  */
 public class Guthix implements MessageCreateListener {
+    @SuppressWarnings("unused")
     private DiscordApi api;
     private DatabaseUtilities db;
 
@@ -68,6 +69,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new ColorsCommand());
         addCommand(new OutfitCommand());
         addCommand(new HelpCommand(this));
+        addCommand(new StatsCommand());
     }
 
     public void addCommand(Command cmd) {
