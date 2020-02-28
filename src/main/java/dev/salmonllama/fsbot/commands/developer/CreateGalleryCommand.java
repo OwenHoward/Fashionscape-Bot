@@ -65,7 +65,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
 
         ctx.getChannel().asServerTextChannel().ifPresent(channel -> gallery.channelName = channel.getName());
 
-        GalleryController.insert(gallery).exceptionally(ExceptionLogger.get()); // Make a discord exception logger for the thingos
+        GalleryController.insert(gallery).exceptionally(ExceptionLogger.get()); // TODO: Make a discord exception logger for the thingos
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(Color.GREEN)
