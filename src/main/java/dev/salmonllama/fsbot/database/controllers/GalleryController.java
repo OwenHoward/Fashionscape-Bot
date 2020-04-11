@@ -95,7 +95,7 @@ public class GalleryController {
         return tag;
     }
 
-    private static GalleryChannel mapObject(ResultSet rs) throws SQLException {
+    private static GalleryChannel mapObject(ResultSet rs) throws SQLException { // TODO: Builder this
         GalleryChannel gallery = new GalleryChannel();
         gallery.serverId = rs.getString("server_id");
         gallery.serverName = rs.getString("server_name");
