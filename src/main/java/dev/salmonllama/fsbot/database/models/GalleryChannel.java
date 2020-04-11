@@ -42,7 +42,7 @@ public class GalleryChannel extends DatabaseModel {
         return "CREATE TABLE IF NOT EXISTS galleries (" +
                 "server_id TEXT," +
                 "server_name TEXT," +
-                "channel_id TEXT," + // PRIMARY KEY? There can only be one gallery per channel.
+                "channel_id TEXT," + // TODO: PRIMARY KEY? There can only be one gallery per channel.
                 "channel_name TEXT," +
                 "tag TEXT)";
     }

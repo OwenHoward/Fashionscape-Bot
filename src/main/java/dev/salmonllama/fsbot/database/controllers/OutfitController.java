@@ -18,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 public class OutfitController {
+    // There is no delete method. 'Deletions' should be executed as an update to the deleted flag.
     public static CompletableFuture<Void> insert(Outfit outfit) {
         return CompletableFuture.runAsync(() -> {
             try {
