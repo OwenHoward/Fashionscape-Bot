@@ -71,6 +71,13 @@ public class DatabaseProvider {
         }
     }
 
+    public int query(String sql, Object... params) throws SQLException {
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            resolveParameters(stmt, params);
+            return stmt.executeUpdate(sql);
+        }
+    }
+
     public int insert(String sql, Object... params) throws SQLException {
         try (PreparedStatement query = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             resolveParameters(query, params);
