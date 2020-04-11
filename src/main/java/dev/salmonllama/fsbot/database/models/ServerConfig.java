@@ -34,7 +34,7 @@ public class ServerConfig extends DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("Server Config: [id: %s, name: %s, prefix: %s",
+        return String.format("Server Config: [id: %s, name: %s, prefix: %s]",
                 id, name, prefix
         );
     }
