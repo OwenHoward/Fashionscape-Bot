@@ -79,11 +79,12 @@ public class DatabaseProvider {
     }
 
     public int insert(String sql, Object... params) throws SQLException {
-        try (PreparedStatement query = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (
+                PreparedStatement query = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ResultSet rs = query.getGeneratedKeys()
+        ) {
             resolveParameters(query, params);
             query.executeUpdate();
-
-            ResultSet rs = query.getGeneratedKeys();
 
             if (rs.next()) {
                 return rs.getInt(1);
