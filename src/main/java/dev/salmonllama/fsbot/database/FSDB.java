@@ -9,6 +9,7 @@ package dev.salmonllama.fsbot.database;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.database.models.Outfit;
+import dev.salmonllama.fsbot.database.models.ServerConfig;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class FSDB {
         try {
             get().query(Outfit.schema());
             get().query(GalleryChannel.schema());
+            get().query(ServerConfig.schema());
         } catch (SQLException e) {
             e.printStackTrace();
         }
