@@ -191,7 +191,7 @@ public class OutfitController {
                 outfit.isFeatured(),
                 outfit.getDisplayCount(),
                 outfit.getDeleteHash()
-                );
+        );
     }
 
     private static Optional<Outfit> findByIdExec(String id) throws SQLException {

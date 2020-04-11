@@ -16,7 +16,6 @@ import org.javacord.api.DiscordApiBuilder;
 import dev.salmonllama.fsbot.utilities.Constants;
 import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
 
-
 // TODO: auto-switching status messages.
 // TODO: Add an official Logger --> logging to Discord, not console
 
