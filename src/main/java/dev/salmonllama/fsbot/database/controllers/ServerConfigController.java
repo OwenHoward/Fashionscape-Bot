@@ -40,6 +40,16 @@ public class ServerConfigController {
         });
     }
 
+    public static CompletableFuture<Void> update(ServerConfig config) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                updateExec(config);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     private static void insertExec(ServerConfig config) throws SQLException {
         FSDB.get().insert("INSERT INTO server_config('id', 'name', 'prefix') VALUES (?, ?, ?)",
                 config.getId(),
@@ -59,6 +69,14 @@ public class ServerConfigController {
 
         FSDB.get().close(rs);
         return Optional.empty();
+    }
+
+    private static void updateExec(ServerConfig config) throws SQLException {
+        FSDB.get().query("UPDATE server_config SET prefix = ?, name = ? WHERE id = ?",
+                config.getPrefix(),
+                config.getName(),
+                config.getId()
+                );
     }
 
     private static ServerConfig mapObject(ResultSet rs) throws SQLException {
