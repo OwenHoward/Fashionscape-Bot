@@ -13,6 +13,10 @@ public class GalleryChannel extends DatabaseModel {
     public String channelId;
     public String channelName;
     public String tag;
+    // Normal emojis will be stored in plain text as :emoji:
+    // Server emojis will be stored in plain text as <:emoji:emoji-id>
+    // This can be acquired through CustomEmoji#getMentionTag()
+    public String emoji;
 
     public GalleryChannel() {
 
@@ -38,18 +42,23 @@ public class GalleryChannel extends DatabaseModel {
         return tag;
     }
 
+    public String getEmoji() {
+        return emoji;
+    }
+
     public static String schema() {
         return "CREATE TABLE IF NOT EXISTS galleries (" +
                 "server_id TEXT," +
                 "server_name TEXT," +
                 "channel_id TEXT," + // TODO: PRIMARY KEY? There can only be one gallery per channel.
                 "channel_name TEXT," +
+                "emoji TEXT," +
                 "tag TEXT)";
     }
 
     @Override
     public String toString() {
-        return String.format("Gallery: [server id: %s, server name: %s, channel id: %s, channel name: %s, tag: %s]",
-                serverId, serverName, channelId, channelName, tag);
+        return String.format("Gallery: [server id: %s, server name: %s, channel id: %s, channel name: %s, tag: %s, emoji: %s]",
+                serverId, serverName, channelId, channelName, tag, emoji);
     }
 }

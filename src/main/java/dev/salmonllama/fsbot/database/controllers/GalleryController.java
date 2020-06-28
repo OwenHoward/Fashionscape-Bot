@@ -55,15 +55,16 @@ public class GalleryController {
             }
         });
     }
-
+    // TODO: Refactor for proper Java-ing, add GalleryBuilder
     private static void insertExec(GalleryChannel gallery) throws SQLException {
-        FSDB.get().insert("INSERT INTO galleries('server_id', 'server_name', 'channel_id', 'channel_name', 'tag')" +
+        FSDB.get().insert("INSERT INTO galleries('server_id', 'server_name', 'channel_id', 'channel_name', 'tag', 'emoji')" +
                         "VALUES(?, ?, ?, ?, ?)",
                 gallery.serverId,
                 gallery.serverName,
                 gallery.channelId,
                 gallery.channelName,
-                gallery.tag
+                gallery.tag,
+                gallery.emoji
         );
     }
 
@@ -95,6 +96,14 @@ public class GalleryController {
         return tag;
     }
 
+    private static String getEmojiExec(String channelId) throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE channel_id = ?");
+        String emoji = rs.getString("emoji");
+
+        FSDB.get().close(rs);
+        return emoji;
+    }
+
     private static GalleryChannel mapObject(ResultSet rs) throws SQLException { // TODO: Builder this
         GalleryChannel gallery = new GalleryChannel();
         gallery.serverId = rs.getString("server_id");
@@ -102,6 +111,7 @@ public class GalleryController {
         gallery.channelId = rs.getString("channel_id");
         gallery.channelName = rs.getString("channel_name");
         gallery.tag = rs.getString("tag");
+        gallery.emoji = rs.getString("emoji");
 
         return gallery;
     }
