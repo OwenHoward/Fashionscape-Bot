@@ -115,7 +115,7 @@ public class ServerBlacklistController {
         return new ServerBlacklist.ServerBlacklistBuilder(rs.getString("id"))
                 .setName(rs.getString("name"))
                 .setOwnerId(rs.getString("owner_id"))
-                .setAdded(new Timestamp( rs.getLong("added")))
+                .setAdded(new Timestamp(rs.getLong("added")))
                 .build();
     }
 }

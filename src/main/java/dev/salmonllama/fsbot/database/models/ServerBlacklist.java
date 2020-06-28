@@ -9,7 +9,7 @@ import dev.salmonllama.fsbot.database.DatabaseModel;
 
 import java.sql.Timestamp;
 
-public class ServerBlacklist extends DatabaseModel {
+public class ServerBlacklist extends DatabaseModel { // TODO: Add a reason?
     private String id;
     private String name;
     private String ownerId;
