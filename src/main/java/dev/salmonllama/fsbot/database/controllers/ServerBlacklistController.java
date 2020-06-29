@@ -78,6 +78,7 @@ public class ServerBlacklistController {
     }
 
     private static void insertExec(ServerBlacklist bl) throws SQLException {
+        // TODO: Check for null added timestamp and init
         FSDB.get().insert("INSERT INTO blacklist_servers ('id', 'name', 'owner_id', 'added') VALUES (?, ?, ?, ?)",
                 bl.getId(),
                 bl.getName(),
