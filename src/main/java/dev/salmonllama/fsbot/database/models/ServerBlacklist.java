@@ -46,6 +46,16 @@ public class ServerBlacklist extends DatabaseModel { // TODO: Add a reason?
                 "added TEXT)";
     }
 
+    @Override
+    public String toString() {
+        return String.format("Server Blacklist: [id: %s, name: %s, owner_id: %s, added %s]",
+                this.getId(),
+                this.getName(),
+                this.getOwnerId(),
+                this.getAdded()
+        );
+    }
+
     public static class ServerBlacklistBuilder {
         private String id;
         private String name;

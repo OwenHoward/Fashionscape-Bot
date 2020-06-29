@@ -39,6 +39,15 @@ public class UserBlacklist extends DatabaseModel {
                 "added TEXT)";
     }
 
+    @Override
+    public String toString() {
+        return String.format("User Blacklist: [id: %s, reason: %s, added: %s",
+                this.getId(),
+                this.getReason(),
+                this.getAdded()
+        );
+    }
+
     public static class UserBlacklistBuilder {
         private String id;
         private String reason;
