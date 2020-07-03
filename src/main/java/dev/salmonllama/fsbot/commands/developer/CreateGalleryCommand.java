@@ -7,6 +7,7 @@ package dev.salmonllama.fsbot.commands.developer;
 
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
+import com.vdurmont.emoji.EmojiManager;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.guthix.Command;
@@ -28,9 +29,6 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override public String category() { return "Developer"; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
-
-    static final RethinkDB R = RethinkDB.r;
-    static final Connection CONN = R.connection().hostname("localhost").port(28015).connect();
 
     @Override
     public void onCommand(CommandContext ctx) { // TODO: Might need some logic help...
@@ -57,6 +55,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
         GalleryChannel gallery = new GalleryChannel();
         gallery.channelId = channelId;
         gallery.tag = tag;
+        gallery.emoji = ":heartpulse:";
 
         ctx.getServer().ifPresent(server -> {
             gallery.serverId = server.getIdAsString();
@@ -73,8 +72,9 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
                 .addField("Channel Name:", gallery.channelName)
                 .addField("Channel Id:", gallery.channelId)
                 .addField("Tag:", tag)
+                .addField("Emoji:", EmojiManager.getByUnicode(gallery.emoji).toString())
                 .addField("End:", String.format("This channel is now being tracked under: %s", tag));
         ctx.getChannel().sendMessage(embed);
-        }
+    }
 }
 
