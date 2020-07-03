@@ -33,7 +33,7 @@ public class UserBlacklist extends DatabaseModel {
     }
 
     public static String schema() {
-        return "CREATE TABLE IF NOT EXISTS blacklist_users(" +
+        return "CREATE TABLE IF NOT EXISTS blacklist_users (" +
                 "id TEXT PRIMARY KEY," +
                 "reason TEXT," +
                 "added TEXT)";
