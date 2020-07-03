@@ -17,7 +17,7 @@ import java.util.concurrent.CompletionException;
 
 public class WelcomeMessageController {
     // Needs insert, update, and delete. Only one per server -> needs exists
-    public CompletableFuture<Void> insert(WelcomeMessage msg) {
+    public static CompletableFuture<Void> insert(WelcomeMessage msg) {
         return CompletableFuture.runAsync(() -> {
             try {
                 insertExec(msg);
@@ -27,7 +27,7 @@ public class WelcomeMessageController {
         });
     }
 
-    public CompletableFuture<Optional<WelcomeMessage>> get(String id) {
+    public static CompletableFuture<Optional<WelcomeMessage>> get(String id) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return getExec(id);
@@ -37,7 +37,7 @@ public class WelcomeMessageController {
         });
     }
 
-    public CompletableFuture<Void> update(WelcomeMessage msg) {
+    public static CompletableFuture<Void> update(WelcomeMessage msg) {
         return CompletableFuture.runAsync(() -> {
             try {
                 updateExec(msg);
@@ -47,7 +47,7 @@ public class WelcomeMessageController {
         });
     }
 
-    public CompletableFuture<Boolean> exists(String id) {
+    public static CompletableFuture<Boolean> exists(String id) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return existsExec(id);
@@ -57,7 +57,7 @@ public class WelcomeMessageController {
         });
     }
 
-    public CompletableFuture<Void> delete(String id) {
+    public static CompletableFuture<Void> delete(String id) {
         return CompletableFuture.runAsync(() -> {
             try {
                 deleteExec(id);
@@ -67,7 +67,7 @@ public class WelcomeMessageController {
         });
     }
 
-    public CompletableFuture<Void> delete(WelcomeMessage msg) {
+    public static CompletableFuture<Void> delete(WelcomeMessage msg) {
         return CompletableFuture.runAsync(() -> {
             try {
                 deleteExec(msg.getServerId());
@@ -77,7 +77,7 @@ public class WelcomeMessageController {
         });
     }
 
-    private void insertExec(WelcomeMessage msg) throws SQLException {
+    private static void insertExec(WelcomeMessage msg) throws SQLException {
         FSDB.get().insert("INSERT INTO welcome_messages (server_id, message, updated, editor) VALUES (?, ?, ?, ?)",
                 msg.getServerId(),
                 msg.getMessage(),
@@ -86,7 +86,7 @@ public class WelcomeMessageController {
         );
     }
 
-    private Optional<WelcomeMessage> getExec(String id) throws SQLException {
+    private static Optional<WelcomeMessage> getExec(String id) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM welcome_messages WHERE server_id = ?", id);
 
         if (rs.next()) {
@@ -99,7 +99,7 @@ public class WelcomeMessageController {
         return Optional.empty();
     }
     
-    private void updateExec(WelcomeMessage msg) throws SQLException {
+    private static void updateExec(WelcomeMessage msg) throws SQLException {
         FSDB.get().query("UPDATE welcome_messages SET message = ?, updated = ?, editor = ? WHERE server_id = ?",
                 msg.getMessage(),
                 msg.getUpdated(),
@@ -108,7 +108,7 @@ public class WelcomeMessageController {
         );
     }
 
-    private boolean existsExec(String id) throws SQLException {
+    private static boolean existsExec(String id) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM welcome_messages WHERE server_id = ?) AS hmm", id);
         boolean exists = rs.getBoolean("hmm");
 
@@ -116,11 +116,11 @@ public class WelcomeMessageController {
         return exists;
     }
 
-    private void deleteExec(String id) throws SQLException {
+    private static void deleteExec(String id) throws SQLException {
         FSDB.get().query("DELETE FROM welcome_messages WHERE server_id = ?", id);
     }
 
-    private WelcomeMessage mapObject(ResultSet rs) throws SQLException {
+    private static WelcomeMessage mapObject(ResultSet rs) throws SQLException {
         return new WelcomeMessage.WelcomeMessageBuilder(rs.getString("server_id"))
                 .setMessage(rs.getString("message"))
                 .setUpdated(new Timestamp(rs.getLong("updated")))
