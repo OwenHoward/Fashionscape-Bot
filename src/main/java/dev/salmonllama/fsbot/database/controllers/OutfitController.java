@@ -179,7 +179,7 @@ public class OutfitController {
         }
 
         FSDB.get().insert(
-                "INSERT INTO " +
+                    "INSERT INTO " +
                         "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'delete_hash') " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 outfit.getId(),
