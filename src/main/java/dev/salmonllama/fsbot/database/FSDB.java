@@ -43,6 +43,8 @@ public class FSDB {
             get().query(ServerConfig.schema());
             get().query(ServerBlacklist.schema());
             get().query(UserBlacklist.schema());
+            get().query(WelcomeMessage.schema());
+            get().query(StaticPermission.schema());
         } catch (SQLException e) {
             e.printStackTrace();
         }
