@@ -58,7 +58,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new GetOutfitCommand());
         addCommand(new RetagCommand(db));
         addCommand(new RemoveOutfitCommand(db));
-        addCommand(new OutfitInfoCommand(db));
+        addCommand(new OutfitInfoCommand());
         addCommand(new SetStatusCommand());
         addCommand(new WelcomeMessageCommand());
         addCommand(new ShowGalleriesCommand());
