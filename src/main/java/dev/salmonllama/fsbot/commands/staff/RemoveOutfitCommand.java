@@ -64,7 +64,7 @@ public class RemoveOutfitCommand extends Command {
                        if (event.getUser().getId() != authorId) {
                            return;
                        }
-                       
+
                        if (event.getEmoji().equalsEmoji(EmojiParser.parseToUnicode(":white_check_mark:"))) {
                            // Delete the outfit
                            OutfitController.delete(outfit.getId());

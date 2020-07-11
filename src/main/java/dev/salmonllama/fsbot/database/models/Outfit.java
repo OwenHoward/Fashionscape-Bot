@@ -6,6 +6,7 @@
 package dev.salmonllama.fsbot.database.models;
 
 import dev.salmonllama.fsbot.database.DatabaseModel;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.sql.Timestamp;
 

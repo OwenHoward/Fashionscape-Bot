@@ -10,10 +10,13 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
+import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.permission.Role;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class TestCommand extends Command {
     @Override public String name() { return "Test"; }
@@ -25,8 +28,15 @@ public class TestCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        OutfitController.findRandom().thenAccept(outfit -> {
-            outfit.ifPresent(o -> ctx.reply(o.toString()));
+        Message msg = ctx.getMessage();
+
+        Collection<Role> roles = msg.getMentionedRoles();
+
+        roles.stream().map(Role::getIdAsString).collect(Collectors.toList()).forEach(id -> {
+            ctx.getServer().ifPresent(server -> {
+                Role r = server.getRoleById(id).orElse(null);
+                ctx.reply(r.getMentionTag());
+            });
         });
     }
 }
