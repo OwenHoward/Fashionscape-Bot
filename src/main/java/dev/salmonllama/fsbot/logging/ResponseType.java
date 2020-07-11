@@ -8,10 +8,10 @@ package dev.salmonllama.fsbot.logging;
 import java.awt.*;
 
 public enum ResponseType {
-    ERROR (Color.RED),
-    WARN (Color.YELLOW),
-    INFO (Color.BLUE),
-    LOG (Color.GRAY);
+    ERROR (Color.RED, "Error"),
+    WARN (Color.YELLOW, "Warning"),
+    INFO (Color.BLUE, "Info"),
+    LOG (Color.GRAY, "Log");
 
     private Color color;
     private String title;
