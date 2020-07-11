@@ -49,6 +49,16 @@ public class StaticPermissionController {
         });
     }
 
+    public static CompletableFuture<Optional<Collection<StaticPermission>>> getAll() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return getAllExec();
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     public static CompletableFuture<Void> delete(StaticPermission perm) {
         return delete(perm.getUserId(), perm.getPermission());
     }
@@ -103,6 +113,23 @@ public class StaticPermissionController {
         }
 
         return Optional.of(users);
+    }
+
+    private static Optional<Collection<StaticPermission>> getAllExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM static_permissions");
+
+        Collection<StaticPermission> permissions = new ArrayList<>();
+        while (rs.next()) {
+            permissions.add(mapObject(rs));
+        }
+
+        FSDB.get().close(rs);
+
+        if (permissions.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(permissions);
     }
 
     private static void deleteExec(String userId, String perm) throws SQLException {
