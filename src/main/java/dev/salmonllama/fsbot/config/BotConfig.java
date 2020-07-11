@@ -46,6 +46,9 @@ public class BotConfig {
     public static String VOTE_CHANNEL = "vote channel here";
 
     @ConfigurationOption
+    public static String JOIN_LOG = "join log channel";
+
+    @ConfigurationOption
     public static String REPORT_LOG = "report_log_channel";
 
     @ConfigurationOption
