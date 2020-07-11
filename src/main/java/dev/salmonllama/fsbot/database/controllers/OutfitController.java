@@ -169,6 +169,26 @@ public class OutfitController {
         });
     }
 
+    public static CompletableFuture<Void> delete(String id) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                deleteExec(id);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Void> delete(Outfit outfit) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                deleteExec(outfit.getId());
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     private static void insertExec(Outfit outfit) throws SQLException {
         if (outfit.getCreated() == null) {
             outfit.setCreated(new Timestamp(System.currentTimeMillis()));
@@ -311,6 +331,10 @@ public class OutfitController {
 
         FSDB.get().close(rs);
         return tags;
+    }
+
+    private static void deleteExec(String id) throws SQLException {
+        FSDB.get().query("UPDATE outfits SET deleted = true WHERE id = ?", id);
     }
 
     private static Optional<Collection<Outfit>> extractMultiple(ResultSet rs) throws SQLException {
