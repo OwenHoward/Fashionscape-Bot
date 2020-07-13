@@ -7,14 +7,10 @@ package dev.salmonllama.fsbot.logging;
 
 import dev.salmonllama.fsbot.config.BotConfig;
 import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.channel.ServerTextChannel;
-import org.javacord.api.entity.message.Message;
-
-import java.util.concurrent.CompletableFuture;
 
 public class Logger {
 
-    private DiscordApi api;
+    private final DiscordApi api;
 
     private final String OUTFIT_LOG = BotConfig.OUTFIT_LOG;
     private final String REPORT_LOG = BotConfig.REPORT_LOG;
@@ -29,9 +25,9 @@ public class Logger {
     public void logOutfit() {
         api.getServerTextChannelById(OUTFIT_LOG).ifPresentOrElse(channel -> {
             // Log the thing
-            channel.sendMessage("thing");
+            channel.sendMessage("outfit");
         }, () -> {
-            // Do something else
+            // DM me
             api.getUserById(SALMONLLAMA).thenAcceptAsync(user -> {
                 user.sendMessage("Outfit log failed and was not found");
             });
@@ -39,10 +35,38 @@ public class Logger {
     }
 
     public void logReport() {
-
+        api.getServerTextChannelById(REPORT_LOG).ifPresentOrElse(channel -> {
+            // Log the thing
+            channel.sendMessage("report");
+        }, () -> {
+            // DM me
+            api.getUserById(SALMONLLAMA).thenAcceptAsync(user -> {
+                user.sendMessage("Report log failed and was not found");
+            });
+        });
     }
 
-    public static void error() {
+    public void logError() {
+        api.getServerTextChannelById(BOT_LOG).ifPresentOrElse(channel -> {
+            // Log the thing
+            channel.sendMessage("error");
+        }, () -> {
+            // DM me
+            api.getUserById(SALMONLLAMA).thenAcceptAsync(user -> {
+                user.sendMessage("Error log failed and was not found");
+            });
+        });
+    }
 
+    public void logMovement() {
+        api.getServerTextChannelById(JOIN_LOG).ifPresentOrElse(channel -> {
+            // Log the thing
+            channel.sendMessage("User joined/Left");
+        }, () -> {
+            // DM me
+            api.getUserById(SALMONLLAMA).thenAcceptAsync(user -> {
+                user.sendMessage("Movement log failed and was not found");
+            });
+        });
     }
 }
