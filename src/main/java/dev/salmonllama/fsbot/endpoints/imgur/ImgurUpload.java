@@ -6,10 +6,10 @@
 package dev.salmonllama.fsbot.endpoints.imgur;
 
 public class ImgurUpload {
-    private String id;
-    private long dateTime;
-    private String deleteHash;
-    private String link;
+    private final String id;
+    private final long dateTime;
+    private final String deleteHash;
+    private final String link;
 
     public ImgurUpload(ImgurUploadBuilder builder) {
         id = builder.id;

@@ -19,8 +19,8 @@ public class ImgurAPIConnection {
     private final String BEARER_TOKEN; // Required for deleting
 
     // Create the okhttp objects. Use methods to complete requests.
-    private OkHttpClient client;
-    private Request.Builder requestBuilder;
+    private final OkHttpClient client;
+    private final Request.Builder requestBuilder;
 
     public ImgurAPIConnection() {
         CLIENT_ID = BotConfig.IMGUR_ID;
