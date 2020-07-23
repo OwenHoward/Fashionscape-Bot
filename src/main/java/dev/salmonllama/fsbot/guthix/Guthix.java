@@ -5,17 +5,14 @@
 
 package dev.salmonllama.fsbot.guthix;
 
+import dev.salmonllama.fsbot.commands.developer.*;
 import dev.salmonllama.fsbot.commands.general.*;
 import dev.salmonllama.fsbot.commands.staff.OutfitInfoCommand;
 import dev.salmonllama.fsbot.commands.staff.*;
-import dev.salmonllama.fsbot.commands.developer.InviteCommand;
-import dev.salmonllama.fsbot.commands.developer.CreateGalleryCommand;
-import dev.salmonllama.fsbot.commands.developer.EvalCommand;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
-import dev.salmonllama.fsbot.commands.developer.TestCommand;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,6 +42,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new TestCommand());
         addCommand(new CreateGalleryCommand());
         addCommand(new InviteCommand());
+        addCommand(new PermissionCommand());
 
         // Staff Commands
         addCommand(new EchoCommand());
