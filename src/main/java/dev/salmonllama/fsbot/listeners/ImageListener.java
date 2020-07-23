@@ -5,8 +5,6 @@
 
 package dev.salmonllama.fsbot.listeners;
 
-import com.rethinkdb.RethinkDB;
-import com.rethinkdb.net.Connection;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.database.models.Outfit;
@@ -20,12 +18,7 @@ import java.sql.Timestamp;
 
 public class ImageListener implements MessageCreateListener {
 
-    final RethinkDB r;
-    final Connection conn;
-
-    public ImageListener(RethinkDB r, Connection conn) {
-        this.r = r;
-        this.conn = conn;
+    public ImageListener() {
     }
 
     @Override

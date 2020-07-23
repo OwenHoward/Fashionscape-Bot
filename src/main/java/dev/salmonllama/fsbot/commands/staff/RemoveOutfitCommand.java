@@ -14,7 +14,6 @@ import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;

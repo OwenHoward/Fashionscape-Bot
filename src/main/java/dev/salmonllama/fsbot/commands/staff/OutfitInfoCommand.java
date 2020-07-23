@@ -11,11 +11,6 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
-import org.javacord.api.DiscordApi;
-import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
-import dev.salmonllama.fsbot.utilities.exceptions.DiscordError;
-import dev.salmonllama.fsbot.utilities.exceptions.OutfitNotFoundException;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.ArrayList;

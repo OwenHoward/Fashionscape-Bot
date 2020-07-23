@@ -5,8 +5,6 @@
 
 package dev.salmonllama.fsbot.commands.developer;
 
-import com.rethinkdb.RethinkDB;
-import com.rethinkdb.net.Connection;
 import com.vdurmont.emoji.EmojiManager;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;

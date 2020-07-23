@@ -11,7 +11,6 @@ import dev.salmonllama.fsbot.commands.staff.*;
 import dev.salmonllama.fsbot.commands.developer.InviteCommand;
 import dev.salmonllama.fsbot.commands.developer.CreateGalleryCommand;
 import dev.salmonllama.fsbot.commands.developer.EvalCommand;
-import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -27,16 +26,13 @@ import java.util.HashMap;
 public class Guthix implements MessageCreateListener {
     @SuppressWarnings("unused")
     private DiscordApi api;
-    private DatabaseUtilities db;
 
     private Registry registry;
     private PermissionManager manager;
 
-    public Guthix(DiscordApi api, DatabaseUtilities db) {
+    public Guthix(DiscordApi api) {
         this.api = api;
         api.addMessageCreateListener(this);
-
-        this.db = db;
 
         manager = new PermissionManager();
         registry = new Registry();
@@ -47,7 +43,6 @@ public class Guthix implements MessageCreateListener {
     public void initCommands() {
         // Developer Commands
         addCommand(new TestCommand());
-        addCommand(new EvalCommand(db));
         addCommand(new CreateGalleryCommand());
         addCommand(new InviteCommand());
 
@@ -56,7 +51,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new GetServersCommand());
         addCommand(new AddColorCommand());
         addCommand(new GetOutfitCommand());
-        addCommand(new RetagCommand(db));
+        addCommand(new RetagCommand());
         addCommand(new RemoveOutfitCommand());
         addCommand(new OutfitInfoCommand());
         addCommand(new SetStatusCommand());

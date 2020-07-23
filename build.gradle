@@ -24,7 +24,6 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.30.1'
     implementation 'com.github.Kaaz:ConfigurationBuilder:0.4'
     implementation 'org.javacord:javacord:3.0.6'
-    implementation group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3' // set for removal
     implementation 'com.vdurmont:emoji-java:4.0.0'
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
 

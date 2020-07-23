@@ -5,22 +5,16 @@
 
 package dev.salmonllama.fsbot.listeners;
 
-import dev.salmonllama.fsbot.utilities.database.DatabaseUtilities;
 import org.javacord.api.DiscordApi;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.server.ServerJoinEvent;
 import org.javacord.api.listener.server.ServerJoinListener;
-
-import java.awt.*;
 
 public class ServerJoined implements ServerJoinListener {
 
     private DiscordApi api;
-    private DatabaseUtilities db;
 
-    public ServerJoined(DiscordApi api, DatabaseUtilities db) {
+    public ServerJoined(DiscordApi api) {
         this.api = api;
-        this.db = db;
     }
 
     public void onServerJoin(ServerJoinEvent event) { // TODO: This needs fixing yo
