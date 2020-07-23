@@ -5,11 +5,13 @@
 
 package dev.salmonllama.fsbot.listeners;
 
+import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.database.models.Outfit;
 import dev.salmonllama.fsbot.endpoints.imgur.ImgurAPIConnection;
 import org.javacord.api.entity.message.MessageAttachment;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.util.logging.ExceptionLogger;
@@ -17,9 +19,6 @@ import org.javacord.api.util.logging.ExceptionLogger;
 import java.sql.Timestamp;
 
 public class ImageListener implements MessageCreateListener {
-
-    public ImageListener() {
-    }
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) { // TODO: This needs immediate help
@@ -59,13 +58,31 @@ public class ImageListener implements MessageCreateListener {
                                                 .setSubmitter(event.getMessageAuthor().getIdAsString())
                                                 .setCreated(new Timestamp(upload.getDateTime()));
 
-                                        GalleryController.getTag(channel.getIdAsString()).thenAccept(outfitBuilder::setTag).join(); // TODO: Wrap this around the insert, don't join no moah
+                                        GalleryController.getTag(channel.getIdAsString()).thenAccept(tag -> {
+                                            outfitBuilder.setTag(tag);
+                                            Outfit outfit = outfitBuilder.build();
 
-                                        Outfit outfit = outfitBuilder.build();
-                                        OutfitController.insert(outfit).join();
+                                            OutfitController.insert(outfit).thenAcceptAsync((Void) -> {
+                                                // Log the outfit
+                                                event.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresentOrElse(chnl -> {
+                                                    EmbedBuilder response = new EmbedBuilder()
+                                                            .setTitle("Outfit Added")
+                                                            .setAuthor(event.getMessageAuthor())
+                                                            .setThumbnail(outfit.getLink())
+                                                            .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                                            .setUrl(outfit.getLink())
+                                                            .addField("Uploaded:", outfit.getCreated().toString())
+                                                            .addField("Meta:", outfit.getMeta());
 
-                                        // Log the event
-                                        // event.getChannel().sendMessage("Outfit stored: " + outfit.toString()); // TODO: Logging. Log this to OutfitLog
+                                                    chnl.sendMessage(response);
+                                                }, () -> {
+                                                    // Fallback error message to me
+                                                    event.getApi().getUserById(BotConfig.BOT_OWNER).thenAcceptAsync(user -> {
+                                                        user.sendMessage("Could not find OUTFIT LOG");
+                                                    });
+                                                });
+                                            });
+                                        });
                                     }).exceptionally(ExceptionLogger.get());
                                 });
                     }
