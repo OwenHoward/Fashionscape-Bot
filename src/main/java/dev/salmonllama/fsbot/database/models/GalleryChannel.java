@@ -8,18 +8,21 @@ package dev.salmonllama.fsbot.database.models;
 import dev.salmonllama.fsbot.database.DatabaseModel;
 
 public class GalleryChannel extends DatabaseModel {
-    public String serverId;
-    public String serverName;
-    public String channelId;
-    public String channelName;
-    public String tag;
+    private final String serverId;
+    private final String serverName;
+    private final String channelId;
+    private final String tag;
     // Normal emojis will be stored in plain text as :emoji:
     // Server emojis will be stored in plain text as <:emoji:emoji-id>
     // This can be acquired through CustomEmoji#getMentionTag()
-    public String emoji;
+    private final String emoji;
 
-    public GalleryChannel() {
-
+    public GalleryChannel(GalleryBuilder builder) {
+        serverId = builder.serverId;
+        serverName = builder.serverName;
+        channelId = builder.channelId;
+        tag = builder.tag;
+        emoji = builder.emoji;
     }
 
     public String getServerId() {
@@ -34,9 +37,6 @@ public class GalleryChannel extends DatabaseModel {
         return channelId;
     }
 
-    public String getChannelName() {
-        return channelName;
-    }
 
     public String getTag() {
         return tag;
@@ -50,15 +50,54 @@ public class GalleryChannel extends DatabaseModel {
         return "CREATE TABLE IF NOT EXISTS galleries (" +
                 "server_id TEXT," +
                 "server_name TEXT," +
-                "channel_id TEXT," + // TODO: PRIMARY KEY? There can only be one gallery per channel.
-                "channel_name TEXT," +
+                "channel_id TEXT," +
                 "emoji TEXT," +
                 "tag TEXT)";
     }
 
     @Override
     public String toString() {
-        return String.format("Gallery: [server id: %s, server name: %s, channel id: %s, channel name: %s, tag: %s, emoji: %s]",
-                serverId, serverName, channelId, channelName, tag, emoji);
+        return String.format("Gallery: [server id: %s, server name: %s, channel id: %s, tag: %s, emoji: %s]",
+                serverId, serverName, channelId, tag, emoji);
+    }
+
+    public static class GalleryBuilder {
+        private String serverId;
+        private String serverName;
+        private String channelId;
+        private String tag;
+        private String emoji;
+
+        public GalleryBuilder() {
+
+        }
+        public GalleryBuilder setServerId(String serverId) {
+            this.serverId = serverId;
+            return this;
+        }
+
+        public GalleryBuilder setServerName(String serverName) {
+            this.serverName = serverName;
+            return this;
+        }
+
+        public GalleryBuilder setChannelId(String channelId) {
+            this.channelId = channelId;
+            return this;
+        }
+
+        public GalleryBuilder setTag(String tag) {
+            this.tag = tag;
+            return this;
+        }
+
+        public GalleryBuilder setEmoji(String emoji) {
+            this.emoji = emoji;
+            return this;
+        }
+
+        public GalleryChannel build() {
+            return new GalleryChannel(this);
+        }
     }
 }

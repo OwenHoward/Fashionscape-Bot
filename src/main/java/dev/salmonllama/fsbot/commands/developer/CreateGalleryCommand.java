@@ -29,12 +29,12 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
 
     @Override
-    public void onCommand(CommandContext ctx) { // TODO: Might need some logic help...
+    public void onCommand(CommandContext ctx) {
         if (ctx.isPrivateMessage()) {
             ctx.reply("This command can only be used in a server!"); // TODO: Stop this. Turn this into a preset no-no embed.
             return;
         }
-        if (ctx.getArgs().length != 1) {
+        if (ctx.getArgs().length < 1) {
             ctx.reply("Args are incorrect");
             return;
         }
@@ -50,27 +50,25 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
 
         String tag = ctx.getArgs()[0];
 
-        GalleryChannel gallery = new GalleryChannel();
-        gallery.channelId = channelId;
-        gallery.tag = tag;
-        gallery.emoji = ":heartpulse:";
+        GalleryChannel.GalleryBuilder galleryBuilder = new GalleryChannel.GalleryBuilder();
+        galleryBuilder.setChannelId(channelId);
+        galleryBuilder.setTag(tag);
+        galleryBuilder.setEmoji(":heartpulse:");
 
         ctx.getServer().ifPresent(server -> {
-            gallery.serverId = server.getIdAsString();
-            gallery.serverName = server.getName();
+            galleryBuilder.setServerId(server.getIdAsString());
+            galleryBuilder.setServerName(server.getName());
         });
 
-        ctx.getChannel().asServerTextChannel().ifPresent(channel -> gallery.channelName = channel.getName());
-
+        GalleryChannel gallery = galleryBuilder.build();
         GalleryController.insert(gallery).exceptionally(ExceptionLogger.get()); // TODO: Make a discord exception logger for the thingos
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setColor(Color.GREEN)
                 .addField("Success", "Gallery has been created:")
-                .addField("Channel Name:", gallery.channelName)
-                .addField("Channel Id:", gallery.channelId)
+                .addField("Channel Id:", gallery.getChannelId())
                 .addField("Tag:", tag)
-                .addField("Emoji:", EmojiManager.getByUnicode(gallery.emoji).toString())
+                .addField("Emoji:", EmojiManager.getByUnicode(gallery.getEmoji()).toString())
                 .addField("End:", String.format("This channel is now being tracked under: %s", tag));
         ctx.getChannel().sendMessage(embed);
     }
