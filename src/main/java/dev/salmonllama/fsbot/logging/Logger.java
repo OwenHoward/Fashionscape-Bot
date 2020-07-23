@@ -7,6 +7,9 @@ package dev.salmonllama.fsbot.logging;
 
 import dev.salmonllama.fsbot.config.BotConfig;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
+
+import java.util.function.Function;
 
 public class Logger {
 
@@ -17,6 +20,10 @@ public class Logger {
     private final String JOIN_LOG = BotConfig.JOIN_LOG;
     private final String BOT_LOG = BotConfig.BOT_LOG;
     private final String SALMONLLAMA = BotConfig.BOT_OWNER;
+
+    private EmbedBuilder reportEmbed;
+
+    private EmbedBuilder errorEmbed;
 
     public Logger(DiscordApi api) {
         this.api = api;
@@ -46,7 +53,7 @@ public class Logger {
         });
     }
 
-    public void logError() {
+    public void logError(String errorMsg) {
         api.getServerTextChannelById(BOT_LOG).ifPresentOrElse(channel -> {
             // Log the thing
             channel.sendMessage("error");
