@@ -63,6 +63,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new OutfitCommand());
         addCommand(new HelpCommand(this));
         addCommand(new StatsCommand());
+        addCommand(new PrivacyCommand());
     }
 
     public void addCommand(Command cmd) {
