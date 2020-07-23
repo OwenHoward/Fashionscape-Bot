@@ -82,7 +82,10 @@ public class UserBlacklistController {
     }
 
     private static void insertExec(UserBlacklist bl) throws SQLException {
-        // TODO: Check for null timestamp and init
+        if (bl.getAdded() == null) {
+            bl.setAdded(new Timestamp(System.currentTimeMillis()));
+        }
+
         FSDB.get().insert("INSERT INTO blacklist_users ('id', 'reason', 'added') VALUES (?, ?, ?)",
                 bl.getId(),
                 bl.getReason(),

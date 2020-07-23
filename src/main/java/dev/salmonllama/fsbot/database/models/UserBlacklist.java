@@ -32,6 +32,10 @@ public class UserBlacklist extends DatabaseModel {
         return added;
     }
 
+    public void setAdded(Timestamp added) {
+        this.added = added;
+    }
+
     public static String schema() {
         return "CREATE TABLE IF NOT EXISTS blacklist_users (" +
                 "id TEXT PRIMARY KEY," +
@@ -41,7 +45,7 @@ public class UserBlacklist extends DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("User Blacklist: [id: %s, reason: %s, added: %s",
+        return String.format("User Blacklist: [id: %s, reason: %s, added: %s]",
                 this.getId(),
                 this.getReason(),
                 this.getAdded()
