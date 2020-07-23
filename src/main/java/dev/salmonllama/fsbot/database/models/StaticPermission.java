@@ -8,6 +8,7 @@ package dev.salmonllama.fsbot.database.models;
 import dev.salmonllama.fsbot.database.DatabaseModel;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 public class StaticPermission extends DatabaseModel {
     private String userId;
@@ -32,8 +33,17 @@ public class StaticPermission extends DatabaseModel {
         return added;
     }
 
+    public void setAdded(Timestamp added) {
+        this.added = added;
+    }
+
     public static String schema() {
         return "CREATE TABLE IF NOT EXISTS static_permissions (user_id TEXT, permission TEXT, date_added TEXT)";
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Static Permission [userId: %s, permission: %s, added: %s", userId, permission, added.toString());
     }
 
     public static class StaticPermissionBuilder {
