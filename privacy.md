@@ -43,5 +43,5 @@ ping one of us, or create an issue on GitHub.
 
 ## Questions, Comments, Concerns
 Any further questions or concerns may be submitted through the 
-[Fashionscape Server](https://discord.com/invite/Tfvxe22)'s #report-issues-here channel, or directed to
+[Fashionscape Server](https://discord.com/invite/Tfvxe22){:target="_blank"}'s #report-issues-here channel, or directed to
 Salmonllama#5727 or LisaaRS#2604. 
