@@ -119,6 +119,19 @@ public class Outfit extends DatabaseModel {
         public OutfitBuilder() {
         }
 
+        public OutfitBuilder(Outfit outfit) {
+            this.id = outfit.getId();
+            this.link = outfit.getLink();
+            this.submitter = outfit.getSubmitter();
+            this.tag = outfit.getTag();
+            this.created = outfit.getCreated();
+            this.updated = outfit.getUpdated();
+            this.deleted = outfit.isDeleted();
+            this.featured = outfit.isFeatured();
+            this.displayCount = outfit.getDisplayCount();
+            this.deleteHash = outfit.getDeleteHash();
+        }
+
         public OutfitBuilder setId(String id) {
             this.id = id;
             return this;
