@@ -46,6 +46,9 @@ public class BotConfig {
     public static String VOTE_CHANNEL = "vote channel here";
 
     @ConfigurationOption
+    public static String WELCOME_CHANNEL = "welcome channel here";
+
+    @ConfigurationOption
     public static String JOIN_LOG = "join log channel";
 
     @ConfigurationOption
@@ -69,9 +72,9 @@ public class BotConfig {
     @ConfigurationOption
     public static String HOME_SERVER = "340511685024546816";
 
-    public static void initConfig(String filePath) {
+    public static void initConfig(String filePath, boolean cleanfile) {
         try {
-            new ConfigurationBuilder(BotConfig.class, new File(filePath)).build(false);
+            new ConfigurationBuilder(BotConfig.class, new File(filePath)).build(cleanfile);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
