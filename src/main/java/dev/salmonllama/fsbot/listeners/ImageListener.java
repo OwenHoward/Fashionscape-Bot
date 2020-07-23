@@ -56,6 +56,7 @@ public class ImageListener implements MessageCreateListener {
                                                 .setMeta(event.getMessageContent())
                                                 .setLink(upload.getLink())
                                                 .setSubmitter(event.getMessageAuthor().getIdAsString())
+                                                .setDeleteHash(upload.getDeleteHash())
                                                 .setCreated(new Timestamp(upload.getDateTime()));
 
                                         GalleryController.getTag(channel.getIdAsString()).thenAccept(tag -> {
