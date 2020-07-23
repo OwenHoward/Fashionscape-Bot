@@ -11,8 +11,10 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.logging.Logger;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class PermissionCommand extends Command {
     @Override public String usage() { return "permission <list|add|remove> <keyword>"; }
     @Override public String category() { return "Staff"; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("permission", "perm")); }
+    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("permission", "permissions", "perm", "perms")); }
 
     @Override
     public void onCommand(CommandContext ctx) {
@@ -38,9 +40,11 @@ public class PermissionCommand extends Command {
                 break;
             case "add":
                 // Add a static permission to the mentioned user, if any
+                add(ctx);
                 break;
             case "remove":
                 // Remove a static permission from the mentioned user, if any
+                remove(ctx);
                 break;
             default:
                 // You don't know how to use this command LUL
@@ -71,31 +75,55 @@ public class PermissionCommand extends Command {
                     ctx.reply(embed);
                 });
             });
-        }
+        } else {
+            StaticPermissionController.getAll().thenAcceptAsync(possiblePerms -> {
+                possiblePerms.ifPresentOrElse(perms -> {
+                    EmbedBuilder embed = new EmbedBuilder()
+                            .setTitle("All static permissions")
+                            .setFooter(String.format("Found %s total static permissions", perms.size()))
+                            .setColor(Color.green);
 
-        StaticPermissionController.getAll().thenAcceptAsync(possiblePerms -> {
-            possiblePerms.ifPresentOrElse(perms -> {
-                EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle("All static permissions")
-                        .setFooter(String.format("Found %s total static permissions", perms.size()))
-                        .setColor(Color.green);
+                    perms.forEach(perm -> {
+                        embed.addField(perm.getUserId(), perm.getPermission());
+                    });
 
-                perms.forEach(perm -> {
-                   embed.addField(perm.getUserId(), perm.getPermission());
+                    ctx.reply(embed);
+                }, () -> {
+                    EmbedBuilder embed = new EmbedBuilder()
+                            .setTitle("No Permissions Found")
+                            .setDescription("No permissions have been added.");
+
+                    ctx.reply(embed);
                 });
-
-                ctx.reply(embed);
-            }, () -> {
-                EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle("No Permissions Found")
-                        .setDescription("No permissions have been added.");
-
-                ctx.reply(embed);
             });
-        });
+        }
     }
 
     private void add(CommandContext ctx) {
+        System.out.println("Add run");
+        if (ctx.getMessage().getMentionedUsers().isEmpty()) {
+            System.out.println("No mentioned users");
+            // If no mentioned users, improper usage
+            return;
+        }
+
+        String userId = ctx.getMessage().getMentionedUsers().get(0).getIdAsString();
+        System.out.println(String.format("Got mentioned user %s", userId));
+
+        StaticPermission perm = new StaticPermission.StaticPermissionBuilder(userId).setPermission(ctx.getArgs()[2]).build();
+
+        StaticPermissionController.insert(perm).thenAcceptAsync((Void) -> {
+            System.out.println("Permission added");
+            EmbedBuilder response = new EmbedBuilder()
+                    .setTitle("Permissions Added")
+                    .addField("User:", userId)
+                    .addField("Permission:", ctx.getArgs()[2]);
+
+            ctx.reply(response);
+        });
+    }
+
+    private void remove(CommandContext ctx) { // TODO: Remove is not functional
         if (ctx.getMessage().getMentionedUsers().isEmpty()) {
             // If no mentioned users, improper usage
             return;
@@ -103,10 +131,8 @@ public class PermissionCommand extends Command {
 
         String userId = ctx.getMessage().getMentionedUsers().get(0).getIdAsString();
 
-        StaticPermission perm = new StaticPermission.StaticPermissionBuilder(userId).setPermission(ctx.getArgs()[2]).build();
-    }
-
-    private void remove(CommandContext ctx) {
-
+        StaticPermissionController.delete(userId, ctx.getArgs()[2]).thenAcceptAsync((Void) -> {
+            System.out.println("Permission removed");
+        }).exceptionally(ExceptionLogger.get());
     }
 }
