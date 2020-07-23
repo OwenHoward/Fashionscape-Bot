@@ -74,6 +74,10 @@ public class StaticPermissionController {
     }
 
     private static void insertExec(StaticPermission perm) throws SQLException {
+        if (perm.getAdded() == null) {
+            perm.setAdded(new Timestamp(System.currentTimeMillis()));
+        }
+
         FSDB.get().insert("INSERT INTO static_permissions (user_id, permission, date_added) VALUES (?, ?, ?)",
                 perm.getUserId(),
                 perm.getPermission(),
