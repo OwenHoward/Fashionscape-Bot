@@ -46,7 +46,7 @@ public class RemoveOutfitCommand extends Command {
                EmbedBuilder embed = new EmbedBuilder()
                        .setTitle("Confirm Outfit Deletion")
                        .setThumbnail(outfit.getLink())
-                       .setAuthor(ctx.getApi().getYourself())
+                       .setAuthor(ctx.getApi().getUserById(outfit.getSubmitter()).join())
                        .setUrl(outfit.getLink())
                        .setFooter(String.format("Tag: %s", outfit.getTag()))
                        .addField("Added", outfit.getCreated().toString(), true)
@@ -72,6 +72,7 @@ public class RemoveOutfitCommand extends Command {
                                    .setTitle("Deletion Successful!")
                                    .setDescription(String.format("Outfit %s marked as deleted", outfit.getId()));
                            ctx.reply(response);
+                           // TODO: Log the action in FSBot-Log
 
                        } else if (event.getEmoji().equalsEmoji(EmojiParser.parseToUnicode(":octagonal_sign:"))) {
                            // Do nothing
