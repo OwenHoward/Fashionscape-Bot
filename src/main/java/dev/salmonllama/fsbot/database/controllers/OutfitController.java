@@ -169,6 +169,16 @@ public class OutfitController {
         });
     }
 
+    public static CompletableFuture<Void> update(Outfit outfit) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                updateExec(outfit);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     public static CompletableFuture<Void> delete(String id) {
         return CompletableFuture.runAsync(() -> {
             try {
@@ -331,6 +341,22 @@ public class OutfitController {
 
         FSDB.get().close(rs);
         return tags;
+    }
+
+    private static void updateExec(Outfit outfit) throws SQLException {
+        FSDB.get().query("UPDATE outfits SET " +
+                "link = ?," +
+                "submitter = ?," +
+                "tag = ?," +
+                "updated = ?," +
+                "featured = ?," +
+                "display_count = ?" +
+                "WHERE id = ?",
+                outfit.getLink(),
+                outfit.getSubmitter(),
+                outfit.getTag(),
+                outfit.isFeatured(),
+                outfit.getDisplayCount());
     }
 
     private static void deleteExec(String id) throws SQLException {
