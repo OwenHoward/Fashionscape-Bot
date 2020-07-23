@@ -20,7 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
         String configLocation = Constants.BOT_FOLDER.concat(Constants.CONFIG_NAME);
-        BotConfig.initConfig(configLocation);
+        BotConfig.initConfig(configLocation, false); // TODO: Use args to dictate newFiling. Also use args to dictate database setup.
 
         FSDB.init();
 
