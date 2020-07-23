@@ -54,6 +54,7 @@ public class ImageListener implements MessageCreateListener {
                                         // Store in the database
                                         Outfit.OutfitBuilder outfitBuilder = new Outfit.OutfitBuilder()
                                                 .setId(upload.getId())
+                                                .setMeta(event.getMessageContent())
                                                 .setLink(upload.getLink())
                                                 .setSubmitter(event.getMessageAuthor().getIdAsString())
                                                 .setCreated(new Timestamp(upload.getDateTime()));

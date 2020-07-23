@@ -210,12 +210,13 @@ public class OutfitController {
 
         FSDB.get().insert(
                     "INSERT INTO " +
-                        "outfits('id', 'link', 'submitter', 'tag', 'created', 'updated', 'deleted', 'featured', 'display_count', 'delete_hash') " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        "outfits('id', 'link', 'submitter', 'tag', 'meta', 'created', 'updated', 'deleted', 'featured', 'display_count', 'delete_hash') " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 outfit.getId(),
                 outfit.getLink(),
                 outfit.getSubmitter(),
                 outfit.getTag(),
+                outfit.getMeta(),
                 outfit.getCreated(),
                 outfit.getUpdated(),
                 outfit.isDeleted(),
@@ -348,6 +349,7 @@ public class OutfitController {
                 "link = ?," +
                 "submitter = ?," +
                 "tag = ?," +
+                "meta = ?," +
                 "updated = ?," +
                 "featured = ?," +
                 "display_count = ?" +
@@ -355,6 +357,7 @@ public class OutfitController {
                 outfit.getLink(),
                 outfit.getSubmitter(),
                 outfit.getTag(),
+                outfit.getMeta(),
                 outfit.isFeatured(),
                 outfit.getDisplayCount());
     }
@@ -395,6 +398,7 @@ public class OutfitController {
                 .setLink(rs.getString("link"))
                 .setSubmitter(rs.getString("submitter"))
                 .setTag(rs.getString("tag"))
+                .setMeta(rs.getString("meta"))
                 .setCreated(new Timestamp(rs.getLong("created")))
                 .setUpdated(new Timestamp((rs.getLong("updated"))))
                 .setDeleted(rs.getBoolean("deleted"))

@@ -6,7 +6,6 @@
 package dev.salmonllama.fsbot.database.models;
 
 import dev.salmonllama.fsbot.database.DatabaseModel;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.sql.Timestamp;
 
@@ -15,6 +14,7 @@ public class Outfit extends DatabaseModel {
     private String link;
     private String submitter;
     private String tag;
+    private String meta;
     private Timestamp created;
     private Timestamp updated;
     private boolean deleted;
@@ -27,6 +27,7 @@ public class Outfit extends DatabaseModel {
         link = builder.link;
         submitter = builder.submitter;
         tag = builder.tag;
+        meta = builder.meta;
         created = builder.created;
         updated = builder.updated;
         deleted = builder.deleted;
@@ -49,6 +50,10 @@ public class Outfit extends DatabaseModel {
 
     public String getTag() {
         return tag;
+    }
+
+    public String getMeta() {
+        return meta;
     }
 
     public Timestamp getCreated() {
@@ -89,6 +94,7 @@ public class Outfit extends DatabaseModel {
                 "link TEXT," +
                 "submitter TEXT," +
                 "tag TEXT," +
+                "meta TEXT," +
                 "created TEXT," +
                 "updated TEXT," +
                 "deleted TEXT," +
@@ -99,8 +105,8 @@ public class Outfit extends DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("Outfit: [id: %s, link: %s, submitter: %s, tag: %s, created: %s, updated: %s, deleted: %s, featured: %s, display count: %s, deletion hash: %s]",
-                id, link, submitter, tag, created, updated, deleted, featured, displayCount, deleteHash
+        return String.format("Outfit: [id: %s, link: %s, submitter: %s, tag: %s, created: %s, updated: %s, deleted: %s, featured: %s, display count: %s, deletion hash: %s, meta: %s]",
+                id, link, submitter, tag, created, updated, deleted, featured, displayCount, deleteHash, meta
         );
     }
 
@@ -109,6 +115,7 @@ public class Outfit extends DatabaseModel {
         private String link;
         private String submitter;
         private String tag;
+        private String meta;
         private Timestamp created = null;
         private Timestamp updated = null;
         private boolean deleted = false;
@@ -124,6 +131,7 @@ public class Outfit extends DatabaseModel {
             this.link = outfit.getLink();
             this.submitter = outfit.getSubmitter();
             this.tag = outfit.getTag();
+            this.meta = outfit.getMeta();
             this.created = outfit.getCreated();
             this.updated = outfit.getUpdated();
             this.deleted = outfit.isDeleted();
@@ -149,6 +157,11 @@ public class Outfit extends DatabaseModel {
 
         public OutfitBuilder setTag(String tag) {
             this.tag = tag;
+            return this;
+        }
+
+        public OutfitBuilder setMeta(String meta) {
+            this.meta = meta;
             return this;
         }
 
