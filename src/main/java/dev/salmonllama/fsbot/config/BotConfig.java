@@ -70,6 +70,9 @@ public class BotConfig {
     public static String IMGUR_BEARER = "imgur bearer here";
 
     @ConfigurationOption
+    public static String DEFAULT_REACTION = ":heartpulse:";
+
+    @ConfigurationOption
     public static String HOME_SERVER = "340511685024546816";
 
     public static void initConfig(String filePath, boolean cleanfile) {

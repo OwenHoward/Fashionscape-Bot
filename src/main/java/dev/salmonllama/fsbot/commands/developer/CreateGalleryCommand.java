@@ -6,6 +6,8 @@
 package dev.salmonllama.fsbot.commands.developer;
 
 import com.vdurmont.emoji.EmojiManager;
+import com.vdurmont.emoji.EmojiParser;
+import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.guthix.Command;
@@ -38,6 +40,8 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
             ctx.reply("Args are incorrect");
             return;
         }
+
+        String[] args = ctx.getArgs();
         // Check if the channel is already a registered gallery channel.
         // Create a gallery channel of the current channel.
         // Store the gallery channel in the database.
@@ -48,12 +52,19 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
             return;
         }
 
-        String tag = ctx.getArgs()[0];
+        String tag = args[0];
+
+        String emoji;
+        if (args.length == 2) {
+            emoji = EmojiParser.parseToAliases(args[1]);
+        } else {
+            emoji = BotConfig.DEFAULT_REACTION;
+        }
 
         GalleryChannel.GalleryBuilder galleryBuilder = new GalleryChannel.GalleryBuilder();
         galleryBuilder.setChannelId(channelId);
         galleryBuilder.setTag(tag);
-        galleryBuilder.setEmoji(":heartpulse:");
+        galleryBuilder.setEmoji(emoji);
 
         ctx.getServer().ifPresent(server -> {
             galleryBuilder.setServerId(server.getIdAsString());
