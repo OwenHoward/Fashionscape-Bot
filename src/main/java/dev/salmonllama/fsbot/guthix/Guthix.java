@@ -101,15 +101,15 @@ public class Guthix implements MessageCreateListener {
         RegistryCommand rComm = registry.getCommandInfo(content);
         String cmdString = rComm.getCommand().toLowerCase();
 
-        if (registry.isCommandAlias(cmdString)) {
-
-        } else {
-            return;
-        }
+//        if (registry.isCommandAlias(cmdString)) {
+//
+//        } else {
+//            return;
+//        }
 
         String[] cmdArgs = rComm.getArgs();
 
-        Command cmd = registry.findCommand(cmdString).orElse(null); // TODO: default command here
+        Command cmd = registry.findCommand(cmdString).orElse(new DefaultCommand()); // TODO: default command here
 
         CommandContext ctx = new CommandContext.CommandContextBuilder(
                 event,
