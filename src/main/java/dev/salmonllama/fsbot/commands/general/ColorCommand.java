@@ -5,7 +5,6 @@
 
 package dev.salmonllama.fsbot.commands.general;
 
-import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
