@@ -30,10 +30,10 @@ public class ServerConfigController {
         });
     }
 
-    public static CompletableFuture<Optional<ServerConfig>> getServerConfig(String serverId) {
+    public static CompletableFuture<Optional<ServerConfig>> get(String serverId) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return getServerConfigExec(serverId);
+                return getExec(serverId);
             } catch (SQLException e) {
                 throw new CompletionException(e);
             }
@@ -51,14 +51,14 @@ public class ServerConfigController {
     }
 
     private static void insertExec(ServerConfig config) throws SQLException {
-        FSDB.get().insert("INSERT INTO server_config('id', 'name', 'prefix') VALUES (?, ?, ?)",
+        FSDB.get().insert("INSERT INTO server_config(id, prefix, welcome_message) VALUES (?, ?, ?)",
                 config.getId(),
-                config.getName(),
-                config.getPrefix()
+                config.getPrefix(),
+                config.getWelcomeMessage()
         );
     }
 
-    private static Optional<ServerConfig> getServerConfigExec(String serverId) throws SQLException {
+    private static Optional<ServerConfig> getExec(String serverId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM server_config WHERE id = ?");
 
         if (rs.next()) {
@@ -72,9 +72,10 @@ public class ServerConfigController {
     }
 
     private static void updateExec(ServerConfig config) throws SQLException {
-        FSDB.get().query("UPDATE server_config SET prefix = ?, name = ? WHERE id = ?",
+        FSDB.get().query("UPDATE server_config SET prefix = ?, welcome_message = ?, welcome_channel = ?, WHERE id = ?",
                 config.getPrefix(),
-                config.getName(),
+                config.getWelcomeMessage(),
+                config.getWelcomeChannel(),
                 config.getId()
                 );
     }
@@ -82,8 +83,9 @@ public class ServerConfigController {
     private static ServerConfig mapObject(ResultSet rs) throws SQLException {
         return new ServerConfig.ServerConfigBuilder()
                 .setId(rs.getString("id"))
-                .setName(rs.getString("name"))
                 .setPrefix(rs.getString("prefix"))
+                .setWelcomeMessage(rs.getString("welcome_message"))
+                .setWelcomeChannel(rs.getString("welcome_channel"))
                 .build();
     }
 }
