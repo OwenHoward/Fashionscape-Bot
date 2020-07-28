@@ -57,7 +57,6 @@ public class PermissionManager {
     }
 
     private boolean staticHandler(String staticPerm, CommandContext ctx) {
-        System.out.println(staticPerm);
         AtomicBoolean ret = new AtomicBoolean(false);
 
         StaticPermissionController.getByUser(ctx.getAuthor().getIdAsString()).thenAccept(possiblePerms -> {
@@ -67,11 +66,9 @@ public class PermissionManager {
                         ret.set(true);
                     }
                 }
-                staticPermissions.forEach(System.out::println);
             });
         }).join(); // TODO: Figure out a way to have this not join
 
-        System.out.println(ret.get());
         return ret.get();
     }
 
