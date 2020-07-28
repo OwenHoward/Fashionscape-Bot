@@ -55,7 +55,17 @@ public class GalleryController {
             }
         });
     }
-    // TODO: Refactor for proper Java-ing, add GalleryBuilder
+
+    public static CompletableFuture<String> getEmoji(String channelId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return getEmojiExec(channelId);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     private static void insertExec(GalleryChannel gallery) throws SQLException {
         FSDB.get().insert("INSERT INTO galleries('server_id', 'server_name', 'channel_id', 'tag', 'emoji')" +
                         "VALUES(?, ?, ?, ?, ?)",
@@ -96,6 +106,7 @@ public class GalleryController {
     }
 
     private static String getEmojiExec(String channelId) throws SQLException {
+        // Does not need to be an optional. CreateGalleryCommand populates it automatically with the default.
         ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE channel_id = ?");
         String emoji = rs.getString("emoji");
 
