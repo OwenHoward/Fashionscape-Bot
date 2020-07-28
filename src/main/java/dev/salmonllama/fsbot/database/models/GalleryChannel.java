@@ -9,7 +9,6 @@ import dev.salmonllama.fsbot.database.DatabaseModel;
 
 public class GalleryChannel extends DatabaseModel {
     private final String serverId;
-    private final String serverName;
     private final String channelId;
     private final String tag;
     // Normal emojis will be stored in plain text as :emoji:
@@ -19,7 +18,6 @@ public class GalleryChannel extends DatabaseModel {
 
     public GalleryChannel(GalleryBuilder builder) {
         serverId = builder.serverId;
-        serverName = builder.serverName;
         channelId = builder.channelId;
         tag = builder.tag;
         emoji = builder.emoji;
@@ -27,10 +25,6 @@ public class GalleryChannel extends DatabaseModel {
 
     public String getServerId() {
         return serverId;
-    }
-
-    public String getServerName() {
-        return serverName;
     }
 
     public String getChannelId() {
@@ -49,7 +43,6 @@ public class GalleryChannel extends DatabaseModel {
     public static String schema() {
         return "CREATE TABLE IF NOT EXISTS galleries (" +
                 "server_id TEXT," +
-                "server_name TEXT," +
                 "channel_id TEXT," +
                 "emoji TEXT," +
                 "tag TEXT)";
@@ -57,13 +50,12 @@ public class GalleryChannel extends DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("Gallery: [server id: %s, server name: %s, channel id: %s, tag: %s, emoji: %s]",
-                serverId, serverName, channelId, tag, emoji);
+        return String.format("Gallery: [server id: %s, channel id: %s, tag: %s, emoji: %s]",
+                serverId, channelId, tag, emoji);
     }
 
     public static class GalleryBuilder {
         private String serverId;
-        private String serverName;
         private String channelId;
         private String tag;
         private String emoji;
@@ -73,11 +65,6 @@ public class GalleryChannel extends DatabaseModel {
         }
         public GalleryBuilder setServerId(String serverId) {
             this.serverId = serverId;
-            return this;
-        }
-
-        public GalleryBuilder setServerName(String serverName) {
-            this.serverName = serverName;
             return this;
         }
 
