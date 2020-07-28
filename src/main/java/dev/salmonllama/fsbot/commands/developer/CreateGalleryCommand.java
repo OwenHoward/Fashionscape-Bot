@@ -27,7 +27,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override public String description() { return "Creates a channel gallery, tracking any posted images"; }
     @Override public String usage() { return "creategallery <String tag>"; }
     @Override public String category() { return "Developer"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
 
     @Override
@@ -81,7 +81,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
                 .addField("Tag:", tag)
                 .addField("Emoji:", EmojiManager.getByUnicode(gallery.getEmoji()).toString())
                 .addField("End:", String.format("This channel is now being tracked under: %s", tag));
-        ctx.getChannel().sendMessage(embed);
+        ctx.getChannel().sendMessage(embed); // TODO: Make this a reply
     }
 }
 
