@@ -68,20 +68,19 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
 
         ctx.getServer().ifPresent(server -> {
             galleryBuilder.setServerId(server.getIdAsString());
-            galleryBuilder.setServerName(server.getName());
         });
 
         GalleryChannel gallery = galleryBuilder.build();
-        GalleryController.insert(gallery).exceptionally(ExceptionLogger.get()); // TODO: Make a discord exception logger for the thingos
-
-        EmbedBuilder embed = new EmbedBuilder()
-                .setColor(Color.GREEN)
-                .addField("Success", "Gallery has been created:")
-                .addField("Channel Id:", gallery.getChannelId())
-                .addField("Tag:", tag)
-                .addField("Emoji:", EmojiManager.getByUnicode(gallery.getEmoji()).toString())
-                .addField("End:", String.format("This channel is now being tracked under: %s", tag));
-        ctx.getChannel().sendMessage(embed); // TODO: Make this a reply
+        GalleryController.insert(gallery).thenAcceptAsync((Void) -> {
+            EmbedBuilder embed = new EmbedBuilder()
+                    .setColor(Color.GREEN)
+                    .addField("Success", "Gallery has been created:")
+                    .addField("Channel Id:", gallery.getChannelId())
+                    .addField("Tag:", tag)
+                    .addField("Emoji:", EmojiParser.parseToUnicode(gallery.getEmoji()))
+                    .addField("End:", String.format("This channel is now being tracked under: %s", tag));
+            ctx.reply(embed);
+        });
     }
 }
 
