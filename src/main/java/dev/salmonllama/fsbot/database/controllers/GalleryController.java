@@ -67,10 +67,9 @@ public class GalleryController {
     }
 
     private static void insertExec(GalleryChannel gallery) throws SQLException {
-        FSDB.get().insert("INSERT INTO galleries('server_id', 'server_name', 'channel_id', 'tag', 'emoji')" +
-                        "VALUES(?, ?, ?, ?, ?)",
+        FSDB.get().insert("INSERT INTO galleries(server_id, channel_id, tag, emoji)" +
+                        "VALUES(?, ?, ?, ?)",
                 gallery.getServerId(),
-                gallery.getChannelId(),
                 gallery.getChannelId(),
                 gallery.getTag(),
                 gallery.getEmoji()
@@ -107,7 +106,7 @@ public class GalleryController {
 
     private static String getEmojiExec(String channelId) throws SQLException {
         // Does not need to be an optional. CreateGalleryCommand populates it automatically with the default.
-        ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE channel_id = ?");
+        ResultSet rs = FSDB.get().select("SELECT * FROM galleries WHERE channel_id = ?", channelId);
         String emoji = rs.getString("emoji");
 
         FSDB.get().close(rs);
@@ -117,7 +116,6 @@ public class GalleryController {
     private static GalleryChannel mapObject(ResultSet rs) throws SQLException { // TODO: Builder this
         return new GalleryChannel.GalleryBuilder()
                 .setServerId(rs.getString("server_id"))
-                .setServerName(rs.getString("server_name"))
                 .setChannelId(rs.getString("channel_id"))
                 .setTag(rs.getString("tag"))
                 .setEmoji(rs.getString("emoji"))
