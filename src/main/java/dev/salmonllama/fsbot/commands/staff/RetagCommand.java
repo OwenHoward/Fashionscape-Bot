@@ -80,7 +80,17 @@ public class RetagCommand extends Command {
                                 msg.delete();
                                 ctx.reply(embed);
                                 // TODO: Log the action in FSBot-log
+
+                                EmbedBuilder log = new EmbedBuilder()
+                                        .setTitle("Outfit Retagged")
+                                        .setThumbnail(outfit.getLink())
+                                        .addField("New tag:", newTag);
+
+                                ctx.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresent(chnl -> {
+                                    chnl.sendMessage(log);
+                                });
                             });
+
                         } else if (event.getEmoji().equalsEmoji(EmojiParser.parseToUnicode(":octagonal_sign:"))) {
                             // Do nothing
                             msg.delete();
@@ -102,18 +112,5 @@ public class RetagCommand extends Command {
                 ctx.reply(response);
             });
         });
-
-//        try {
-//            Outfit outfit = this.db.getOutfitFromId(args[0]);
-//
-//            channel.sendMessage(outfit.generateInfo().setTitle(String.format("Update tag to %s?", args[1]))).thenAcceptAsync(message -> {
-//                message.addReaction(EmojiParser.parseToUnicode(":white_check_mark:"));
-//                message.addReaction(EmojiParser.parseToUnicode(":octagonal_sign:"));
-//                message.addReactionAddListener(new ReactionRetagConfirmationListener(author, message, outfit, db, outfit.getTag(), args[1]));
-//            });
-//        }
-//        catch (OutfitNotFoundException e) {
-//            channel.sendMessage(new DiscordError(e.getMessage()).get());
-//        }
     }
 }
