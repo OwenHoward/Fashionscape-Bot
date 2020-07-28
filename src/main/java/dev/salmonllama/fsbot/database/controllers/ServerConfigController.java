@@ -59,7 +59,7 @@ public class ServerConfigController {
     }
 
     private static Optional<ServerConfig> getExec(String serverId) throws SQLException {
-        ResultSet rs = FSDB.get().select("SELECT * FROM server_config WHERE id = ?");
+        ResultSet rs = FSDB.get().select("SELECT * FROM server_config WHERE id = ?", serverId);
 
         if (rs.next()) {
             ServerConfig config = mapObject(rs);
