@@ -12,7 +12,6 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
-import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class WelcomeMessageCommand extends Command {
     @Override public String description() { return "View or update the server welcome message. Options: get|set|getchannel|setchannel."; }
     @Override public String usage() { return "welcomemessage <String opt> [String newMessage]"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("welcomemessage", "wmsg")); }
 
     @Override

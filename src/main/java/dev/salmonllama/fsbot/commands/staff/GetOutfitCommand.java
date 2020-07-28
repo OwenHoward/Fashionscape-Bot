@@ -21,7 +21,7 @@ public class GetOutfitCommand extends Command { // TODO: This command also needs
     @Override public String description() { return "Shows the outfit, given an ID"; }
     @Override public String usage() { return "getoutfit <String id>"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("getoutfit", "get")); }
 
     @Override

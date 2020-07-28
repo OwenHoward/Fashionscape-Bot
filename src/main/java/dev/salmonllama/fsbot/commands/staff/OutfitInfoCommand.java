@@ -22,7 +22,7 @@ public class OutfitInfoCommand extends Command {
     @Override public String description() { return "Shows all related info about the outfit"; }
     @Override public String usage() { return "outfitinfo <String id>"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("outfitinfo", "oinfo")); }
 
     @Override

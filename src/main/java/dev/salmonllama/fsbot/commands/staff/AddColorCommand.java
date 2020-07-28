@@ -20,7 +20,7 @@ public class AddColorCommand extends Command {
     @Override public String description() { return "adds the provided role to the toggleable cosmetic roles."; }
     @Override public String usage() { return "addcolor <colorName> <roleId>"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("addcolor", "addcolour", "addclr")); }
 
     @Override

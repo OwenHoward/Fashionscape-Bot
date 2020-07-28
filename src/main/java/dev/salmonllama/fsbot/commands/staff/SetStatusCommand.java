@@ -23,7 +23,7 @@ public class SetStatusCommand extends Command {
     @Override public String description() { return "Updates the bot's current status"; }
     @Override public String usage()  { return "updatestatus <String status>"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("setstatus", "status")); }
 
     @Override

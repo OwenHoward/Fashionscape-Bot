@@ -27,7 +27,7 @@ public class RetagCommand extends Command {
     @Override public String description() { return "Changes the tag of the given outfit"; }
     @Override public String usage() { return "retag <String id> <String newtag>"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Collections.singletonList("retag")); }
 
     @Override
