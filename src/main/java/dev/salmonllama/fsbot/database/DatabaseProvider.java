@@ -74,7 +74,7 @@ public class DatabaseProvider {
     public int query(String sql, Object... params) throws SQLException {
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             resolveParameters(stmt, params);
-            return stmt.executeUpdate(sql);
+            return stmt.executeUpdate();
         }
     }
 
