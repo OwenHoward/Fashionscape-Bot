@@ -99,7 +99,6 @@ public class PermissionCommand extends Command {
     }
 
     private void add(CommandContext ctx) {
-        System.out.println("Add run");
         if (ctx.getMessage().getMentionedUsers().isEmpty()) {
             System.out.println("No mentioned users");
             // If no mentioned users, improper usage
@@ -107,12 +106,10 @@ public class PermissionCommand extends Command {
         }
 
         String userId = ctx.getMessage().getMentionedUsers().get(0).getIdAsString();
-        System.out.println(String.format("Got mentioned user %s", userId));
 
         StaticPermission perm = new StaticPermission.StaticPermissionBuilder(userId).setPermission(ctx.getArgs()[2]).build();
 
         StaticPermissionController.insert(perm).thenAcceptAsync((Void) -> {
-            System.out.println("Permission added");
             EmbedBuilder response = new EmbedBuilder()
                     .setTitle("Permissions Added")
                     .addField("User:", userId)
