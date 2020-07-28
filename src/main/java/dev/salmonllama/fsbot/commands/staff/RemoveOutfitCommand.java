@@ -74,6 +74,15 @@ public class RemoveOutfitCommand extends Command {
                            ctx.reply(response);
                            // TODO: Log the action in FSBot-Log
 
+                           EmbedBuilder log = new EmbedBuilder()
+                                   .setTitle("Outfit Marked as Deleted")
+                                   .setThumbnail(outfit.getLink())
+                                   .addField("Deleted By:", ctx.getAuthor().getDiscriminatedName());
+
+                           ctx.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresent(chnl -> {
+                               chnl.sendMessage(log);
+                           });
+
                        } else if (event.getEmoji().equalsEmoji(EmojiParser.parseToUnicode(":octagonal_sign:"))) {
                            // Do nothing
                            EmbedBuilder response = new EmbedBuilder()
