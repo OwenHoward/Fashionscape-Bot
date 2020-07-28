@@ -73,7 +73,7 @@ public class BotConfig {
     public static String DEFAULT_REACTION = ":heartpulse:";
 
     @ConfigurationOption
-    public static String HOME_SERVER = "340511685024546816";
+    public static String HOME_SERVER = "Home server here";
 
     public static void initConfig(String filePath, boolean cleanfile) {
         try {
