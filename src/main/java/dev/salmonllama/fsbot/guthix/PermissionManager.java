@@ -5,7 +5,6 @@
 
 package dev.salmonllama.fsbot.guthix;
 
-import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.javacord.api.entity.message.MessageAuthor;
@@ -58,18 +57,21 @@ public class PermissionManager {
     }
 
     private boolean staticHandler(String staticPerm, CommandContext ctx) {
+        System.out.println(staticPerm);
         AtomicBoolean ret = new AtomicBoolean(false);
 
         StaticPermissionController.getByUser(ctx.getAuthor().getIdAsString()).thenAccept(possiblePerms -> {
-            possiblePerms.ifPresent(
-                    staticPermissions -> ret.set(
-                            staticPermissions.stream()
-                                    .map(StaticPermission::getPermission)
-                                    .anyMatch(staticPerm::equals)
-                    )
-            );
-        });
+            possiblePerms.ifPresent(staticPermissions -> {
+                for (StaticPermission perm : staticPermissions) {
+                    if (perm.getPermission().equals(staticPerm)) {
+                        ret.set(true);
+                    }
+                }
+                staticPermissions.forEach(System.out::println);
+            });
+        }).join(); // TODO: Figure out a way to have this not join
 
+        System.out.println(ret.get());
         return ret.get();
     }
 
