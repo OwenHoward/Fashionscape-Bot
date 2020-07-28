@@ -358,8 +358,10 @@ public class OutfitController {
                 outfit.getSubmitter(),
                 outfit.getTag(),
                 outfit.getMeta(),
+                outfit.getUpdated(),
                 outfit.isFeatured(),
-                outfit.getDisplayCount());
+                outfit.getDisplayCount(),
+                outfit.getId());
     }
 
     private static void deleteExec(String id) throws SQLException {
