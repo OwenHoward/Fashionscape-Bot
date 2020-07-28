@@ -6,15 +6,19 @@
 package dev.salmonllama.fsbot.commands.general;
 
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
+import dev.salmonllama.fsbot.database.models.Outfit;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
+import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 public class OutfitCommand extends Command {
     private final int MAX_OUTFITS = 5;
@@ -36,7 +40,7 @@ public class OutfitCommand extends Command {
         String[] args = ctx.getArgs();
 
         OutfitController.getDistinctTags().thenAccept(tags -> {
-            if (tags.contains(command)) { // TODO: Hey uh, test casing
+            if (tags.contains(command)) {
                 // args parsing and command logic with tag as caller
                 handleTagCommand(command, args, ctx);
             } else if (NON_TAG_ALIASES.contains(command)) {
@@ -50,17 +54,45 @@ public class OutfitCommand extends Command {
         switch (args.length) {
             case 0:
                 // Send one single random outfit of the given tag
-                OutfitController.findRandomByTag(command).thenAccept(outfit -> {
-                    ctx.reply(outfit.toString());
-                }).exceptionally(ExceptionLogger.get()); // TODO: Exception logging
+                OutfitController.findRandomByTag(command).thenAccept(possibleOutfit -> { // TODO: Add an orElse case
+                    possibleOutfit.ifPresent(outfit -> {
+                        ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
+                            EmbedBuilder response = new EmbedBuilder()
+                                    .setTitle(user.getDiscriminatedName())
+                                    .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                    .setImage(outfit.getLink())
+                                    .setUrl(outfit.getLink());
+
+                            if (!outfit.getMeta().equals("")) {
+                                response.setDescription(outfit.getMeta());
+                            }
+
+                            ctx.reply(response);
+                        });
+                    });
+                }).exceptionally(ExceptionLogger.get());
             case 1:
                 // Send the given number of outfits, not to exceed 5 for ratelimit reasons
                 if (isNumeric(args[0])) {
                     int num = Math.min(Integer.parseInt(args[0]), MAX_OUTFITS);
 
-                    OutfitController.findRandomByTag(command, num).thenAccept(outfitsOpt -> {
-                       outfitsOpt.ifPresent(outfits -> {
-                           outfits.forEach(outfit -> ctx.reply(outfit.toString()));
+                    OutfitController.findRandomByTag(command, num).thenAccept(possibleOutfits -> {
+                       possibleOutfits.ifPresent(outfits -> {
+                               outfits.forEach(outfit -> {
+                                   ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
+                                       EmbedBuilder response = new EmbedBuilder()
+                                               .setTitle(user.getDiscriminatedName())
+                                               .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                               .setImage(outfit.getLink())
+                                               .setUrl(outfit.getLink());
+
+                                       if (!outfit.getMeta().equals("")) {
+                                           response.setDescription(outfit.getMeta());
+                                       }
+
+                                       ctx.reply(response);
+                                   });
+                               });
                        });
                     });
                 } else {
@@ -73,24 +105,66 @@ public class OutfitCommand extends Command {
         switch (args.length) {
             case 0:
                 // Send one truly random outfit
-                OutfitController.findRandom().thenAccept(outfit -> {
-                    ctx.reply(outfit.toString());
+                OutfitController.findRandom().thenAccept(possibleOutfit -> {
+                    possibleOutfit.ifPresent(outfit -> {
+                        ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
+                            EmbedBuilder response = new EmbedBuilder()
+                                    .setTitle(user.getDiscriminatedName())
+                                    .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                    .setImage(outfit.getLink())
+                                    .setUrl(outfit.getLink());
+
+                            if (!outfit.getMeta().equals("")) {
+                                response.setDescription(outfit.getMeta());
+                            }
+
+                            ctx.reply(response);
+                        });
+                    });
                 });
             case 1:
                 // Send the given number of outfits, not to exceed 5 for ratelimit reasons
                 if (isNumeric(args[0])) {
                     int num = Math.min(Integer.parseInt(args[0]), MAX_OUTFITS);
 
-                    OutfitController.findRandom(num).thenAccept(outfitsOpt -> {
-                        outfitsOpt.ifPresent(outfits -> {
-                            outfits.forEach(outfit -> ctx.reply(outfit.toString()));
+                    OutfitController.findRandom(num).thenAccept(possibleOutfits -> {
+                        possibleOutfits.ifPresent(outfits -> {
+                            outfits.forEach(outfit -> {
+                                ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
+                                    EmbedBuilder response = new EmbedBuilder()
+                                            .setTitle(user.getDiscriminatedName())
+                                            .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                            .setImage(outfit.getLink())
+                                            .setUrl(outfit.getLink());
+
+                                    if (!outfit.getMeta().equals("")) {
+                                        response.setDescription(outfit.getMeta());
+                                    }
+
+                                    ctx.reply(response);
+                                });
+                            });
                         });
                     });
                 } else {
                     // First arg is not a number, send an outfit of the given tag
                     String tag = args[0];
-                    OutfitController.findRandomByTag(tag).thenAccept(outfitOpt -> {
-                        outfitOpt.ifPresent(outfit -> ctx.reply(outfit.toString()));
+                    OutfitController.findRandomByTag(tag).thenAccept(possibleOutfit -> {
+                        possibleOutfit.ifPresent(outfit -> {
+                            ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
+                                EmbedBuilder response = new EmbedBuilder()
+                                        .setTitle(user.getDiscriminatedName())
+                                        .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                        .setImage(outfit.getLink())
+                                        .setUrl(outfit.getLink());
+
+                                if (!outfit.getMeta().equals("")) {
+                                    response.setDescription(outfit.getMeta());
+                                }
+
+                                ctx.reply(response);
+                            });
+                        });
                     });
                 }
             case 2:
@@ -98,9 +172,23 @@ public class OutfitCommand extends Command {
                 if (isNumeric(args[1])) {
                     int num = Math.min(Integer.parseInt(args[1]), MAX_OUTFITS);
 
-                    OutfitController.findRandomByTag(args[0], num).thenAccept(outfitsOpt -> {
-                        outfitsOpt.ifPresent(outfits -> {
-                            outfits.forEach(outfit -> ctx.reply(outfit.toString()));
+                    OutfitController.findRandomByTag(args[0], num).thenAccept(possibleOutfits -> {
+                        possibleOutfits.ifPresent(outfits -> {
+                            outfits.forEach(outfit -> {
+                                ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
+                                    EmbedBuilder response = new EmbedBuilder()
+                                            .setTitle(user.getDiscriminatedName())
+                                            .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                            .setImage(outfit.getLink())
+                                            .setUrl(outfit.getLink());
+
+                                    if (!outfit.getMeta().equals("")) {
+                                        response.setDescription(outfit.getMeta());
+                                    }
+
+                                    ctx.reply(response);
+                                });
+                            });
                         });
                     });
                 }
@@ -124,5 +212,10 @@ public class OutfitCommand extends Command {
             return false;
         }
         return true;
+    }
+
+    private CompletableFuture<Message> sendOutfit(Outfit outfit) {
+        // TODO: Replace sending with this
+        return null;
     }
 }
