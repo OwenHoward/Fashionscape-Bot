@@ -5,6 +5,7 @@
 
 package dev.salmonllama.fsbot.listeners;
 
+import com.vdurmont.emoji.EmojiParser;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
@@ -72,10 +73,18 @@ public class ImageListener implements MessageCreateListener {
                                                             .setThumbnail(outfit.getLink())
                                                             .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
                                                             .setUrl(outfit.getLink())
-                                                            .addField("Uploaded:", outfit.getCreated().toString())
-                                                            .addField("Meta:", outfit.getMeta());
+                                                            .addField("Uploaded:", outfit.getCreated().toString());
+
+                                                    if (outfit.getMeta() != null) {
+                                                        response.addField("Meta:", outfit.getMeta());
+                                                    }
 
                                                     chnl.sendMessage(response);
+
+                                                    // Add the reaction to the original message
+                                                    GalleryController.getEmoji(channel.getIdAsString()).thenAcceptAsync(emoji -> {
+                                                        event.getMessage().addReaction(EmojiParser.parseToUnicode(emoji));
+                                                    });
                                                 }, () -> {
                                                     // Fallback error message to me
                                                     event.getApi().getUserById(BotConfig.BOT_OWNER).thenAcceptAsync(user -> {
