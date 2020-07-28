@@ -9,10 +9,6 @@ import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.server.Server;
-import dev.salmonllama.fsbot.config.BotConfig;
-import dev.salmonllama.fsbot.utilities.ColorRole;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,17 +24,6 @@ public class ColorsCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        if (!ctx.getServer().isPresent()) {
-            ctx.reply("This command must be used in a server.");
-            return;
-        }
-        Server server = ctx.getServer().get();
-        TextChannel channel = ctx.getChannel();
-
-        if (!server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
-            return;
-        }
-
-        channel.sendMessage(ColorRole.rolesListEmbed());
+        ctx.reply("This command is a WIP and will be available soon.");
     }
 }

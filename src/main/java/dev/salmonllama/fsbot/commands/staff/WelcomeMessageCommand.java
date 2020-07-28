@@ -6,17 +6,14 @@
 package dev.salmonllama.fsbot.commands.staff;
 
 import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.controllers.ServerConfigController;
+import dev.salmonllama.fsbot.database.models.ServerConfig;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
-import dev.salmonllama.fsbot.utilities.database.ServerConfUtility;
-import dev.salmonllama.fsbot.utilities.warnings.Warning;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.server.Server;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,89 +23,80 @@ public class WelcomeMessageCommand extends Command {
     @Override public String description() { return "View or update the server welcome message. Options: get|set|getchannel|setchannel."; }
     @Override public String usage() { return "welcomemessage <String opt> [String newMessage]"; }
     @Override public String category() { return "Staff"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.ROLE, BotConfig.STAFF_ROLE); }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("welcomemessage", "wmsg")); }
 
     @Override
     public void onCommand(CommandContext ctx) {
-        if (!ctx.getServer().isPresent()) {
-            ctx.reply("You must use this command in a server");
+        if (ctx.isPrivateMessage()) {
+            ctx.reply("This command can only be used within a server");
             return;
         }
+
+        if (ctx.getArgs().length < 1) {
+            ctx.reply("You need to supply arguments for this command");
+            return;
+        }
+
         String[] args = ctx.getArgs();
-        TextChannel channel = ctx.getChannel();
-        Server server = ctx.getServer().get();
-
-        if (!server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
-            return;
-        }
-
-        if (args.length == 0) channel.sendMessage(new Warning("Not enough arguments provided").sendWarning());
-
         switch (args[0]) {
-            case ("get"):
-                channel.sendMessage(fetchWelcomeMsg(server));
-                break;
-            case ("set"):
-                StringBuilder sb = new StringBuilder();
-                for (int i = 1; i < args.length; i++) {
-                    sb.append(String.format("%s ", args[i]));
-                }
-
-                channel.sendMessage(updateWelcomeMsg(sb.toString(), server));
-                break;
-            case ("getchannel"):
-                channel.sendMessage(fetchWelcomeChannel(server));
-                break;
-            case ("setchannel"):
-                if (args.length < 2) channel.sendMessage(new Warning("Not enough arguments provided").sendWarning());
-
-                channel.sendMessage(updateWelcomeChannel(args[1], server));
-                break;
+            case "get":
+                get(ctx);
+            case "set": // TODO: check for args here
+                set(ctx, args[1]);
         }
     }
 
-    private EmbedBuilder fetchWelcomeMsg(Server server) {
+    private void get(CommandContext ctx) {
+        ServerConfigController.get(ctx.getServer().get().getIdAsString()).thenAcceptAsync(possibleConf -> {
+            possibleConf.ifPresentOrElse(conf -> {
+                EmbedBuilder response = new EmbedBuilder()
+                        .setTitle("Current Welcome Message")
+                        .setDescription(conf.getWelcomeMessage());
 
-        ServerConfUtility conf = new ServerConfUtility(server.getIdAsString());
-        String msg = conf.getWelcomeMsg();
+                ctx.reply(response);
+            }, () -> {
+                EmbedBuilder response = new EmbedBuilder()
+                        .setTitle("Does not exist!")
+                        .setDescription("No welcome message was found! use `~wmsg set` to set one!");
 
-        return new EmbedBuilder()
-                .setColor(Color.GREEN)
-                .setTitle("Current welcome message:")
-                .setDescription(msg);
+                ctx.reply(response);
+            });
+        });
     }
 
-    private EmbedBuilder updateWelcomeMsg(String msg, Server server) {
+    private void set(CommandContext ctx, String newMsg) {
+        ServerConfigController.get(ctx.getServer().get().getIdAsString()).thenAcceptAsync(possibleConf -> {
+            possibleConf.ifPresentOrElse(conf -> {
+                // Update the config
+                ServerConfig config = new ServerConfig.ServerConfigBuilder().from(conf)
+                        .setWelcomeMessage(newMsg)
+                        .build();
 
-        ServerConfUtility conf = new ServerConfUtility(server.getIdAsString());
-        conf.setWelcomeMsg(msg);
+                ServerConfigController.update(config);
 
-        return new EmbedBuilder()
-                .setColor(Color.GREEN)
-                .setTitle("Welcome message updated")
-                .addField("New welcome message:", msg);
-    }
+                EmbedBuilder response = new EmbedBuilder()
+                        .setTitle("Welcome Message Set")
+                        .addField("New Welcome Message:", config.getWelcomeMessage());
 
-    private EmbedBuilder fetchWelcomeChannel(Server server) {
+                ctx.reply(response);
+            }, () -> {
+                // Create a config and set the welcome message
+                ServerConfig config = new ServerConfig.ServerConfigBuilder()
+                        .setId(ctx.getServer().get().getIdAsString())
+                        .setPrefix(BotConfig.DEFAULT_PREFIX)
+                        .setWelcomeMessage(newMsg)
+                        .build();
 
-        ServerConfUtility conf = new ServerConfUtility(server.getIdAsString());
-        String welcomeChannel = conf.getWelcomeChannel();
+                ServerConfigController.insert(config);
 
-        return new EmbedBuilder()
-                .setColor(Color.GREEN)
-                .setTitle("Current welcome channel:")
-                .setDescription(welcomeChannel);
-    }
+                EmbedBuilder response = new EmbedBuilder()
+                        .setTitle("Welcome Message Set!")
+                        .setDescription("server conf has been created")
+                        .addField("New Welcome Message:", newMsg);
 
-    private EmbedBuilder updateWelcomeChannel(String id, Server server) {
-
-        ServerConfUtility conf = new ServerConfUtility(server.getIdAsString());
-        conf.setWelcomeChannel(id);
-
-        return new EmbedBuilder()
-                .setColor(Color.GREEN)
-                .setTitle("Welcome channel updated:")
-                .addField("New welcome channel:", id);
+                ctx.reply(response);
+            });
+        });
     }
 }

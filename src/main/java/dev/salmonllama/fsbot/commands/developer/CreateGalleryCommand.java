@@ -5,92 +5,82 @@
 
 package dev.salmonllama.fsbot.commands.developer;
 
-import com.rethinkdb.RethinkDB;
-import com.rethinkdb.net.Connection;
+import com.vdurmont.emoji.EmojiManager;
+import com.vdurmont.emoji.EmojiParser;
 import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.controllers.GalleryController;
+import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.server.Server;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Optional;
 
 public class CreateGalleryCommand extends Command { // TODO: This command needs help.
     @Override public String name() { return "Create Gallery"; }
     @Override public String description() { return "Creates a channel gallery, tracking any posted images"; }
     @Override public String usage() { return "creategallery <String tag>"; }
     @Override public String category() { return "Developer"; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "addgall")); }
-
-    static final RethinkDB R = RethinkDB.r;
-    static final Connection CONN = R.connection().hostname("localhost").port(28015).connect();
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
+    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
 
     @Override
     public void onCommand(CommandContext ctx) {
-        Optional<Server> opServer = ctx.getServer();
-        TextChannel channel = ctx.getChannel();
+        if (ctx.isPrivateMessage()) {
+            ctx.reply("This command can only be used in a server!"); // TODO: Stop this. Turn this into a preset no-no embed.
+            return;
+        }
+        if (ctx.getArgs().length < 1) {
+            ctx.reply("Args are incorrect");
+            return;
+        }
+
         String[] args = ctx.getArgs();
-        String targetChannelId = channel.getIdAsString();
-        String targetChannelName = channel.asServerChannel().get().getName(); // TODO: un-band-aid this.
+        // Check if the channel is already a registered gallery channel.
+        // Create a gallery channel of the current channel.
+        // Store the gallery channel in the database.
 
-        if (!opServer.isPresent()) {
-            ctx.reply("This command can only be used in a server");
-            return;
-        }
-
-        Server server = opServer.get();
-        String targetServerName = server.getName();
-        String targetServerId = server.getIdAsString();
-
-        if (!server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
-            channel.sendMessage("Fashion galleries can only be created in the Fashionscape server");
-            return;
-        }
-
-        if (args.length < 1) {
-            channel.sendMessage("No Arguments provided");
-            return;
-        }
-        else if (args.length > 1) {
-            channel.sendMessage("Too many arguments provided.");
+        String channelId = ctx.getChannel().getIdAsString();
+        if (GalleryController.galleryExists(channelId).join()) { // This is a value that is needed immediately.
+            ctx.reply("A gallery already exists in this channel, can not create a new one.");
             return;
         }
 
         String tag = args[0];
 
-        if (R.db("fsbot").table("channels").getField("cId").contains(targetChannelId).run(CONN)) {
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setColor(Color.RED)
-                    .addField("ERROR", "This channel is already gathering images");
-            channel.sendMessage(embed);
+        String emoji;
+        if (args.length == 2) {
+            emoji = EmojiParser.parseToAliases(args[1]);
+        } else {
+            emoji = BotConfig.DEFAULT_REACTION;
         }
-        else {
-            R.db("fsbot").table("channels").insert(
-                    R.hashMap("sName", targetServerName)
-                            .with("sId", targetServerId)
-                            .with("cName", targetChannelName)
-                            .with("cId", targetChannelId)
-                            .with("tag", tag)
-            ).run(CONN);
 
-            R.db("fsbot").tableCreate(tag).run(CONN);
+        GalleryChannel.GalleryBuilder galleryBuilder = new GalleryChannel.GalleryBuilder();
+        galleryBuilder.setChannelId(channelId);
+        galleryBuilder.setTag(tag);
+        galleryBuilder.setEmoji(emoji);
 
+        ctx.getServer().ifPresent(server -> {
+            galleryBuilder.setServerId(server.getIdAsString());
+        });
+
+        GalleryChannel gallery = galleryBuilder.build();
+        GalleryController.insert(gallery).thenAcceptAsync((Void) -> {
             EmbedBuilder embed = new EmbedBuilder()
                     .setColor(Color.GREEN)
-                    .addField("Success", "Channel added to storage with the following values:")
-                    .addField("Channel Name:", targetChannelName)
-                    .addField("Channel Id:", targetChannelId)
+                    .addField("Success", "Gallery has been created:")
+                    .addField("Channel Id:", gallery.getChannelId())
                     .addField("Tag:", tag)
-                    .addField("End:", String.format("Table \"%s\" created for images in this channel", tag));
-            channel.sendMessage(embed);
-        }
+                    .addField("Emoji:", EmojiParser.parseToUnicode(gallery.getEmoji()))
+                    .addField("End:", String.format("This channel is now being tracked under: %s", tag));
+            ctx.reply(embed);
+        });
     }
 }
+

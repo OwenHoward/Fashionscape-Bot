@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 
+// Shoutout to Kaaz (again) for a kickass config service: https://github.com/Kaaz/ConfigurationBuilder
 package dev.salmonllama.fsbot.config;
 
 import com.kaaz.configuration.ConfigurationBuilder;
@@ -15,10 +16,10 @@ public class BotConfig {
     public static String TOKEN = "token-goes-here";
 
     @ConfigurationOption
-    public static String DB_HOST = "localhost";
+    public static String DB_ADDR = "fsbot.db";
 
     @ConfigurationOption
-    public static int DB_PORT = 28015;
+    public static String DB_NAME = "fsbot";
 
     @ConfigurationOption
     public static String DEFAULT_PREFIX = "~";
@@ -45,6 +46,12 @@ public class BotConfig {
     public static String VOTE_CHANNEL = "vote channel here";
 
     @ConfigurationOption
+    public static String WELCOME_CHANNEL = "welcome channel here";
+
+    @ConfigurationOption
+    public static String JOIN_LOG = "join log channel";
+
+    @ConfigurationOption
     public static String REPORT_LOG = "report_log_channel";
 
     @ConfigurationOption
@@ -63,11 +70,14 @@ public class BotConfig {
     public static String IMGUR_BEARER = "imgur bearer here";
 
     @ConfigurationOption
-    public static String HOME_SERVER = "340511685024546816";
+    public static String DEFAULT_REACTION = ":heartpulse:";
 
-    public static void initConfig(String filePath) {
+    @ConfigurationOption
+    public static String HOME_SERVER = "Home server here";
+
+    public static void initConfig(String filePath, boolean cleanfile) {
         try {
-            new ConfigurationBuilder(BotConfig.class, new File(filePath)).build(false);
+            new ConfigurationBuilder(BotConfig.class, new File(filePath)).build(cleanfile);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

@@ -6,6 +6,7 @@
 package dev.salmonllama.fsbot.guthix;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class Command {
     public abstract String name();
@@ -18,7 +19,6 @@ public abstract class Command {
     public abstract void onCommand(CommandContext ctx);
 
     public void invoke(final CommandContext ctx) {
-        Thread thread = new Thread(() -> onCommand(ctx));
-        thread.start();
+        CompletableFuture.runAsync(() -> onCommand(ctx));
     }
 }
