@@ -75,7 +75,7 @@ public class ImageListener implements MessageCreateListener {
                                                             .setUrl(outfit.getLink())
                                                             .addField("Uploaded:", outfit.getCreated().toString());
 
-                                                    if (outfit.getMeta() != null) {
+                                                    if (!outfit.getMeta().equals("")) {
                                                         response.addField("Meta:", outfit.getMeta());
                                                     }
 
@@ -84,7 +84,7 @@ public class ImageListener implements MessageCreateListener {
                                                     // Add the reaction to the original message
                                                     GalleryController.getEmoji(channel.getIdAsString()).thenAcceptAsync(emoji -> {
                                                         event.getMessage().addReaction(EmojiParser.parseToUnicode(emoji));
-                                                    });
+                                                    }).exceptionally(ExceptionLogger.get());
                                                 }, () -> {
                                                     // Fallback error message to me
                                                     event.getApi().getUserById(BotConfig.BOT_OWNER).thenAcceptAsync(user -> {
