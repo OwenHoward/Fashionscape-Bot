@@ -33,7 +33,7 @@ public class ServerConfig extends DatabaseModel {
 
     public static String schema() {
         return "CREATE TABLE IF NOT EXISTS server_config (" +
-                "id TEXT PRIMARY KEY ," +
+                "id TEXT," +
                 "prefix TEXT," +
                 "welcome_message TEXT," +
                 "welcome_channel TEXT)";
