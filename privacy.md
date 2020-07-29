@@ -67,6 +67,6 @@ If you need to contact us for assistance regarding information outlined in this 
 
 Salmonllama’s Discord Tag: Salmonllama#5727
 LisaaRS’s Discord Tag: LisaaRS#2604.
-FashionScapers Discord Server: [https://discord.com/invite/Tfvxe22](https://discord.com/invite/Tfvxe22). Please use the “#report-issues-here” channel.
-Github: [https://github.com/Salmonllama/Fashionscape-Bot/issues/new](https://github.com/Salmonllama/Fashionscape-Bot/issues/new)
-Email: salmonllama999@gmail.com
+FashionScapers Discord Server: [https://discord.com/invite/Tfvxe22](https://discord.com/invite/Tfvxe22). Please use the “#report-issues-here” channel.  
+Github: [https://github.com/Salmonllama/Fashionscape-Bot/issues/new](https://github.com/Salmonllama/Fashionscape-Bot/issues/new)  
+Email: salmonllama999@gmail.com  
