@@ -402,7 +402,7 @@ public class OutfitController {
                 .setTag(rs.getString("tag"))
                 .setMeta(rs.getString("meta"))
                 .setCreated(new Timestamp(rs.getLong("created")))
-                .setUpdated(new Timestamp((rs.getLong("updated"))))
+                .setUpdated(new Timestamp(rs.getLong("updated")))
                 .setDeleted(rs.getBoolean("deleted"))
                 .setFeatured(rs.getBoolean("featured"))
                 .setDisplayCount(rs.getInt("display_count"))

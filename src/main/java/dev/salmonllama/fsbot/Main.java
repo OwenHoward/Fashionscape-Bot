@@ -37,8 +37,8 @@ public class Main {
             api.addMessageCreateListener(new AchievementListener());
             api.addMessageCreateListener(new ReportListener());
 
-            System.out.println(String.format("Bot invite: %s", api.createBotInvite()));
-            System.out.println(String.format("Logged in as %s", api.getYourself().getDiscriminatedName()));
+            System.out.printf("Bot invite: %s%n", api.createBotInvite());
+            System.out.printf("Logged in as %s%n", api.getYourself().getDiscriminatedName());
         });
     }
 }
