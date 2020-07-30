@@ -72,7 +72,7 @@ public class ServerConfigController {
     }
 
     private static void updateExec(ServerConfig config) throws SQLException {
-        FSDB.get().query("UPDATE server_config SET prefix = ?, welcome_message = ?, welcome_channel = ?, WHERE id = ?",
+        FSDB.get().query("UPDATE server_config SET prefix = ?, welcome_message = ?, welcome_channel = ? WHERE id = ?",
                 config.getPrefix(),
                 config.getWelcomeMessage(),
                 config.getWelcomeChannel(),

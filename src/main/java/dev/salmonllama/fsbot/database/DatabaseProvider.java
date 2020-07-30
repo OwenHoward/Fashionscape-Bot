@@ -28,7 +28,8 @@ public class DatabaseProvider {
             SQLiteConnectionPoolDataSource dataSource = new SQLiteConnectionPoolDataSource();
             dataSource.setDatabaseName(DB_NAME);
             dataSource.setUrl(DB_ADDR);
-            return dataSource.getConnection();
+            c = dataSource.getConnection();
+            return c;
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Could not connect to database, double check config values");
@@ -58,6 +59,8 @@ public class DatabaseProvider {
             }
             else if (p instanceof Timestamp) {
                 query.setTimestamp(index, (Timestamp) p);
+            } else if (p == null) {
+                query.setNull(index, Types.NULL);
             } else {
                 throw new UnknownParameterException(p, index);
             }

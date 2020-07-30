@@ -17,8 +17,6 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.util.logging.ExceptionLogger;
 
-import java.sql.Timestamp;
-
 public class ImageListener implements MessageCreateListener {
 
     @Override
@@ -57,8 +55,7 @@ public class ImageListener implements MessageCreateListener {
                                                 .setMeta(event.getMessageContent())
                                                 .setLink(upload.getLink())
                                                 .setSubmitter(event.getMessageAuthor().getIdAsString())
-                                                .setDeleteHash(upload.getDeleteHash())
-                                                .setCreated(new Timestamp(upload.getDateTime()));
+                                                .setDeleteHash(upload.getDeleteHash());
 
                                         GalleryController.getTag(channel.getIdAsString()).thenAccept(tag -> {
                                             outfitBuilder.setTag(tag);
