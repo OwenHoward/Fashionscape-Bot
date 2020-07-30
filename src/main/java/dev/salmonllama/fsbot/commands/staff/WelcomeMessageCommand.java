@@ -13,6 +13,7 @@ import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,61 +43,72 @@ public class WelcomeMessageCommand extends Command {
         switch (args[0]) {
             case "get":
                 get(ctx);
+                break;
             case "set": // TODO: check for args here
-                set(ctx, args[1]);
+                String newMsg = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                set(ctx, newMsg);
+                break;
+            default:
+                ctx.reply("You used this command incorrectly.");
         }
     }
 
     private void get(CommandContext ctx) {
-        ServerConfigController.get(ctx.getServer().get().getIdAsString()).thenAcceptAsync(possibleConf -> {
-            possibleConf.ifPresentOrElse(conf -> {
-                EmbedBuilder response = new EmbedBuilder()
-                        .setTitle("Current Welcome Message")
-                        .setDescription(conf.getWelcomeMessage());
+        ctx.getServer().ifPresent( // If server is present (not private message) get the server config
+                server -> ServerConfigController.get(server.getIdAsString()).thenAcceptAsync(
+                        possibleConf -> possibleConf.ifPresentOrElse( // Check for current server config
+                                conf -> ctx.reply(getMsg(conf)), // Fetch and send the current welcome message
+                                () -> ctx.reply(notFound()) // No welcome message exists, sorrynotsorry
+                        )
+                ));
+    }
 
-                ctx.reply(response);
-            }, () -> {
-                EmbedBuilder response = new EmbedBuilder()
-                        .setTitle("Does not exist!")
-                        .setDescription("No welcome message was found! use `~wmsg set` to set one!");
+    private EmbedBuilder getMsg(ServerConfig config) {
+        return new EmbedBuilder()
+                .setTitle("Current Welcome Message")
+                .setDescription(config.getWelcomeMessage());
+    }
 
-                ctx.reply(response);
-            });
-        });
+    private EmbedBuilder notFound() {
+        return new EmbedBuilder()
+                .setTitle("Does not exist!")
+                .setDescription("No welcome message was found! use `~wmsg set` to set one!");
     }
 
     private void set(CommandContext ctx, String newMsg) {
-        ServerConfigController.get(ctx.getServer().get().getIdAsString()).thenAcceptAsync(possibleConf -> {
-            possibleConf.ifPresentOrElse(conf -> {
-                // Update the config
-                ServerConfig config = new ServerConfig.ServerConfigBuilder().from(conf)
-                        .setWelcomeMessage(newMsg)
-                        .build();
+        ctx.getServer().ifPresent( // If server is present (private msg check) get the server's config
+                server -> ServerConfigController.get(server.getIdAsString()).thenAcceptAsync( // Check for a current server config
+                        possibleConf -> possibleConf.ifPresentOrElse(
+                                conf -> ctx.reply(updateMsg(conf, newMsg)), // Config exists, update with new welcome message
+                                () -> ctx.reply(setNewMsg(server.getIdAsString(), newMsg))))); // Config does not exist, init and add new welcome message
+    }
 
-                ServerConfigController.update(config);
+    private EmbedBuilder updateMsg(ServerConfig conf, String newMsg) {
+        // Updates a welcome message from an already existing server config
+        ServerConfig config = new ServerConfig.ServerConfigBuilder().from(conf)
+                .setWelcomeMessage(newMsg)
+                .build();
 
-                EmbedBuilder response = new EmbedBuilder()
-                        .setTitle("Welcome Message Set")
-                        .addField("New Welcome Message:", config.getWelcomeMessage());
+        ServerConfigController.update(config).exceptionally(ExceptionLogger.get()); // TODO: Write a discord Throwable consumer like this
 
-                ctx.reply(response);
-            }, () -> {
-                // Create a config and set the welcome message
-                ServerConfig config = new ServerConfig.ServerConfigBuilder()
-                        .setId(ctx.getServer().get().getIdAsString())
-                        .setPrefix(BotConfig.DEFAULT_PREFIX)
-                        .setWelcomeMessage(newMsg)
-                        .build();
+        return new EmbedBuilder()
+                .setTitle("Welcome Message Set")
+                .addField("New Welcome Message:", config.getWelcomeMessage());
+    }
 
-                ServerConfigController.insert(config);
+    private EmbedBuilder setNewMsg(String serverId, String newMsg) {
+        // Creates a new server config and adds a welcome message
+        ServerConfig config = new ServerConfig.ServerConfigBuilder()
+                .setId(serverId)
+                .setPrefix(BotConfig.DEFAULT_PREFIX)
+                .setWelcomeMessage(newMsg)
+                .build();
 
-                EmbedBuilder response = new EmbedBuilder()
-                        .setTitle("Welcome Message Set!")
-                        .setDescription("server conf has been created")
-                        .addField("New Welcome Message:", newMsg);
+        ServerConfigController.insert(config);
 
-                ctx.reply(response);
-            });
-        });
+        return new EmbedBuilder()
+                .setTitle("Welcome Message Set!")
+                .setDescription("server conf has been created")
+                .addField("New Welcome Message:", newMsg);
     }
 }
