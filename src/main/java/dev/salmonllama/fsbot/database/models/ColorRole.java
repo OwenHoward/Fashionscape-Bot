@@ -8,9 +8,9 @@ package dev.salmonllama.fsbot.database.models;
 import dev.salmonllama.fsbot.database.DatabaseModel;
 
 public class ColorRole extends DatabaseModel {
-    private long roleId;
-    private long serverId;
-    private String color;
+    private final long roleId;
+    private final long serverId;
+    private final String color;
 
     public ColorRole(ColorRoleBuilder builder) {
         roleId = builder.roleId;
@@ -34,8 +34,13 @@ public class ColorRole extends DatabaseModel {
         return "CREATE TABLE IF NOT EXISTS color_roles (role_id INTEGER, server_id INTEGER, color TEXT)";
     }
 
+    @Override
+    public String toString() {
+        return String.format("Color Role: {roleId: %d, serverId: %d, color: %s", roleId, serverId, color);
+    }
+
     public static class ColorRoleBuilder {
-        private long roleId;
+        private final long roleId;
         private long serverId;
         private String color;
 
