@@ -21,7 +21,7 @@ public class FSDB {
             return connections.get(key);
         }
 
-        System.out.println(String.format("Specified connection %s has not been set.", key));
+        System.out.printf("Specified connection %s has not been set.%n", key);
         return null;
     }
 
@@ -39,6 +39,7 @@ public class FSDB {
     private static void prepareTables() {
         try {
             get().query(Outfit.schema());
+            get().query(ColorRole.schema());
             get().query(GalleryChannel.schema());
             get().query(ServerConfig.schema());
             get().query(ServerBlacklist.schema());

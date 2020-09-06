@@ -12,15 +12,18 @@ import dev.salmonllama.fsbot.listeners.*;
 import org.javacord.api.DiscordApiBuilder;
 
 import dev.salmonllama.fsbot.utilities.Constants;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 // TODO: auto-switching status messages.
 // TODO: Add an official Logger --> logging to Discord, not console
 
+@SpringBootApplication
 public class Main {
-
     public static void main(String[] args) {
         String configLocation = Constants.BOT_FOLDER.concat(Constants.CONFIG_NAME);
-        BotConfig.initConfig(configLocation, false); // TODO: Use args to dictate newFiling. Also use args to dictate database setup.
+        BotConfig.initConfig(configLocation, false);
+        // TODO: Use args to dictate newFiling. Also use args to dictate database setup.
 
         FSDB.init();
 
@@ -40,5 +43,7 @@ public class Main {
             System.out.printf("Bot invite: %s%n", api.createBotInvite());
             System.out.printf("Logged in as %s%n", api.getYourself().getDiscriminatedName());
         });
+
+        SpringApplication.run(Main.class, args);
     }
 }

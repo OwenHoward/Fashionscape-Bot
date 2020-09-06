@@ -5,6 +5,7 @@
 
 package dev.salmonllama.fsbot.commands.developer;
 
+import dev.salmonllama.fsbot.Main;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
