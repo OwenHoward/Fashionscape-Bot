@@ -5,18 +5,15 @@
 
 package dev.salmonllama.fsbot.commands.developer;
 
-import dev.salmonllama.fsbot.database.controllers.OutfitController;
+import dev.salmonllama.fsbot.endpoints.scapefashion.ScapeFashionConnection;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.permission.Role;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class TestCommand extends Command {
     @Override public String name() { return "Test"; }
@@ -28,15 +25,12 @@ public class TestCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        Message msg = ctx.getMessage();
+        ScapeFashionConnection conn = new ScapeFashionConnection();
 
-        Collection<Role> roles = msg.getMentionedRoles();
-
-        roles.stream().map(Role::getIdAsString).collect(Collectors.toList()).forEach(id -> {
-            ctx.getServer().ifPresent(server -> {
-                Role r = server.getRoleById(id).orElse(null);
-                ctx.reply(r.getMentionTag());
-            });
-        });
+        try {
+            ctx.reply(conn.osrsColor("#00ff00").toString(2));
+        } catch (Exception e) {
+            ctx.reply(e.getMessage());
+        }
     }
 }
