@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.javacord:javacord:3.0.6'
     implementation 'com.vdurmont:emoji-java:4.0.0'
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
