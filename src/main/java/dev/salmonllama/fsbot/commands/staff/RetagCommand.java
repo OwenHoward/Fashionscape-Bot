@@ -79,7 +79,6 @@ public class RetagCommand extends Command {
 
                                 msg.delete();
                                 ctx.reply(embed);
-                                // TODO: Log the action in FSBot-log
 
                                 EmbedBuilder log = new EmbedBuilder()
                                         .setTitle("Outfit Retagged")

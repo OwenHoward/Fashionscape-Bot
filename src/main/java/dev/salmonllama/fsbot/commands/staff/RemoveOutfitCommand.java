@@ -71,8 +71,9 @@ public class RemoveOutfitCommand extends Command {
                            EmbedBuilder response = new EmbedBuilder()
                                    .setTitle("Deletion Successful!")
                                    .setDescription(String.format("Outfit %s marked as deleted", outfit.getId()));
+
+                           msg.delete();
                            ctx.reply(response);
-                           // TODO: Log the action in FSBot-Log
 
                            EmbedBuilder log = new EmbedBuilder()
                                    .setTitle("Outfit Marked as Deleted")

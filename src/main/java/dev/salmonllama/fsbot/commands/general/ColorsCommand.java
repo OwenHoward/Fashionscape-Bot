@@ -5,10 +5,13 @@
 
 package dev.salmonllama.fsbot.commands.general;
 
+import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.database.controllers.ColorRoleController;
 import dev.salmonllama.fsbot.guthix.Command;
 import dev.salmonllama.fsbot.guthix.CommandContext;
 import dev.salmonllama.fsbot.guthix.CommandPermission;
 import dev.salmonllama.fsbot.guthix.PermissionType;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +27,26 @@ public class ColorsCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        ctx.reply("This command is a WIP and will be available soon.");
+        // List available color roles
+        ctx.getServer().ifPresentOrElse(server -> {
+            if (server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
+                ColorRoleController.getAll().thenAcceptAsync(
+                        possibleColorRoles -> possibleColorRoles.ifPresentOrElse(colorRoles -> {
+                            EmbedBuilder response = new EmbedBuilder()
+                                    .setTitle("Color roles")
+                                    .setFooter(String.format("Found %d roles", colorRoles.size()));
+
+                            colorRoles.forEach(
+                                    colorRole -> server.getRoleById(colorRole.getRoleId()).ifPresent(
+                                        role -> response.addField(colorRole.getColor(), role.getMentionTag(), true)
+                                    )
+                            );
+
+                            ctx.reply(response);
+                        }, () -> ctx.reply("No color roles have been found")));
+            } else {
+                ctx.reply("This command can only be used in the fashionscape server");
+            }
+        }, () -> ctx.reply("This command can only be used in the fashionscape server"));
     }
 }

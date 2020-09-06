@@ -58,7 +58,7 @@ public class BotConfig {
     public static String OUTFIT_LOG = "outfit log channel";
 
     @ConfigurationOption
-    public static String BOT_LOG = "bot_log_channel";
+    public static String ACTIVITY_LOG = "bot_log_channel";
 
     @ConfigurationOption
     public static String HYDRIX_ROLE = "hydrix role id here";
