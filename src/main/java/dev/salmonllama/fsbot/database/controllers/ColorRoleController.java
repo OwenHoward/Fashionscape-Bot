@@ -5,13 +5,15 @@ import dev.salmonllama.fsbot.database.models.ColorRole;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 public class ColorRoleController {
     // Need insert, get by color, exists by color, exists by role, get by server, count, and delete
-    public CompletableFuture<Void> insert(ColorRole cr) {
+    public static CompletableFuture<Void> insert(ColorRole cr) {
         return CompletableFuture.runAsync(() -> {
             try {
                 insertExec(cr);
@@ -21,7 +23,7 @@ public class ColorRoleController {
         });
     }
 
-    public CompletableFuture<Boolean> exists(String color) {
+    public static CompletableFuture<Boolean> exists(String color) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return existsExec(color);
@@ -31,7 +33,7 @@ public class ColorRoleController {
         });
     }
 
-    public CompletableFuture<Boolean> exists(long roleId) {
+    public static CompletableFuture<Boolean> exists(long roleId) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return existsExec(roleId);
@@ -41,7 +43,7 @@ public class ColorRoleController {
         });
     }
 
-    public CompletableFuture<Optional<ColorRole>> get(String color) {
+    public static CompletableFuture<Optional<ColorRole>> get(String color) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return getExec(color);
@@ -51,7 +53,7 @@ public class ColorRoleController {
         });
     }
 
-    public CompletableFuture<Optional<ColorRole>> get(long roleId) {
+    public static CompletableFuture<Optional<ColorRole>> get(long roleId) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return getExec(roleId);
@@ -61,17 +63,17 @@ public class ColorRoleController {
         });
     }
 
-    public CompletableFuture<Integer> count(long serverId) {
+    public static CompletableFuture<Optional<Collection<ColorRole>>> getAll() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return countExec(serverId);
+                return getAllExec();
             } catch (SQLException e) {
                 throw new CompletionException(e);
             }
         });
     }
 
-    public CompletableFuture<Void> delete(long roleId) {
+    public static CompletableFuture<Void> delete(long roleId) {
         return CompletableFuture.runAsync(() -> {
             try {
                 deleteExec(roleId);
@@ -81,7 +83,7 @@ public class ColorRoleController {
         });
     }
 
-    public CompletableFuture<Void> delete(String color) {
+    public static CompletableFuture<Void> delete(String color) {
         return CompletableFuture.runAsync(() -> {
             try {
                 deleteExec(color);
@@ -91,7 +93,7 @@ public class ColorRoleController {
         });
     }
 
-    private void insertExec(ColorRole cr) throws SQLException {
+    private static void insertExec(ColorRole cr) throws SQLException {
         FSDB.get().insert("INSERT INTO color_roles (role_id, server_id, color) VALUES (?, ?, ?)",
                 cr.getRoleId(),
                 cr.getServerId(),
@@ -99,7 +101,7 @@ public class ColorRoleController {
         );
     }
 
-    private boolean existsExec(String color) throws SQLException {
+    private static boolean existsExec(String color) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM color_roles WHERE color = ?) AS hmm", color);
         boolean exists = rs.getBoolean("hmm");
 
@@ -107,7 +109,7 @@ public class ColorRoleController {
         return exists;
     }
 
-    private boolean existsExec(long roleId) throws SQLException {
+    private static boolean existsExec(long roleId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT EXISTS(SELECT 1 FROM color_roles WHERE role_id = ?) AS hmm", roleId);
         boolean exists = rs.getBoolean("hmm");
 
@@ -115,7 +117,7 @@ public class ColorRoleController {
         return exists;
     }
 
-    private Optional<ColorRole> getExec(String color) throws SQLException {
+    private static Optional<ColorRole> getExec(String color) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM color_roles WHERE color = ?", color);
 
         if (rs.next()) {
@@ -128,7 +130,7 @@ public class ColorRoleController {
         return Optional.empty();
     }
 
-    private Optional<ColorRole> getExec(Long roleId) throws SQLException {
+    private static Optional<ColorRole> getExec(Long roleId) throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT * FROM color_roles WHERE role_id = ?", roleId);
 
         if (rs.next()) {
@@ -141,28 +143,31 @@ public class ColorRoleController {
         return Optional.empty();
     }
 
-    private int countExec(long serverId) throws SQLException {
-        ResultSet rs = FSDB.get().select("SELECT COUNT(*) AS count FROM color_roles WHERE server_id = ?", serverId);
+    private static Optional<Collection<ColorRole>> getAllExec() throws SQLException {
+        ResultSet rs = FSDB.get().select("SELECT * FROM color_roles");
 
-        if (rs.next()) {
-            int count = rs.getInt("count");
+        Collection<ColorRole> roles = new ArrayList<>();
+        while (rs.next()) {
+            roles.add(mapObject(rs));
             FSDB.get().close(rs);
-            return count;
         }
 
-        FSDB.get().close(rs);
-        return 0;
+        if (roles.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(roles);
     }
 
-    private void deleteExec(long roleId) throws SQLException {
+    private static void deleteExec(long roleId) throws SQLException {
         FSDB.get().query("DELETE FROM color_roles WHERE role_id = ?", roleId);
     }
 
-    private void deleteExec(String color) throws SQLException {
+    private static void deleteExec(String color) throws SQLException {
         FSDB.get().query("DELETE FROM color_roles WHERE color = ?", color);
     }
 
-    private ColorRole mapObject(ResultSet rs) throws SQLException {
+    private static ColorRole mapObject(ResultSet rs) throws SQLException {
         return new ColorRole.ColorRoleBuilder(rs.getLong("role_id"))
                 .setServerId(rs.getLong("server_id"))
                 .setColor(rs.getString("color"))

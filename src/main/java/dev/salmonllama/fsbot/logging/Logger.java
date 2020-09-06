@@ -18,7 +18,7 @@ public class Logger {
     private final String OUTFIT_LOG = BotConfig.OUTFIT_LOG;
     private final String REPORT_LOG = BotConfig.REPORT_LOG;
     private final String JOIN_LOG = BotConfig.JOIN_LOG;
-    private final String BOT_LOG = BotConfig.BOT_LOG;
+    private final String ACTIVITY_LOG = BotConfig.ACTIVITY_LOG;
     private final String SALMONLLAMA = BotConfig.BOT_OWNER;
 
     private EmbedBuilder reportEmbed;
@@ -54,7 +54,7 @@ public class Logger {
     }
 
     public void logError(String errorMsg) {
-        api.getServerTextChannelById(BOT_LOG).ifPresentOrElse(channel -> {
+        api.getServerTextChannelById(ACTIVITY_LOG).ifPresentOrElse(channel -> {
             // Log the thing
             channel.sendMessage("error");
         }, () -> {
