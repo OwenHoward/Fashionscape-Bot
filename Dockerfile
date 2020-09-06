@@ -12,6 +12,6 @@ EXPOSE 8080
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/fashionscape-bot.jar
+COPY --from=build /home/gradle/src/build/libs/fsbot*.jar /app/
 
-ENTRYPOINT ["java","-jar","-Xmx800m","/app/fashionscape-bot.jar"]
+ENTRYPOINT ["java","-jar","-Xmx800m","/app/fsbot*.jar"]
