@@ -20,6 +20,26 @@ public class ScapeFashionItem {
         this.match = builder.match;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSlot() {
+        return slot;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public String[] getColors() {
+        return colors;
+    }
+
+    public float getMatch() {
+        return match;
+    }
+
     public static class Builder {
         private String name;
         private String slot;

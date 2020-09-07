@@ -28,7 +28,7 @@ public class TestCommand extends Command {
         ScapeFashionConnection conn = new ScapeFashionConnection();
 
         try {
-            ctx.reply(conn.osrsColor("#00ff00").toString(2));
+            conn.osrsColor("#00ff00");
         } catch (Exception e) {
             ctx.reply(e.getMessage());
         }

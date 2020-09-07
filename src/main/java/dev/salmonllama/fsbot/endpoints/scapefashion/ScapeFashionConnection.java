@@ -13,8 +13,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 public class ScapeFashionConnection {
     private final String RS3_REQUEST_URL = "https://api.rune.scape.fashion";
@@ -36,11 +41,11 @@ public class ScapeFashionConnection {
 
     // Uses the color endpoint to search for items
     // Returns an object with a list of the top results, and a link redirect to see full list
-    public JSONArray osrsColor(String color) throws IOException {
+    public void osrsColor(String color) throws IOException {
         String url = OSRS_REQUEST_URL + "/colors/" + encode(color);
         System.out.println(url);
 
-        return makeRequest(url);
+        makeRequestNEW(url);
     }
 
     private void osrsColor(String color, String slot) {
@@ -79,6 +84,19 @@ public class ScapeFashionConnection {
         // returns a JSONArray of JSONObjects
         System.out.println(response.body().string());
         return new JSONObject(response.body().string()).getJSONArray("items");
+    }
+
+    private void makeRequestNEW(String url) {
+        var client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+
+        HttpRequest request = HttpRequest.newBuilder(URI.create(url))
+                .header("Content-Type", "application/json")
+                .header("User-Agent", USER_AGENT)
+                .GET()
+                .build();
+
+        CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+        response.thenAcceptAsync(res -> System.out.println(res.body()));
     }
 
     private String encode(String value) throws UnsupportedEncodingException {
