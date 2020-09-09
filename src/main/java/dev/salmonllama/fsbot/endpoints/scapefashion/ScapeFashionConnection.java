@@ -5,13 +5,7 @@
 
 package dev.salmonllama.fsbot.endpoints.scapefashion;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -19,7 +13,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CompletableFuture;
 
 public class ScapeFashionConnection {
     private final String RS3_REQUEST_URL = "https://api.rune.scape.fashion";
@@ -28,36 +21,44 @@ public class ScapeFashionConnection {
     private final String OSRS_REQUEST_URL = "https://api.scape.fashion";
     private final String OSRS_LINK_URL = "https://scape.fashion";
 
-    private final String USER_AGENT = "Fashionscape-Bot github.com/salmonllama/fashionscape-bot";
-
-    private final OkHttpClient client;
-    private final Request.Builder requestBuilder;
-
-    public ScapeFashionConnection() {
-
-        client = new OkHttpClient().newBuilder().build();
-        requestBuilder = new Request.Builder();
-    }
+    public ScapeFashionConnection() {}
 
     // Uses the color endpoint to search for items
     // Returns an object with a list of the top results, and a link redirect to see full list
-    public void osrsColor(String color) throws IOException {
-        String url = OSRS_REQUEST_URL + "/colors/" + encode(color);
-        System.out.println(url);
+    public ScapeFashionResult osrsColor(String color) throws Exception {
+        String uri = OSRS_REQUEST_URL + "/colors/" + encode(color);
+        String link = OSRS_LINK_URL + "/colors/" + encode(color);
 
-        makeRequestNEW(url);
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
-    private void osrsColor(String color, String slot) {
+    private ScapeFashionResult osrsColor(String color, String slot) throws Exception {
+        String uri = OSRS_REQUEST_URL + "/colors/" + encode(color) + "?slot=" + encode(slot);
+        String link = OSRS_LINK_URL + "/colors/" + encode(color) + "?slot=" + encode(slot);
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
-    private void osrsItem(String item) {
+    private ScapeFashionResult osrsItem(String item) throws Exception {
+        String uri = OSRS_REQUEST_URL + "/items/" + encode(item);
+        String link = OSRS_LINK_URL + "/items/" + encode(item);
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
-    private void osrsItem(String item, String slot) {
+    private ScapeFashionResult osrsItem(String item, String slot) throws Exception {
+        String uri = OSRS_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot);
+        String link = OSRS_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot);
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
     private void rs3Color(String color) {
@@ -76,18 +77,10 @@ public class ScapeFashionConnection {
 
     }
 
-    private JSONArray makeRequest(String url) throws IOException {
-        // Returns the items JSONObject
-        Request request = requestBuilder.get().url(url).addHeader("User-Agent", USER_AGENT).build();
-
-        Response response = client.newCall(request).execute();
-        // returns a JSONArray of JSONObjects
-        System.out.println(response.body().string());
-        return new JSONObject(response.body().string()).getJSONArray("items");
-    }
-
-    private void makeRequestNEW(String url) {
+    private ScapeFashionResult makeRequest(String url) throws Exception {
         var client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+
+        String USER_AGENT = "Fashionscape-Bot github.com/salmonllama/fashionscape-bot";
 
         HttpRequest request = HttpRequest.newBuilder(URI.create(url))
                 .header("Content-Type", "application/json")
@@ -95,16 +88,13 @@ public class ScapeFashionConnection {
                 .GET()
                 .build();
 
-        CompletableFuture<HttpResponse<String>> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
-        response.thenAcceptAsync(res -> System.out.println(res.body()));
+        Gson gson = new Gson();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        var json = response.body();
+        return gson.fromJson(json, ScapeFashionResult.class);
     }
 
     private String encode(String value) throws UnsupportedEncodingException {
         return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
-    }
-
-    private ScapeFashionResult extract(JSONObject json) {
-
-        return null;
     }
 }
