@@ -40,6 +40,11 @@ public class ScapeFashionItem {
         return match;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Item: [%s]", name);
+    }
+
     public static class Builder {
         private String name;
         private String slot;
