@@ -50,11 +50,9 @@ public class ImageListener implements MessageCreateListener {
 
                             if (System.getenv("ENVIRONMENT") != null) {
                                 // Upload the image(s) to Imgur, store in database, log the stored images.
-                                System.out.println("PROD environment, uploading");
                                 uploadAndStore(event, channel, image);
                             } else {
                                 // Store the image(s) in database, log the stored images.
-                                System.out.println("DEV environment, not uploading");
                                 store(event, channel, image);
                             }
                         });
