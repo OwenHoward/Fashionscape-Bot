@@ -34,9 +34,9 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult osrsColor(String color, String slot) throws Exception {
-        String uri = OSRS_REQUEST_URL + "/colors/" + encode(color) + "?slot=" + encode(slot);
-        String link = OSRS_LINK_URL + "/colors/" + encode(color) + "?slot=" + encode(slot);
+    private ScapeFashionResult osrsColor(String color, ScapeFashionSlotOSRS slot) throws Exception {
+        String uri = OSRS_REQUEST_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
+        String link = OSRS_LINK_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
 
         var response = makeRequest(uri);
         response.setLink(link);
@@ -52,29 +52,49 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult osrsItem(String item, String slot) throws Exception {
-        String uri = OSRS_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot);
-        String link = OSRS_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot);
+    private ScapeFashionResult osrsItem(String item, ScapeFashionSlotOSRS slot) throws Exception {
+        String uri = OSRS_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
+        String link = OSRS_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
 
         var response = makeRequest(uri);
         response.setLink(link);
         return response;
     }
 
-    private void rs3Color(String color) {
+    private ScapeFashionResult rs3Color(String color) throws Exception {
+        String uri = RS3_REQUEST_URL + "/colors/" + encode(color);
+        String link = RS3_LINK_URL + "/colors/" + encode(color);
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
-    private void rs3Color(String color, String slot) {
+    private ScapeFashionResult rs3Color(String color, ScapeFashionSlotRs3 slot) throws Exception {
+        String uri = RS3_REQUEST_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
+        String link = RS3_LINK_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
-    private void rs3Item(String item) {
+    private ScapeFashionResult rs3Item(String item) throws Exception {
+        String uri = RS3_REQUEST_URL + "/items/" + encode(item);
+        String link = RS3_LINK_URL + "/items/" + encode(item);
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
-    private void rs3Item(String item, String slot) {
+    private ScapeFashionResult rs3Item(String item, ScapeFashionSlotRs3 slot) throws Exception {
+        String uri = RS3_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
+        String link = RS3_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
 
+        var response = makeRequest(uri);
+        response.setLink(link);
+        return response;
     }
 
     private ScapeFashionResult makeRequest(String url) throws Exception {
