@@ -2,10 +2,7 @@ package dev.salmonllama.fsbot.commands.developer;
 
 import dev.salmonllama.fsbot.database.controllers.UserBlacklistController;
 import dev.salmonllama.fsbot.database.models.UserBlacklist;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.Arrays;
@@ -15,7 +12,7 @@ public class BlacklistUserCommand extends Command {
     @Override public String name() { return "Blacklist User"; }
     @Override public String description() { return "Adds the user to the bot's blacklist, preventing them from using any commands or features"; }
     @Override public String usage() { return "blacklistuser <userId> <reason>"; }
-    @Override public String category() { return "Developer"; }
+    @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
     @Override public Collection<String> aliases() { return Arrays.asList("blacklistuser", "bluser", "sabusr"); }
 

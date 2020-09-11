@@ -6,11 +6,7 @@
 package dev.salmonllama.fsbot.commands.staff;
 
 import com.vdurmont.emoji.EmojiParser;
-import dev.salmonllama.fsbot.config.BotConfig;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.awt.*;
@@ -22,7 +18,7 @@ public class SetStatusCommand extends Command {
     @Override public String name() { return "Set Status"; }
     @Override public String description() { return "Updates the bot's current status"; }
     @Override public String usage()  { return "updatestatus <String status>"; }
-    @Override public String category() { return "Staff"; }
+    @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("setstatus", "status")); }
 

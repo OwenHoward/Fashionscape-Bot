@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
 
 public class StatsCommand extends Command {
     @Override public String name() { return "Stats"; }
     @Override public String description() { return "Shows various stats from Fashionscape Bot"; }
     @Override public String usage() { return "stats"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("stats")); }
 

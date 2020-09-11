@@ -5,11 +5,7 @@
 
 package dev.salmonllama.fsbot.commands.staff;
 
-import dev.salmonllama.fsbot.config.BotConfig;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
@@ -23,7 +19,7 @@ public class GetServersCommand extends Command {
     @Override public String name() { return "Get Servers"; }
     @Override public String description() { return "Lists all the servers the bot is in"; }
     @Override public String usage() { return "getservers"; }
-    @Override public String category() { return "Staff"; }
+    @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("getservers", "servers")); }
 

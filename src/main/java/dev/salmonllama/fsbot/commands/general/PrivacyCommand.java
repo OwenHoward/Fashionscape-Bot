@@ -1,9 +1,6 @@
 package dev.salmonllama.fsbot.commands.general;
 
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.Collection;
@@ -13,7 +10,7 @@ public class PrivacyCommand extends Command {
     @Override public String name() { return "Privacy"; }
     @Override public String description() { return "Directs users to the bot's privacy policy"; }
     @Override public String usage() { return "privacy"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
     @Override public Collection<String> aliases() { return Collections.singletonList("privacy"); }
 

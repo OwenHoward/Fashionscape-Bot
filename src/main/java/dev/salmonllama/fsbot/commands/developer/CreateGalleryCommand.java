@@ -10,10 +10,7 @@ import com.vdurmont.emoji.EmojiParser;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 
@@ -26,7 +23,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override public String name() { return "Create Gallery"; }
     @Override public String description() { return "Creates a channel gallery, tracking any posted images"; }
     @Override public String usage() { return "creategallery <String tag>"; }
-    @Override public String category() { return "Developer"; }
+    @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
     @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
 
