@@ -34,7 +34,7 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult osrsColor(String color, ScapeFashionSlotOSRS slot) throws Exception {
+    public ScapeFashionResult osrsColor(String color, ScapeFashionSlotOsrs slot) throws Exception {
         String uri = OSRS_REQUEST_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
         String link = OSRS_LINK_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
 
@@ -52,7 +52,7 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult osrsItem(String item, ScapeFashionSlotOSRS slot) throws Exception {
+    private ScapeFashionResult osrsItem(String item, ScapeFashionSlotOsrs slot) throws Exception {
         String uri = OSRS_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
         String link = OSRS_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
 

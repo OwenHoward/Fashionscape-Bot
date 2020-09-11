@@ -8,7 +8,7 @@ package dev.salmonllama.fsbot.endpoints.scapefashion;
 import java.util.Optional;
 
 // Source: https://github.com/ncpierson/fashionscape/blob/master/api/data/tools/slot.js
-public enum ScapeFashionSlotOSRS {
+public enum ScapeFashionSlotOsrs {
     AMMUNITION("ammunition"),
     BODY("body"),
     CAPE("cape"),
@@ -23,7 +23,7 @@ public enum ScapeFashionSlotOSRS {
 
     private final String value;
 
-    ScapeFashionSlotOSRS(String value) {
+    ScapeFashionSlotOsrs(String value) {
         this.value = value;
     }
 
@@ -31,9 +31,9 @@ public enum ScapeFashionSlotOSRS {
         return value;
     }
 
-    public static Optional<ScapeFashionSlotOSRS> matches(String s) {
+    public static Optional<ScapeFashionSlotOsrs> matches(String s) {
         try {
-            var slot = ScapeFashionSlotOSRS.valueOf(s);
+            var slot = ScapeFashionSlotOsrs.valueOf(s);
             return Optional.of(slot);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
