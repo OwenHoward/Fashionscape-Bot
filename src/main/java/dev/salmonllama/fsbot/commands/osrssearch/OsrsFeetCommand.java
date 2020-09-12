@@ -17,15 +17,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class OsrsBodyCommand extends Command {
-    @Override public String name() { return "OSRS Body"; }
-    @Override public String description() { return "Searches scape.fashion for body slot items."; }
-    @Override public String usage() { return "osrsbody <#color or item name>"; }
+public class OsrsFeetCommand extends Command {
+    @Override public String name() { return "OSRS Feet"; }
+    @Override public String description() { return "Searches scape.fashion for foot slot items."; }
+    @Override public String usage() { return "osrsfeet <#color or item name>"; }
     @Override public CommandCategory category() { return CommandCategory.OSRS_ITEM_SEARCH; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("07body", "osrsbody")); }
+    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("07feet", "osrsfeet")); }
 
-    private static final Logger logger = LoggerFactory.getLogger(OsrsBodyCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(OsrsFeetCommand.class);
 
     @Override
     public void onCommand(CommandContext ctx) {
@@ -41,7 +41,7 @@ public class OsrsBodyCommand extends Command {
         if (OsrsSearchUtilities.isColor(args[0])) {
             // Color search
             try {
-                var bestMatch = conn.osrsColor(params, ScapeFashionSlotOsrs.BODY);
+                var bestMatch = conn.osrsColor(params, ScapeFashionSlotOsrs.FEET);
                 OsrsSearchUtilities.sendResult(bestMatch, ctx.getChannel());
             } catch (Exception e) {
                 logger.error(e.getMessage());
@@ -50,7 +50,7 @@ public class OsrsBodyCommand extends Command {
         } else {
             // Item search
             try {
-                var bestMatch = conn.osrsItem(params, ScapeFashionSlotOsrs.BODY);
+                var bestMatch = conn.osrsItem(params, ScapeFashionSlotOsrs.FEET);
                 OsrsSearchUtilities.sendResult(bestMatch, ctx.getChannel());
             } catch (Exception e) {
                 logger.error(e.getMessage());
