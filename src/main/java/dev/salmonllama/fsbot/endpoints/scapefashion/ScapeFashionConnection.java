@@ -6,6 +6,9 @@
 package dev.salmonllama.fsbot.endpoints.scapefashion;
 
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -20,6 +23,8 @@ public class ScapeFashionConnection {
 
     private final String OSRS_REQUEST_URL = "https://api.scape.fashion";
     private final String OSRS_LINK_URL = "https://scape.fashion";
+
+    private static final Logger logger = LoggerFactory.getLogger(ScapeFashionConnection.class);
 
     public ScapeFashionConnection() {}
 
@@ -43,21 +48,27 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult osrsItem(String item) throws Exception {
+    public ScapeFashionResult osrsItem(String item) throws Exception {
         String uri = OSRS_REQUEST_URL + "/items/" + encode(item);
         String link = OSRS_LINK_URL + "/items/" + encode(item);
 
         var response = makeRequest(uri);
         response.setLink(link);
+        if (response.getItems().get(0).getName().toLowerCase().equals(item.toLowerCase())) {
+            response.getItems().remove(0);
+        }
         return response;
     }
 
-    private ScapeFashionResult osrsItem(String item, ScapeFashionSlotOsrs slot) throws Exception {
+    public ScapeFashionResult osrsItem(String item, ScapeFashionSlotOsrs slot) throws Exception {
         String uri = OSRS_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
         String link = OSRS_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
 
         var response = makeRequest(uri);
         response.setLink(link);
+        if (response.getItems().get(0).getName().toLowerCase().equals(item.toLowerCase())) {
+            response.getItems().remove(0);
+        }
         return response;
     }
 
@@ -85,6 +96,9 @@ public class ScapeFashionConnection {
 
         var response = makeRequest(uri);
         response.setLink(link);
+        if (response.getItems().get(0).getName().toLowerCase().equals(item.toLowerCase())) {
+            response.getItems().remove(0);
+        }
         return response;
     }
 
@@ -94,6 +108,9 @@ public class ScapeFashionConnection {
 
         var response = makeRequest(uri);
         response.setLink(link);
+        if (response.getItems().get(0).getName().toLowerCase().equals(item.toLowerCase())) {
+            response.getItems().remove(0);
+        }
         return response;
     }
 
@@ -115,6 +132,6 @@ public class ScapeFashionConnection {
     }
 
     private String encode(String value) throws UnsupportedEncodingException {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        return URLEncoder.encode(value, StandardCharsets.UTF_8.toString()).replace("+", "%20");
     }
 }
