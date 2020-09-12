@@ -7,6 +7,7 @@ package dev.salmonllama.fsbot.guthix;
 
 import dev.salmonllama.fsbot.commands.developer.*;
 import dev.salmonllama.fsbot.commands.general.*;
+import dev.salmonllama.fsbot.commands.osrssearch.*;
 import dev.salmonllama.fsbot.commands.staff.OutfitInfoCommand;
 import dev.salmonllama.fsbot.commands.staff.*;
 import org.javacord.api.DiscordApi;
@@ -64,6 +65,20 @@ public class Guthix implements MessageCreateListener {
         addCommand(new HelpCommand(this));
         addCommand(new StatsCommand());
         addCommand(new PrivacyCommand());
+
+        // Osrs Search Commands
+        addCommand(new OsrsSearchCommand());
+        addCommand(new OsrsHeadCommand());
+        addCommand(new OsrsBodyCommand());
+        addCommand(new OsrsHeadCommand());
+        addCommand(new OsrsLegsCommand());
+        addCommand(new OsrsFeetCommand());
+        addCommand(new OsrsCapeCommand());
+        addCommand(new OsrsNeckCommand());
+        addCommand(new OsrsShieldCommand());
+        addCommand(new OsrsWeaponCommand());
+
+        // Rs3 Search Commands
     }
 
     public void addCommand(Command cmd) {
