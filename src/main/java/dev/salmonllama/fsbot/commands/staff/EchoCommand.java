@@ -5,7 +5,6 @@
 
 package dev.salmonllama.fsbot.commands.staff;
 
-import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.guthix.*;
 
 import java.util.ArrayList;
