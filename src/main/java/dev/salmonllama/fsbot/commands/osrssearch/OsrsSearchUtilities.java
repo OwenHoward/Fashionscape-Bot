@@ -6,9 +6,12 @@
 package dev.salmonllama.fsbot.commands.osrssearch;
 
 import dev.salmonllama.fsbot.endpoints.scapefashion.ScapeFashionResult;
-import dev.salmonllama.fsbot.guthix.CommandContext;
+import org.apache.logging.log4j.util.Strings;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+
+import java.awt.*;
+import java.util.Arrays;
 
 public class OsrsSearchUtilities {
     static boolean isColor(String s) {
@@ -17,20 +20,17 @@ public class OsrsSearchUtilities {
 
     static void sendResult(ScapeFashionResult result, TextChannel channel) {
         var bestMatch = result.getItems().get(0);
+        var colors = Strings.join(Arrays.asList(bestMatch.getColors()), ',');
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(String.format("Best Match - %s", bestMatch.getName()))
                 .setImage(bestMatch.getImages().getDetail())
                 .setUrl(result.getLink())
+                .setColor(Color.decode(bestMatch.getColors()[0]))
+                .addField("Match:", String.valueOf(bestMatch.getMatch()), true)
+                .addField("Colors:", colors, true)
+
                 .setDescription(String.format("Click the title or visit %s for full results!", result.getLink()));
 
         channel.sendMessage(embed);
-    }
-
-    static void handleException(Exception e, CommandContext ctx) {
-        EmbedBuilder embed = new EmbedBuilder()
-            .setTitle("An error has occurred!")
-            .setDescription(e.getMessage());
-
-            ctx.reply(embed);
     }
 }
