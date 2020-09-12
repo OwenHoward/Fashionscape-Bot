@@ -161,7 +161,7 @@ public class HelpCommand extends Command {
 
     public boolean isCategory(String input) {
         for (Command cmd : guthix.listCommands()) {
-            String category = cmd.category().getCategory();
+            String category = cmd.category().getCategory().toLowerCase();
             if (category.toLowerCase().equals(input.toLowerCase())) {
                 return true;
             }
