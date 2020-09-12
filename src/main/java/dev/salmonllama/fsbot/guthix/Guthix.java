@@ -23,10 +23,10 @@ import java.util.HashMap;
  */
 public class Guthix implements MessageCreateListener {
     @SuppressWarnings("unused")
-    private DiscordApi api;
+    private final DiscordApi api;
 
-    private Registry registry;
-    private PermissionManager manager;
+    private final Registry registry;
+    private final PermissionManager manager;
 
     public Guthix(DiscordApi api) {
         this.api = api;
