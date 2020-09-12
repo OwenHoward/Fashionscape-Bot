@@ -11,9 +11,8 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class GetServersCommand extends Command {
     @Override public String name() { return "Get Servers"; }
@@ -21,7 +20,7 @@ public class GetServersCommand extends Command {
     @Override public String usage() { return "getservers"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("getservers", "servers")); }
+    @Override public List<String> aliases() { return Arrays.asList("getservers", "servers"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

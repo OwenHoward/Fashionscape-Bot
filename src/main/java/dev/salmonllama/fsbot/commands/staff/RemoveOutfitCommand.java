@@ -12,9 +12,8 @@ import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class RemoveOutfitCommand extends Command {
     @Override public String name() { return "Remove Outfit"; }
@@ -22,7 +21,7 @@ public class RemoveOutfitCommand extends Command {
     @Override public String usage() { return "remove <String id>"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("removeoutfit", "remove")); }
+    @Override public List<String> aliases() { return Arrays.asList("removeoutfit", "remove"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

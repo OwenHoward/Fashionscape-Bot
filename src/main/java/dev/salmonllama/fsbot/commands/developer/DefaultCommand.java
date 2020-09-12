@@ -3,8 +3,8 @@ package dev.salmonllama.fsbot.commands.developer;
 import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class DefaultCommand extends Command {
     @Override public String name() { return "Default"; }
@@ -12,7 +12,7 @@ public class DefaultCommand extends Command {
     @Override public String usage() { return "you don't use this command"; }
     @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
-    @Override public Collection<String> aliases() { return Collections.singletonList("default"); }
+    @Override public List<String> aliases() { return Collections.singletonList("default"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

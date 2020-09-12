@@ -3,8 +3,8 @@ package dev.salmonllama.fsbot.commands.general;
 import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class PrivacyCommand extends Command {
     @Override public String name() { return "Privacy"; }
@@ -12,12 +12,12 @@ public class PrivacyCommand extends Command {
     @Override public String usage() { return "privacy"; }
     @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return Collections.singletonList("privacy"); }
+    @Override public List<String> aliases() { return Collections.singletonList("privacy"); }
 
 
     @Override
     public void onCommand(CommandContext ctx) {
-        String privacyUrl = "https://github.com/Salmonllama/Fashionscape-Bot/blob/database-rewrite/privacy.md"; // TODO: Change this to master
+        String privacyUrl = "https://github.com/Salmonllama/Fashionscape-Bot/blob/master/privacy.md";
 
         EmbedBuilder response = new EmbedBuilder()
                 .setTitle("Click Here to open")

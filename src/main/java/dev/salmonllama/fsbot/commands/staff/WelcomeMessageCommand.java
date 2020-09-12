@@ -12,9 +12,8 @@ import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class WelcomeMessageCommand extends Command {
     @Override public String name() { return "Welcome Message"; }
@@ -22,7 +21,7 @@ public class WelcomeMessageCommand extends Command {
     @Override public String usage() { return "welcomemessage <String opt> [String newMessage]"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("welcomemessage", "wmsg")); }
+    @Override public List<String> aliases() { return Arrays.asList("welcomemessage", "wmsg"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

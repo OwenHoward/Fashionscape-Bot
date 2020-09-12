@@ -9,9 +9,8 @@ import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class OutfitInfoCommand extends Command {
     @Override public String name() { return "Outfit Info"; }
@@ -19,7 +18,7 @@ public class OutfitInfoCommand extends Command {
     @Override public String usage() { return "outfitinfo <String id>"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("outfitinfo", "oinfo")); }
+    @Override public List<String> aliases() { return Arrays.asList("outfitinfo", "oinfo"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

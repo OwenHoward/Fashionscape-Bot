@@ -8,9 +8,8 @@ package dev.salmonllama.fsbot.commands.staff;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.guthix.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class GetOutfitCommand extends Command {
     @Override public String name() { return "Get Outift"; }
@@ -18,7 +17,7 @@ public class GetOutfitCommand extends Command {
     @Override public String usage() { return "getoutfit <String id>"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("getoutfit", "get")); }
+    @Override public List<String> aliases() { return Arrays.asList("getoutfit", "get"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

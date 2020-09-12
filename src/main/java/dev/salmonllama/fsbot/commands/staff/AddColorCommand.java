@@ -11,9 +11,7 @@ import dev.salmonllama.fsbot.database.models.ColorRole;
 import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.permission.Role;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class AddColorCommand extends Command {
@@ -22,7 +20,7 @@ public class AddColorCommand extends Command {
     @Override public String usage() { return "addcolor <colorName> <roleId>"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("addcolor", "addcolour", "addclr")); }
+    @Override public List<String> aliases() { return Arrays.asList("addcolor", "addcolour", "addclr"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

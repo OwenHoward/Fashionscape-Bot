@@ -1,8 +1,6 @@
 package dev.salmonllama.fsbot.commands.general;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 
 import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -15,7 +13,7 @@ public class StatsCommand extends Command {
     @Override public String usage() { return "stats"; }
     @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("stats")); }
+    @Override public List<String> aliases() { return Collections.singletonList("stats"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

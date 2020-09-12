@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class SetStatusCommand extends Command {
     @Override public String name() { return "Set Status"; }
@@ -20,7 +21,7 @@ public class SetStatusCommand extends Command {
     @Override public String usage()  { return "updatestatus <String status>"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("setstatus", "status")); }
+    @Override public List<String> aliases() { return Arrays.asList("setstatus", "status"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

@@ -15,9 +15,8 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.awt.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class RetagCommand extends Command {
     @Override public String name() { return "Retag"; }
@@ -25,7 +24,7 @@ public class RetagCommand extends Command {
     @Override public String usage() { return "retag <String id> <String newtag>"; }
     @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Collections.singletonList("retag")); }
+    @Override public List<String> aliases() { return Collections.singletonList("retag"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

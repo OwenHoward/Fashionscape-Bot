@@ -5,7 +5,7 @@
 
 package dev.salmonllama.fsbot.guthix;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class Command {
@@ -14,7 +14,7 @@ public abstract class Command {
     public abstract String usage();
     public abstract CommandCategory category();
     public abstract CommandPermission permission();
-    public abstract Collection<String> aliases();
+    public abstract List<String> aliases();
 
     public abstract void onCommand(CommandContext ctx);
 

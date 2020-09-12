@@ -15,7 +15,7 @@ public class PingCommand extends Command {
     @Override public String usage() { return "ping"; }
     @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Collections.singletonList("ping")); }
+    @Override public List<String> aliases() { return Collections.singletonList("ping"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

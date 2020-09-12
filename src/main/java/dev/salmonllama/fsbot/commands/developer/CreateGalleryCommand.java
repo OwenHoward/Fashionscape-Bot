@@ -5,19 +5,16 @@
 
 package dev.salmonllama.fsbot.commands.developer;
 
-import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;
 import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class CreateGalleryCommand extends Command { // TODO: This command needs help.
     @Override public String name() { return "Create Gallery"; }
@@ -25,7 +22,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override public String usage() { return "creategallery <String tag>"; }
     @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("creategallery", "addgallery", "newgallery")); }
+    @Override public List<String> aliases() { return Arrays.asList("creategallery", "addgallery", "newgallery"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

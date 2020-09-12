@@ -13,9 +13,8 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class PermissionCommand extends Command {
     @Override public String name() { return "Permission"; }
@@ -23,7 +22,7 @@ public class PermissionCommand extends Command {
     @Override public String usage() { return "permission <list|add|remove> <keyword>"; }
     @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("permission", "permissions", "perm", "perms")); }
+    @Override public List<String> aliases() { return Arrays.asList("permission", "permissions", "perm", "perms"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

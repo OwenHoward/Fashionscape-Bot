@@ -13,9 +13,8 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class OsrsWeaponCommand extends Command {
     @Override public String name() { return "OSRS Weapon"; }
@@ -23,7 +22,7 @@ public class OsrsWeaponCommand extends Command {
     @Override public String usage() { return "osrsweapon <#color or item name>"; }
     @Override public CommandCategory category() { return CommandCategory.OSRS_ITEM_SEARCH; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("07weapon", "osrsweapon")); }
+    @Override public List<String> aliases() { return Arrays.asList("07weapon", "osrsweapon"); }
 
     private static final Logger logger = LoggerFactory.getLogger(OsrsWeaponCommand.class);
 

@@ -23,7 +23,7 @@ public class HelpCommand extends Command {
     @Override public String usage() { return "help [String command]"; }
     @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("help", "h")); }
+    @Override public List<String> aliases() { return Arrays.asList("help", "h"); }
 
     private final Guthix guthix;
 
@@ -84,7 +84,7 @@ public class HelpCommand extends Command {
         for (Command cmd : guthix.listCommands()) {
             String cat = cmd.category().getCategory().toLowerCase();
             if (cat.equals(category.toLowerCase())) {
-                builder.append("\n- ").append(cmd.name());
+                builder.append("\n- ").append(cmd.aliases().get(0));
             }
         }
 

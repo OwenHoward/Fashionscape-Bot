@@ -6,7 +6,7 @@ import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class BlacklistUserCommand extends Command {
     @Override public String name() { return "Blacklist User"; }
@@ -14,7 +14,7 @@ public class BlacklistUserCommand extends Command {
     @Override public String usage() { return "blacklistuser <userId> <reason>"; }
     @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
-    @Override public Collection<String> aliases() { return Arrays.asList("blacklistuser", "bluser", "sabusr"); }
+    @Override public List<String> aliases() { return Arrays.asList("blacklistuser", "bluser", "sabusr"); }
 
     @Override
     public void onCommand(CommandContext ctx) {
