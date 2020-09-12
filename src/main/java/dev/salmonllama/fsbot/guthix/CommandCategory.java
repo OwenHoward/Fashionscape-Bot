@@ -8,8 +8,8 @@ package dev.salmonllama.fsbot.guthix;
 public enum CommandCategory {
     DEVELOPER("Developer"),
     GENERAL("General"),
-    OSRS_ITEM_SEARCH("07Search"),
-    RS3_ITEM_SEARCH("RS3Search"),
+    OSRS_ITEM_SEARCH("Oldschool Item Search"),
+    RS3_ITEM_SEARCH("Runescape Item Search"),
     STAFF("Staff");
 
     private final String category;
