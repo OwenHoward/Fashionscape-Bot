@@ -24,9 +24,9 @@ public class OsrsSearchUtilities {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(String.format("Best Match - %s", bestMatch.getName()))
                 .setImage(bestMatch.getImages().getDetail())
+                .setAuthor(String.format("Wiki: %s", bestMatch.getName()), bestMatch.getWiki().getLink(), bestMatch.getImages().getDetail())
                 .setUrl(result.getLink())
                 .setColor(Color.decode(bestMatch.getColors()[0]))
-                .setFooter(String.format("Wiki: %s", result.getLink()))
                 .addField("Match:", String.valueOf(bestMatch.getMatch()), true)
                 .addField("Colors:", colors, true)
 
