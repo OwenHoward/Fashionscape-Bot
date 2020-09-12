@@ -26,6 +26,7 @@ public class OsrsSearchUtilities {
                 .setImage(bestMatch.getImages().getDetail())
                 .setUrl(result.getLink())
                 .setColor(Color.decode(bestMatch.getColors()[0]))
+                .setFooter(String.format("Wiki: %s", result.getLink()))
                 .addField("Match:", String.valueOf(bestMatch.getMatch()), true)
                 .addField("Colors:", colors, true)
 
