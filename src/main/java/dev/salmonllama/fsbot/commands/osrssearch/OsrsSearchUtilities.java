@@ -28,9 +28,7 @@ public class OsrsSearchUtilities {
                 .setUrl(result.getLink())
                 .setColor(Color.decode(bestMatch.getColors()[0]))
                 .addField("Match:", String.valueOf(bestMatch.getMatch()), true)
-                .addField("Colors:", colors, true)
-
-                .setDescription(String.format("Click the title or visit %s for full results!", result.getLink()));
+                .addField("Colors:", colors, true);
 
         channel.sendMessage(embed);
     }
