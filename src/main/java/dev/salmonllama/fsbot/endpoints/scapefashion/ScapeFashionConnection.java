@@ -72,7 +72,7 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult rs3Color(String color) throws Exception {
+    public ScapeFashionResult rs3Color(String color) throws Exception {
         String uri = RS3_REQUEST_URL + "/colors/" + encode(color);
         String link = RS3_LINK_URL + "/colors/" + encode(color);
 
@@ -81,7 +81,7 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult rs3Color(String color, ScapeFashionSlotRs3 slot) throws Exception {
+    public ScapeFashionResult rs3Color(String color, ScapeFashionSlotRs3 slot) throws Exception {
         String uri = RS3_REQUEST_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
         String link = RS3_LINK_URL + "/colors/" + encode(color) + "?slot=" + encode(slot.getValue());
 
@@ -90,7 +90,7 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult rs3Item(String item) throws Exception {
+    public ScapeFashionResult rs3Item(String item) throws Exception {
         String uri = RS3_REQUEST_URL + "/items/" + encode(item);
         String link = RS3_LINK_URL + "/items/" + encode(item);
 
@@ -102,7 +102,7 @@ public class ScapeFashionConnection {
         return response;
     }
 
-    private ScapeFashionResult rs3Item(String item, ScapeFashionSlotRs3 slot) throws Exception {
+    public ScapeFashionResult rs3Item(String item, ScapeFashionSlotRs3 slot) throws Exception {
         String uri = RS3_REQUEST_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
         String link = RS3_LINK_URL + "/items/" + encode(item) + "?slot=" + encode(slot.getValue());
 
