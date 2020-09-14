@@ -8,6 +8,7 @@ package dev.salmonllama.fsbot.guthix;
 import dev.salmonllama.fsbot.commands.developer.*;
 import dev.salmonllama.fsbot.commands.general.*;
 import dev.salmonllama.fsbot.commands.osrssearch.*;
+import dev.salmonllama.fsbot.commands.rs3search.*;
 import dev.salmonllama.fsbot.commands.staff.OutfitInfoCommand;
 import dev.salmonllama.fsbot.commands.staff.*;
 import org.javacord.api.DiscordApi;
@@ -70,7 +71,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new OsrsSearchCommand());
         addCommand(new OsrsHeadCommand());
         addCommand(new OsrsBodyCommand());
-        addCommand(new OsrsHeadCommand());
+        addCommand(new OsrsHandCommand());
         addCommand(new OsrsLegsCommand());
         addCommand(new OsrsFeetCommand());
         addCommand(new OsrsCapeCommand());
@@ -79,6 +80,17 @@ public class Guthix implements MessageCreateListener {
         addCommand(new OsrsWeaponCommand());
 
         // Rs3 Search Commands
+        addCommand(new Rs3SearchCommand());
+        addCommand(new Rs3HeadCommand());
+        addCommand(new Rs3BodyCommand());
+        addCommand(new Rs3NeckCommand());
+        addCommand(new Rs3HandCommand());
+        addCommand(new Rs3FeetCommand());
+        addCommand(new Rs3LegsCommand());
+        addCommand(new Rs3BackCommand());
+        addCommand(new Rs3MainhandCommand());
+        addCommand(new Rs3OffhandCommand());
+        addCommand(new Rs3TwohandedCommand());
     }
 
     public void addCommand(Command cmd) {
