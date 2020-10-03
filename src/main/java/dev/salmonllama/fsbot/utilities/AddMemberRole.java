@@ -13,6 +13,6 @@ public class AddMemberRole implements Runnable{
 
     @Override
     public void run() {
-        event.getApi().getRoleById(BotConfig.MEMBER_ROLE).ifPresent(role -> role.addUser(event.getUser()));
+        event.getApi().getRoleById(BotConfig.MEMBER_ROLE).ifPresent(event.getUser()::addRole);
     }
 }
