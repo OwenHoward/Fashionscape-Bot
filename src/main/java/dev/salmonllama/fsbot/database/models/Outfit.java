@@ -56,6 +56,10 @@ public class Outfit extends DatabaseModel {
         return meta;
     }
 
+    public void setMeta(String meta) {
+        this.meta = meta;
+    }
+
     public Timestamp getCreated() {
         return created;
     }

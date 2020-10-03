@@ -57,6 +57,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new SetStatusCommand());
         addCommand(new WelcomeMessageCommand());
         addCommand(new ShowGalleriesCommand());
+        addCommand(new EditMetaCommand());
 
         // General Commands
         addCommand(new PingCommand());
