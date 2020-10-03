@@ -7,7 +7,7 @@ package dev.salmonllama.fsbot.listeners;
 
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.ServerConfigController;
-import dev.salmonllama.fsbot.utilities.AddMemberRole;
+import dev.salmonllama.fsbot.services.MemberRoleService;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
 import org.javacord.api.listener.server.member.ServerMemberJoinListener;
 
@@ -32,7 +32,7 @@ public class NewMemberListener implements ServerMemberJoinListener {
                                 config -> channel.sendMessage(String.format(config.getWelcomeMessage(), event.getUser().getMentionTag()))))); // Send the welcome message
 
         // Add the Member role after 5 minutes
-        var roleAdder = new AddMemberRole(event);
-        event.getApi().getThreadPool().getScheduler().schedule(roleAdder, 5, TimeUnit.MINUTES);
+        var memberRoleService = new MemberRoleService(event);
+        event.getApi().getThreadPool().getScheduler().schedule(memberRoleService, 5, TimeUnit.MINUTES);
     }
 }

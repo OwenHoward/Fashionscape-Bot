@@ -1,13 +1,13 @@
-package dev.salmonllama.fsbot.utilities;
+package dev.salmonllama.fsbot.services;
 
 import dev.salmonllama.fsbot.config.BotConfig;
 import org.javacord.api.event.server.member.ServerMemberJoinEvent;
 
-public class AddMemberRole implements Runnable{
+public class MemberRoleService implements Runnable {
 
     ServerMemberJoinEvent event;
 
-    public AddMemberRole(ServerMemberJoinEvent event) {
+    public MemberRoleService(ServerMemberJoinEvent event) {
         this.event = event;
     }
 
