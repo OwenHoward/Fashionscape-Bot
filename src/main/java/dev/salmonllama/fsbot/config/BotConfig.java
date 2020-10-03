@@ -64,6 +64,9 @@ public class BotConfig {
     public static String HYDRIX_ROLE = "hydrix role id here";
 
     @ConfigurationOption
+    public static String MEMBER_ROLE = "member role id here";
+
+    @ConfigurationOption
     public static String IMGUR_ID = "imgur_id_here";
 
     @ConfigurationOption
