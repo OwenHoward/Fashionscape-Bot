@@ -12,6 +12,7 @@ import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class RemoveOutfitCommand extends Command {
                         EmbedBuilder log = new EmbedBuilder()
                                 .setTitle("Outfit Marked as Deleted")
                                 .setThumbnail(outfit.getLink())
+                                .setColor(Color.RED)
                                 .addField("Deleted By:", ctx.getAuthor().getDiscriminatedName());
 
                         ctx.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresent(

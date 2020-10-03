@@ -77,6 +77,7 @@ public class RetagCommand extends Command {
 
                             EmbedBuilder log = new EmbedBuilder()
                                     .setTitle("Outfit Retagged")
+                                    .setColor(Color.YELLOW)
                                     .setThumbnail(outfit.getLink())
                                     .addField("New tag:", newTag);
 

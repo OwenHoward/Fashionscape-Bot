@@ -17,6 +17,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.util.logging.ExceptionLogger;
+import java.awt.Color;
 
 import java.util.UUID;
 
@@ -107,6 +108,7 @@ public class ImageListener implements MessageCreateListener {
                             .setThumbnail(outfit.getLink())
                             .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
                             .setUrl(outfit.getLink())
+                            .setColor(Color.GREEN)
                             .addField("Uploaded:", outfit.getCreated().toString());
 
                     if (!outfit.getMeta().equals("")) {
