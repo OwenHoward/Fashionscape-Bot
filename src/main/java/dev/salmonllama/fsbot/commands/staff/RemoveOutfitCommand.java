@@ -56,7 +56,7 @@ public class RemoveOutfitCommand extends Command {
                 msg.addReaction(EmojiParser.parseToUnicode(":octagonal_sign:"));
 
                 msg.addReactionAddListener(event -> {
-                    if (event.getUser().getId() != authorId) {
+                    if (event.getUserId() != authorId) {
                         return;
                     }
 

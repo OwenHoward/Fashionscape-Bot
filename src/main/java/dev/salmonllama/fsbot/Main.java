@@ -34,7 +34,6 @@ public class Main {
 
         new DiscordApiBuilder().setToken(BotConfig.TOKEN).login().thenAccept(api -> {
 
-            @SuppressWarnings("unused")
             Guthix guthix = new Guthix(api);
 
             // Register listeners
