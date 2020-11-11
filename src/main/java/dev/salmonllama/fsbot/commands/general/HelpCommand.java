@@ -21,9 +21,9 @@ public class HelpCommand extends Command {
     @Override public String name() { return "Help"; }
     @Override public String description() { return "Shows all commands, or a specific command's information"; }
     @Override public String usage() { return "help [String command]"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("help", "h")); }
+    @Override public List<String> aliases() { return Arrays.asList("help", "h"); }
 
     private final Guthix guthix;
 
@@ -60,7 +60,7 @@ public class HelpCommand extends Command {
         List<String> categories = new ArrayList<>();
 
         for (Command cmd : guthix.listCommands()) {
-            String category = cmd.category();
+            String category = cmd.category().getCategory();
             if (!categories.contains(category)) {
                 categories.add(category);
 
@@ -82,9 +82,9 @@ public class HelpCommand extends Command {
         StringBuilder builder = new StringBuilder().append("```yml");
 
         for (Command cmd : guthix.listCommands()) {
-            String cat = cmd.category().toLowerCase();
+            String cat = cmd.category().getCategory().toLowerCase();
             if (cat.equals(category.toLowerCase())) {
-                builder.append("\n- ").append(cmd.name());
+                builder.append("\n- ").append(cmd.aliases().get(0));
             }
         }
 
@@ -161,7 +161,7 @@ public class HelpCommand extends Command {
 
     public boolean isCategory(String input) {
         for (Command cmd : guthix.listCommands()) {
-            String category = cmd.category();
+            String category = cmd.category().getCategory().toLowerCase();
             if (category.toLowerCase().equals(input.toLowerCase())) {
                 return true;
             }

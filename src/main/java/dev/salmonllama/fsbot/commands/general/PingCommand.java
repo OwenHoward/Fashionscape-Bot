@@ -5,10 +5,7 @@
 
 package dev.salmonllama.fsbot.commands.general;
 
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 
 import java.util.*;
 
@@ -16,9 +13,9 @@ public class PingCommand extends Command {
     @Override public String name() { return "Ping"; }
     @Override public String description() { return "Pings the bot, checks for a heartbeat"; }
     @Override public String usage() { return "ping"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Collections.singletonList("ping")); }
+    @Override public List<String> aliases() { return Collections.singletonList("ping"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

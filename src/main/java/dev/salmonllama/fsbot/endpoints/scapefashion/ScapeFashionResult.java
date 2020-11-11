@@ -5,16 +5,22 @@
 
 package dev.salmonllama.fsbot.endpoints.scapefashion;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class ScapeFashionResult {
-    private final String link;
-    private Collection<ScapeFashionItem> items;
+    private String link;
+    @SerializedName("items")
+    private final List<ScapeFashionItem> items = new ArrayList<>();
+
+    public ScapeFashionResult() {
+
+    }
 
     public ScapeFashionResult(String link) {
         this.link = link;
-        items = new ArrayList<>();
     }
 
     public ScapeFashionResult addItem(ScapeFashionItem item) {
@@ -22,11 +28,15 @@ public class ScapeFashionResult {
         return this;
     }
 
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public String getLink() {
         return link;
     }
 
-    public Collection<ScapeFashionItem> getItems() {
+    public List<ScapeFashionItem> getItems() {
         return items;
     }
 }

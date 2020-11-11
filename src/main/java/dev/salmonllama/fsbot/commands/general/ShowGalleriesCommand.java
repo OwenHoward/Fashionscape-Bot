@@ -5,34 +5,31 @@
 
 package dev.salmonllama.fsbot.commands.general;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.models.GalleryChannel;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 public class ShowGalleriesCommand extends Command {
     @Override public String name() { return "Show Galleries"; }
     @Override public String description() { return "Shows registered gallery channels in the current server"; }
     @Override public String usage() { return "showgalleries"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("showgalleries", "listgalleries")); }
+    @Override public List<String> aliases() { return Arrays.asList("showgalleries", "listgalleries"); }
 
     @Override public void onCommand(CommandContext ctx) {
         if (ctx.isPrivateMessage()) {
-            ctx.reply("This command can only be used within a server"); // TODO: Preset embeds again, yeah
+            ctx.reply("This command can only be used within a server");
             return;
         }
 
@@ -45,7 +42,7 @@ public class ShowGalleriesCommand extends Command {
         });
     }
 
-    EmbedBuilder galleryEmbed(Collection<GalleryChannel> galleries, Server server) { // TODO: Base FSBot embed.
+    EmbedBuilder galleryEmbed(Collection<GalleryChannel> galleries, Server server) {
         EmbedBuilder embed = new EmbedBuilder()
             .setTitle("Server Gallery Channels");
 

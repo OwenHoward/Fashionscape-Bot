@@ -7,23 +7,19 @@ package dev.salmonllama.fsbot.commands.general;
 
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.ColorRoleController;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class ColorsCommand extends Command {
     @Override public String name() { return "Colors"; }
     @Override public String description() { return "Lists available cosmetic roles"; }
     @Override public String usage() { return "colors"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("colors", "colours")); }
+    @Override public List<String> aliases() { return Arrays.asList("colors", "colours"); }
 
     @Override
     public void onCommand(CommandContext ctx) {

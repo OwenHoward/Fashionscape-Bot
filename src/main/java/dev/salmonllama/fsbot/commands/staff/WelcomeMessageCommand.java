@@ -8,24 +8,20 @@ package dev.salmonllama.fsbot.commands.staff;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.ServerConfigController;
 import dev.salmonllama.fsbot.database.models.ServerConfig;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class WelcomeMessageCommand extends Command {
     @Override public String name() { return "Welcome Message"; }
     @Override public String description() { return "View or update the server welcome message. Options: get|set|getchannel|setchannel."; }
     @Override public String usage() { return "welcomemessage <String opt> [String newMessage]"; }
-    @Override public String category() { return "Staff"; }
+    @Override public CommandCategory category() { return CommandCategory.STAFF; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "staff"); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("welcomemessage", "wmsg")); }
+    @Override public List<String> aliases() { return Arrays.asList("welcomemessage", "wmsg"); }
 
     @Override
     public void onCommand(CommandContext ctx) {
