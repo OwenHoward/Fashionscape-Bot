@@ -200,6 +200,16 @@ public class OutfitController {
         });
     }
 
+    public static CompletableFuture<Void> forceRemove(String id) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                forceRemoveExec(id);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     private static void insertExec(Outfit outfit) throws SQLException {
         if (outfit.getCreated() == null) {
             outfit.setCreated(new Timestamp(System.currentTimeMillis()));
@@ -367,6 +377,10 @@ public class OutfitController {
 
     private static void deleteExec(String id) throws SQLException {
         FSDB.get().query("UPDATE outfits SET deleted = true WHERE id = ?", id);
+    }
+
+    private static void forceRemoveExec(String id) throws SQLException {
+        FSDB.get().query("DELETE FROM outfits WHERE id = ?", id);
     }
 
     private static Optional<Collection<Outfit>> extractMultiple(ResultSet rs) throws SQLException {
