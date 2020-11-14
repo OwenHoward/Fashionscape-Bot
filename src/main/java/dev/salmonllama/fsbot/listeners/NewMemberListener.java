@@ -14,11 +14,7 @@ import org.javacord.api.listener.server.member.ServerMemberJoinListener;
 import java.util.concurrent.TimeUnit;
 
 public class NewMemberListener implements ServerMemberJoinListener {
-
-    ServerMemberJoinEvent event;
-
     public void onServerMemberJoin(ServerMemberJoinEvent event) {
-        this.event = event;
 
         if (!event.getServer().getIdAsString().equals(BotConfig.HOME_SERVER)) {
             // Only active in the Fashionscape server, currently.
