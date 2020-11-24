@@ -1,4 +1,9 @@
-package dev.salmonllama.fsbot.commands.developer;
+/*
+ * Copyright (c) 2020. Aleksei Gryczewski
+ * All rights reserved.
+ */
+
+package dev.salmonllama.fsbot.commands.staff;
 
 import dev.salmonllama.fsbot.database.controllers.UserBlacklistController;
 import dev.salmonllama.fsbot.database.models.UserBlacklist;
@@ -12,8 +17,8 @@ public class BlacklistUserCommand extends Command {
     @Override public String name() { return "Blacklist User"; }
     @Override public String description() { return "Adds the user to the bot's blacklist, preventing them from using any commands or features"; }
     @Override public String usage() { return "blacklistuser <userId> <reason>"; }
-    @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
-    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "owner"); }
+    @Override public CommandCategory category() { return CommandCategory.STAFF; }
+    @Override public CommandPermission permission() { return new CommandPermission(PermissionType.STATIC, "admin"); }
     @Override public List<String> aliases() { return Arrays.asList("blacklistuser", "bluser", "sabusr"); }
 
     @Override
@@ -40,7 +45,7 @@ public class BlacklistUserCommand extends Command {
                 });
             }, () -> {
                 // Add user to the blacklist, check args
-                UserBlacklist.UserBlacklistBuilder blBuilder = new UserBlacklist.UserBlacklistBuilder(args[0]);
+                UserBlacklist.Builder blBuilder = new UserBlacklist.Builder(args[0]);
                 EmbedBuilder response = new EmbedBuilder().setTitle("Added User to Blacklist").addField("User ID:", args[0]);
 
                 if (args.length > 1) {
