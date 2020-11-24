@@ -31,33 +31,29 @@ public class BlacklistUserCommand extends Command {
         }
 
         // If the user is on the blacklist, remove them, otherwise, add them with the reason.
-        UserBlacklistController.get(args[0]).thenAcceptAsync(possibleBlacklist -> {
-            possibleBlacklist.ifPresentOrElse(blacklist -> {
-                // Remove user from the blacklist
-                UserBlacklistController.delete(blacklist).thenAcceptAsync((Void) -> {
-                    EmbedBuilder response = new EmbedBuilder()
-                        .setTitle("Removed User from Blacklist")
-                        .addField("User ID:", blacklist.getId())
-                        .addField("Reason for Add", blacklist.getReason())
-                        .addField("Added:", blacklist.getAdded().toString());
+        UserBlacklistController.get(args[0]).thenAcceptAsync(possibleBlacklist -> possibleBlacklist.ifPresentOrElse(blacklist -> {
+            // Remove user from the blacklist
+            UserBlacklistController.delete(blacklist).thenAcceptAsync((Void) -> {
+                EmbedBuilder response = new EmbedBuilder()
+                    .setTitle("Removed User from Blacklist")
+                    .addField("User ID:", blacklist.getId())
+                    .addField("Reason for Add", blacklist.getReason())
+                    .addField("Added:", blacklist.getAdded().toString());
 
-                    ctx.reply(response);
-                });
-            }, () -> {
-                // Add user to the blacklist, check args
-                UserBlacklist.Builder blBuilder = new UserBlacklist.Builder(args[0]);
-                EmbedBuilder response = new EmbedBuilder().setTitle("Added User to Blacklist").addField("User ID:", args[0]);
-
-                if (args.length > 1) {
-                    String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-                    blBuilder.setReason(reason);
-                    response.addField("With reason:", reason);
-                }
-
-                UserBlacklistController.insert(blBuilder.build()).thenAcceptAsync((Void) -> {
-                    ctx.reply(response);
-                });
+                ctx.reply(response);
             });
-        });
+        }, () -> {
+            // Add user to the blacklist, check args
+            UserBlacklist.Builder blBuilder = new UserBlacklist.Builder(args[0]);
+            EmbedBuilder response = new EmbedBuilder().setTitle("Added User to Blacklist").addField("User ID:", args[0]);
+
+            if (args.length > 1) {
+                String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                blBuilder.setReason(reason);
+                response.addField("With reason:", reason);
+            }
+
+            UserBlacklistController.insert(blBuilder.build()).thenAcceptAsync((Void) -> ctx.reply(response));
+        }));
     }
 }
