@@ -7,10 +7,7 @@ package dev.salmonllama.fsbot.commands.general;
 
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
 import dev.salmonllama.fsbot.database.models.Outfit;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
@@ -18,6 +15,7 @@ import org.javacord.api.util.logging.ExceptionLogger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class OutfitCommand extends Command {
@@ -27,9 +25,9 @@ public class OutfitCommand extends Command {
     @Override public String name() { return "Outfit"; }
     @Override public String description() { return "Generates a random image with the given tag. Use ~tags to see valid tags."; }
     @Override public String usage() { return "outfit <String tag>"; }
-    @Override public String category() { return "General"; }
+    @Override public CommandCategory category() { return CommandCategory.GENERAL; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.NONE); }
-    @Override public Collection<String> aliases() { return initAliases(); }
+    @Override public List<String> aliases() { return initAliases(); }
 
     @Override
     public void onCommand(CommandContext ctx) {
@@ -195,8 +193,8 @@ public class OutfitCommand extends Command {
         }
     }
 
-    private Collection<String> initAliases() {
-        Collection<String> aliases = OutfitController.getDistinctTags().join();
+    private List<String> initAliases() {
+        List<String> aliases = OutfitController.getDistinctTags().join();
         aliases.addAll(NON_TAG_ALIASES);
         return aliases;
     }

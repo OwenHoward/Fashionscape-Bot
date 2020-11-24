@@ -12,6 +12,8 @@ import dev.salmonllama.fsbot.listeners.*;
 import org.javacord.api.DiscordApiBuilder;
 
 import dev.salmonllama.fsbot.utilities.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -20,6 +22,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Main {
+
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
         String configLocation = Constants.BOT_FOLDER.concat(Constants.CONFIG_NAME);
         BotConfig.initConfig(configLocation, false);
@@ -29,7 +34,6 @@ public class Main {
 
         new DiscordApiBuilder().setToken(BotConfig.TOKEN).login().thenAccept(api -> {
 
-            @SuppressWarnings("unused")
             Guthix guthix = new Guthix(api);
 
             // Register listeners
@@ -40,8 +44,7 @@ public class Main {
             api.addMessageCreateListener(new AchievementListener());
             api.addMessageCreateListener(new ReportListener());
 
-            System.out.printf("Bot invite: %s%n", api.createBotInvite());
-            System.out.printf("Logged in as %s%n", api.getYourself().getDiscriminatedName());
+            logger.info("{} reporting for duty", api.getYourself().getDiscriminatedName());
         });
 
         SpringApplication.run(Main.class, args);

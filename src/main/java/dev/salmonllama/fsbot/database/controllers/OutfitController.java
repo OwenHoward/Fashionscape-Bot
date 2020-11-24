@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -159,7 +160,7 @@ public class OutfitController {
         });
     }
 
-    public static CompletableFuture<Collection<String>> getDistinctTags() {
+    public static CompletableFuture<List<String>> getDistinctTags() {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return getDistinctTagsExec();
@@ -193,6 +194,16 @@ public class OutfitController {
         return CompletableFuture.runAsync(() -> {
             try {
                 deleteExec(outfit.getId());
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Void> forceRemove(String id) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                forceRemoveExec(id);
             } catch (SQLException e) {
                 throw new CompletionException(e);
             }
@@ -332,10 +343,10 @@ public class OutfitController {
         return extractCount(rs);
     }
 
-    private static Collection<String> getDistinctTagsExec() throws SQLException {
+    private static List<String> getDistinctTagsExec() throws SQLException {
         ResultSet rs = FSDB.get().select("SELECT DISTINCT tag FROM outfits");
 
-        Collection<String> tags = new ArrayList<>();
+        List<String> tags = new ArrayList<>();
         while (rs.next()) {
             tags.add(rs.getString("tag"));
         }
@@ -366,6 +377,10 @@ public class OutfitController {
 
     private static void deleteExec(String id) throws SQLException {
         FSDB.get().query("UPDATE outfits SET deleted = true WHERE id = ?", id);
+    }
+
+    private static void forceRemoveExec(String id) throws SQLException {
+        FSDB.get().query("DELETE FROM outfits WHERE id = ?", id);
     }
 
     private static Optional<Collection<Outfit>> extractMultiple(ResultSet rs) throws SQLException {

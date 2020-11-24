@@ -17,6 +17,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.util.logging.ExceptionLogger;
+import java.awt.Color;
 
 import java.util.UUID;
 
@@ -50,11 +51,9 @@ public class ImageListener implements MessageCreateListener {
 
                             if (System.getenv("ENVIRONMENT") != null) {
                                 // Upload the image(s) to Imgur, store in database, log the stored images.
-                                System.out.println("PROD environment, uploading");
                                 uploadAndStore(event, channel, image);
                             } else {
                                 // Store the image(s) in database, log the stored images.
-                                System.out.println("DEV environment, not uploading");
                                 store(event, channel, image);
                             }
                         });
@@ -107,6 +106,7 @@ public class ImageListener implements MessageCreateListener {
                             .setThumbnail(outfit.getLink())
                             .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
                             .setUrl(outfit.getLink())
+                            .setColor(Color.GREEN)
                             .addField("Uploaded:", outfit.getCreated().toString());
 
                     if (!outfit.getMeta().equals("")) {

@@ -7,26 +7,22 @@ package dev.salmonllama.fsbot.commands.developer;
 
 import dev.salmonllama.fsbot.database.controllers.StaticPermissionController;
 import dev.salmonllama.fsbot.database.models.StaticPermission;
-import dev.salmonllama.fsbot.guthix.Command;
-import dev.salmonllama.fsbot.guthix.CommandContext;
-import dev.salmonllama.fsbot.guthix.CommandPermission;
-import dev.salmonllama.fsbot.guthix.PermissionType;
+import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 public class PermissionCommand extends Command {
     @Override public String name() { return "Permission"; }
     @Override public String description() { return "Manages a user's static permissions"; }
     @Override public String usage() { return "permission <list|add|remove> <keyword>"; }
-    @Override public String category() { return "Staff"; }
+    @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
-    @Override public Collection<String> aliases() { return new ArrayList<>(Arrays.asList("permission", "permissions", "perm", "perms")); }
+    @Override public List<String> aliases() { return Arrays.asList("permission", "permissions", "perm", "perms"); }
 
     @Override
     public void onCommand(CommandContext ctx) {
