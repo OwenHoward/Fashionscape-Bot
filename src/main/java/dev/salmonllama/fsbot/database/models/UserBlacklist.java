@@ -10,14 +10,13 @@ import dev.salmonllama.fsbot.database.DatabaseModel;
 import java.sql.Timestamp;
 
 public class UserBlacklist extends DatabaseModel {
-    private String id;
-    private String reason;
+    private final String id;
+    private final String reason;
     private Timestamp added;
 
-    private UserBlacklist(UserBlacklistBuilder builder) {
+    private UserBlacklist(Builder builder) {
         this.id = builder.id;
         this.reason = builder.reason;
-        this.added = builder.added;
     }
 
     public String getId() {
@@ -52,26 +51,26 @@ public class UserBlacklist extends DatabaseModel {
         );
     }
 
-    public static class UserBlacklistBuilder {
+    public static class Builder {
         private String id;
         private String reason;
         private Timestamp added;
 
-        public UserBlacklistBuilder(String id) {
+        public Builder(String id) {
             this.id = id;
         }
 
-        public UserBlacklistBuilder setId(String id) {
+        public Builder setId(String id) {
             this.id = id;
             return this;
         }
 
-        public UserBlacklistBuilder setReason(String reason) {
+        public Builder setReason(String reason) {
             this.reason = reason;
             return this;
         }
 
-        public UserBlacklistBuilder setAdded(Timestamp added) {
+        public Builder setAdded(Timestamp added) {
             this.added = added;
             return this;
         }

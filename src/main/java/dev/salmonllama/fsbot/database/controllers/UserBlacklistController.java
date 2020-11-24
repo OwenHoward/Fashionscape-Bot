@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -119,7 +118,7 @@ public class UserBlacklistController {
     }
 
     private static UserBlacklist mapObject(ResultSet rs) throws SQLException {
-        return new UserBlacklist.UserBlacklistBuilder(rs.getString("id"))
+        return new UserBlacklist.Builder(rs.getString("id"))
                 .setReason(rs.getString("reason"))
                 .setAdded(new Timestamp(rs.getLong("added")))
                 .build();
