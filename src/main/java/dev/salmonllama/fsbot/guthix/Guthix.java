@@ -146,7 +146,7 @@ public class Guthix implements MessageCreateListener {
                 cmdArgs
         ).build();
 
-        if (manager.hasPermission(cmd.permission(), ctx)) {
+        if (manager.userHasPermission(cmd.permission(), ctx)) {
 
         } else {
             return;
