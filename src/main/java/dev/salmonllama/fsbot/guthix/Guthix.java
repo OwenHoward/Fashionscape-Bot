@@ -11,10 +11,13 @@ import dev.salmonllama.fsbot.commands.osrssearch.*;
 import dev.salmonllama.fsbot.commands.rs3search.*;
 import dev.salmonllama.fsbot.commands.staff.OutfitInfoCommand;
 import dev.salmonllama.fsbot.commands.staff.*;
+import dev.salmonllama.fsbot.database.controllers.UserBlacklistController;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,6 +26,8 @@ import java.util.HashMap;
  * Guthix is Fashionscape Bot's command repository and dispatcher
  */
 public class Guthix implements MessageCreateListener {
+    private final static Logger logger = LoggerFactory.getLogger(Guthix.class);
+
     @SuppressWarnings("unused")
     private final DiscordApi api;
 
@@ -58,6 +63,7 @@ public class Guthix implements MessageCreateListener {
         addCommand(new WelcomeMessageCommand());
         addCommand(new ShowGalleriesCommand());
         addCommand(new EditMetaCommand());
+        addCommand(new BlacklistUserCommand());
 
         // General Commands
         addCommand(new PingCommand());
@@ -96,7 +102,6 @@ public class Guthix implements MessageCreateListener {
 
     public void addCommand(Command cmd) {
         registry.addCommand(cmd);
-//        return cmd;
     }
 
     public Collection<Command> listCommands() {
@@ -126,18 +131,19 @@ public class Guthix implements MessageCreateListener {
             return;
         }
 
+        // Check for blacklisted user
+        if (!UserBlacklistController.exists(author.getIdAsString()).join()) {
+            // User is not blacklisted, continue as normal
+        } else {
+            return;
+        }
+
         RegistryCommand rComm = registry.getCommandInfo(content);
         String cmdString = rComm.getCommand().toLowerCase();
 
-//        if (registry.isCommandAlias(cmdString)) {
-//
-//        } else {
-//            return;
-//        }
-
         String[] cmdArgs = rComm.getArgs();
 
-        Command cmd = registry.findCommand(cmdString).orElse(new DefaultCommand()); // TODO: default command here
+        Command cmd = registry.findCommand(cmdString).orElse(new DefaultCommand());
 
         CommandContext ctx = new CommandContext.CommandContextBuilder(
                 event,
@@ -146,7 +152,7 @@ public class Guthix implements MessageCreateListener {
                 cmdArgs
         ).build();
 
-        if (manager.hasPermission(cmd.permission(), ctx)) {
+        if (manager.userHasPermission(cmd.permission(), ctx)) {
 
         } else {
             return;

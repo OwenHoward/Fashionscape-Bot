@@ -17,7 +17,7 @@ public class PermissionManager {
     public PermissionManager() {
     }
 
-    public boolean hasPermission(CommandPermission reqPerm, CommandContext ctx) {
+    public boolean userHasPermission(CommandPermission reqPerm, CommandContext ctx) {
         PermissionType permType = reqPerm.getType();
         String permValue = reqPerm.getValue();
 
