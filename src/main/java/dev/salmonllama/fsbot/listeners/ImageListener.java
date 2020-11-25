@@ -9,6 +9,7 @@ import com.vdurmont.emoji.EmojiParser;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.database.controllers.GalleryController;
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
+import dev.salmonllama.fsbot.database.controllers.UserBlacklistController;
 import dev.salmonllama.fsbot.database.models.Outfit;
 import dev.salmonllama.fsbot.endpoints.imgur.ImgurAPIConnection;
 import org.javacord.api.entity.channel.ServerTextChannel;
@@ -17,11 +18,15 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.javacord.api.util.logging.ExceptionLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Color;
 
 import java.util.UUID;
 
 public class ImageListener implements MessageCreateListener {
+    private static final Logger logger = LoggerFactory.getLogger(ImageListener.class);
 
     @Override
     public void onMessageCreate(MessageCreateEvent event) {
@@ -35,6 +40,10 @@ public class ImageListener implements MessageCreateListener {
 
         if (!event.getMessageAuthor().isRegularUser()) {
             // Ignore anything that is a webhook or a bot message
+            return;
+        }
+
+        if (UserBlacklistController.exists(event.getMessageAuthor().getIdAsString()).join()) {
             return;
         }
 
