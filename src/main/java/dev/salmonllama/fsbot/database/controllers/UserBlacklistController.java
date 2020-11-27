@@ -6,7 +6,6 @@
 package dev.salmonllama.fsbot.database.controllers;
 
 import dev.salmonllama.fsbot.database.FSDB;
-import dev.salmonllama.fsbot.database.models.ServerBlacklist;
 import dev.salmonllama.fsbot.database.models.UserBlacklist;
 
 import java.sql.ResultSet;

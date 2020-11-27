@@ -34,12 +34,13 @@ public class Main {
 
         new DiscordApiBuilder().setToken(BotConfig.TOKEN).login().thenAccept(api -> {
 
+            @SuppressWarnings("unused")
             Guthix guthix = new Guthix(api);
 
             // Register listeners
             api.addMessageCreateListener(new ImageListener());
             api.addServerMemberJoinListener(new NewMemberListener());
-            api.addServerJoinListener(new ServerJoined(api));
+            api.addServerJoinListener(new ServerJoined());
             api.addMessageCreateListener(new ThumbsListener());
             api.addMessageCreateListener(new AchievementListener());
             api.addMessageCreateListener(new ReportListener());

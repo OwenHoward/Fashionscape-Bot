@@ -20,7 +20,7 @@ public class Warning {
 
     public EmbedBuilder sendWarning() {
         EmbedBuilder warning = new EmbedBuilder()
-                .setColor(Color.YELLOW)
+                .setColor(embedColor)
                 .setFooter(embedFooter)
                 .addField("WARNING", embedWarning);
 

@@ -10,7 +10,6 @@ import dev.salmonllama.fsbot.guthix.CommandContext;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.awt.*;
-import java.util.Arrays;
 
 public class DiscordUtilities {
     public static void handleException(Exception e, CommandContext ctx) {

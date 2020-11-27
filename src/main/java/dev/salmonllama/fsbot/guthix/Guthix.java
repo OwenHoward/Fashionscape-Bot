@@ -45,6 +45,8 @@ public class Guthix implements MessageCreateListener {
     }
 
     public void initCommands() {
+        logger.info("Initializing commands...");
+
         // Developer Commands
         addCommand(new TestCommand());
         addCommand(new CreateGalleryCommand());
@@ -98,6 +100,8 @@ public class Guthix implements MessageCreateListener {
         addCommand(new Rs3MainhandCommand());
         addCommand(new Rs3OffhandCommand());
         addCommand(new Rs3TwohandedCommand());
+
+        logger.info("Command initialization complete!");
     }
 
     public void addCommand(Command cmd) {
@@ -159,5 +163,6 @@ public class Guthix implements MessageCreateListener {
         }
 
         cmd.invoke(ctx);
+        logger.info(String.format("Processed command from %s.", author.getDiscriminatedName()));
     }
 }

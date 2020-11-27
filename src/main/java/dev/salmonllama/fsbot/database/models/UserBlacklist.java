@@ -17,6 +17,7 @@ public class UserBlacklist extends DatabaseModel {
     private UserBlacklist(Builder builder) {
         this.id = builder.id;
         this.reason = builder.reason;
+        this.added = builder.added;
     }
 
     public String getId() {
