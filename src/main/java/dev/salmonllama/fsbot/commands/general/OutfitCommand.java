@@ -49,7 +49,7 @@ public class OutfitCommand extends Command {
         switch (args.length) {
             case 0:
                 // Send one single random outfit of the given tag
-                OutfitController.findRandomByTag(command).thenAccept(possibleOutfit -> { // TODO: Add an orElse case
+                OutfitController.findRandomByTag(command).thenAccept(possibleOutfit -> {
                     possibleOutfit.ifPresent(outfit -> {
                         ctx.getApi().getUserById(outfit.getSubmitter()).thenAcceptAsync(user -> {
                             EmbedBuilder response = new EmbedBuilder()
@@ -91,7 +91,7 @@ public class OutfitCommand extends Command {
                        });
                     });
                 } else {
-                    ctx.reply("Improper command usage"); // TODO: Logging update reminder
+                    ctx.reply("Improper command usage");
                 }
         }
     }

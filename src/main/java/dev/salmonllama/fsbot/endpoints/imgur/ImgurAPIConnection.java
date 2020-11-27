@@ -51,7 +51,7 @@ public class ImgurAPIConnection {
         try (Response response = client.newCall(request).execute()) {
             json = new JSONObject(response.body().string()).getJSONObject("data");
         } catch (IOException e) {
-            e.printStackTrace(); //  TODO: Do tha logging thang.
+            e.printStackTrace();
             return null;
         }
 

@@ -19,7 +19,7 @@ class Registry {
         commandsMap = new HashMap<>();
     }
 
-    Predicate<String> valueMatch(String input) { // TODO: Move to a helper class
+    Predicate<String> valueMatch(String input) {
         return str -> str.equals(input);
     }
 
