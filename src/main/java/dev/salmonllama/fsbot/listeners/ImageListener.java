@@ -123,6 +123,7 @@ public class ImageListener implements MessageCreateListener {
                     }
 
                     chnl.sendMessage(response);
+                    logger.info(String.format("Outfit from %s successfully added.", event.getMessageAuthor().getDiscriminatedName()));
 
                     // Add the reaction to the original message
                     GalleryController.getEmoji(channel.getIdAsString()).thenAcceptAsync(
