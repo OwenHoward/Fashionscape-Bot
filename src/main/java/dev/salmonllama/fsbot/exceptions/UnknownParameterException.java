@@ -8,6 +8,7 @@ package dev.salmonllama.fsbot.exceptions;
 import java.sql.SQLException;
 
 public class UnknownParameterException extends SQLException {
+    private static final long serialVersionUID = 1L;
     private String message;
 
     public UnknownParameterException(Object param) {

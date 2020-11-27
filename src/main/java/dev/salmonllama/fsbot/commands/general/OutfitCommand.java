@@ -6,9 +6,7 @@
 package dev.salmonllama.fsbot.commands.general;
 
 import dev.salmonllama.fsbot.database.controllers.OutfitController;
-import dev.salmonllama.fsbot.database.models.Outfit;
 import dev.salmonllama.fsbot.guthix.*;
-import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.util.logging.ExceptionLogger;
 
@@ -16,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class OutfitCommand extends Command {
     private final int MAX_OUTFITS = 5;
@@ -210,10 +207,5 @@ public class OutfitCommand extends Command {
             return false;
         }
         return true;
-    }
-
-    private CompletableFuture<Message> sendOutfit(Outfit outfit) {
-        // TODO: Replace sending with this
-        return null;
     }
 }

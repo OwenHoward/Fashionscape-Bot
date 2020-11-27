@@ -6,8 +6,6 @@
 package dev.salmonllama.fsbot.endpoints.scapefashion;
 
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -18,13 +16,12 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public class ScapeFashionConnection {
+    // TODO: Refactor this for request-response based interactions
     private final String RS3_REQUEST_URL = "https://api.rune.scape.fashion";
     private final String RS3_LINK_URL = "https://rune.scape.fashion";
 
     private final String OSRS_REQUEST_URL = "https://api.scape.fashion";
     private final String OSRS_LINK_URL = "https://scape.fashion";
-
-    private static final Logger logger = LoggerFactory.getLogger(ScapeFashionConnection.class);
 
     public ScapeFashionConnection() {}
 

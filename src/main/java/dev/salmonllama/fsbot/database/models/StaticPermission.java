@@ -8,7 +8,6 @@ package dev.salmonllama.fsbot.database.models;
 import dev.salmonllama.fsbot.database.DatabaseModel;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 public class StaticPermission extends DatabaseModel {
     private String userId;

@@ -10,7 +10,7 @@ import dev.salmonllama.fsbot.guthix.*;
 import dev.salmonllama.fsbot.listeners.ForceDeleteAttachedListener;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.event.message.MessageCreateEvent;
+
 
 import java.util.Arrays;
 import java.util.List;

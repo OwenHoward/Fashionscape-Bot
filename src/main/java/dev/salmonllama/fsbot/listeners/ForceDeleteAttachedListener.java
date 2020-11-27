@@ -11,6 +11,7 @@ import org.javacord.api.listener.message.MessageCreateListener;
 
 public class ForceDeleteAttachedListener implements MessageCreateListener {
 
+    @SuppressWarnings("unused")
     private CommandContext ctx;
 
     public ForceDeleteAttachedListener(CommandContext ctx) {

@@ -9,9 +9,7 @@ import dev.salmonllama.fsbot.guthix.*;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class InviteCommand extends Command {
