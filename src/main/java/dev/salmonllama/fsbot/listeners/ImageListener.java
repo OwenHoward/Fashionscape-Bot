@@ -86,7 +86,16 @@ public class ImageListener implements MessageCreateListener {
                     .setDeleteHash(upload.getDeleteHash());
 
             storeAndLog(event, channel, outfitBuilder);
-        }).exceptionally(ExceptionLogger.get());
+        }).exceptionally(e -> {
+            EmbedBuilder errorEmbed = new EmbedBuilder()
+                    .setTitle("Error!")
+                    .setColor(Color.RED)
+                    .setAuthor(event.getApi().getYourself())
+                    .setDescription(e.getMessage());
+
+            event.getChannel().sendMessage(errorEmbed);
+            return null;
+        });
     }
 
     private void store(MessageCreateEvent event, ServerTextChannel channel, MessageAttachment image) {
