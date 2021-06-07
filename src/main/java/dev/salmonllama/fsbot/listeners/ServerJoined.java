@@ -10,7 +10,7 @@ import org.javacord.api.listener.server.ServerJoinListener;
 
 public class ServerJoined implements ServerJoinListener {
 
-    public void onServerJoin(ServerJoinEvent event) { // TODO: This needs fixing yo
+    public void onServerJoin(ServerJoinEvent event) {
     //     db.newServerProcess(event.getServer());
 
     //     EmbedBuilder embed = new EmbedBuilder()

@@ -17,9 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-// TODO: auto-switching status messages.
-// TODO: Add an official Logger --> logging to Discord, not console
-
 @SpringBootApplication
 public class Main {
 
@@ -28,7 +25,6 @@ public class Main {
     public static void main(String[] args) {
         String configLocation = Constants.BOT_FOLDER.concat(Constants.CONFIG_NAME);
         BotConfig.initConfig(configLocation, false);
-        // TODO: Use args to dictate newFiling. Also use args to dictate database setup.
 
         FSDB.init();
 

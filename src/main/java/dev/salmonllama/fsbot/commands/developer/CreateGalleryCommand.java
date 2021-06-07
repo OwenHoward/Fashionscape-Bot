@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreateGalleryCommand extends Command { // TODO: This command needs help.
+public class CreateGalleryCommand extends Command {
     @Override public String name() { return "Create Gallery"; }
     @Override public String description() { return "Creates a channel gallery, tracking any posted images"; }
     @Override public String usage() { return "creategallery <String tag>"; }
@@ -27,7 +27,7 @@ public class CreateGalleryCommand extends Command { // TODO: This command needs 
     @Override
     public void onCommand(CommandContext ctx) {
         if (ctx.isPrivateMessage()) {
-            ctx.reply("This command can only be used in a server!"); // TODO: Stop this. Turn this into a preset no-no embed.
+            ctx.reply("This command can only be used in a server!");
             return;
         }
         if (ctx.getArgs().length < 1) {

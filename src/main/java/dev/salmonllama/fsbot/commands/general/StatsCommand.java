@@ -27,7 +27,7 @@ public class StatsCommand extends Command {
         int userCount = ctx.getApi().getCachedUsers().size(); // Will these be accurate with sharding?
         int serverCount = ctx.getApi().getServers().size();
 
-        EmbedBuilder embed = new EmbedBuilder(); // TODO: Standard embeds yeah?
+        EmbedBuilder embed = new EmbedBuilder();
         embed.setTitle("Stats");
         embed.addField("Users:", String.valueOf(userCount));
         embed.addField("Servers:", String.valueOf(serverCount));

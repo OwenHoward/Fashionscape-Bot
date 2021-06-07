@@ -9,6 +9,7 @@ import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
+import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -37,6 +38,12 @@ public class ReportListener implements MessageCreateListener {
         }
 
         String content = message.getContent();
+        message.getAttachments().forEach(
+                attachment -> attachment.downloadAsImage().thenAcceptAsync(
+                        image -> new MessageBuilder()
+                            .addAttachment(image, "evidence")
+                            .setContent("Report Evidence:")
+                            .send(channel)));
 
         message.delete().join();
 
