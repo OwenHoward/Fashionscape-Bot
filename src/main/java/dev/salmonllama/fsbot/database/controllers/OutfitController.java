@@ -200,6 +200,18 @@ public class OutfitController {
         });
     }
 
+    public static CompletableFuture<Void> restore(Outfit outfit) {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                Outfit newOutfit = new Outfit.OutfitBuilder(outfit).setDeleted(false).build();
+                System.out.println(newOutfit.isDeleted());
+                updateExec(newOutfit);
+            } catch (SQLException e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
     public static CompletableFuture<Void> forceRemove(String id) {
         return CompletableFuture.runAsync(() -> {
             try {
@@ -363,6 +375,7 @@ public class OutfitController {
                 "meta = ?," +
                 "updated = ?," +
                 "featured = ?," +
+                "deleted = ?," +
                 "display_count = ?" +
                 "WHERE id = ?",
                 outfit.getLink(),
@@ -371,6 +384,7 @@ public class OutfitController {
                 outfit.getMeta(),
                 outfit.getUpdated(),
                 outfit.isFeatured(),
+                outfit.isDeleted(),
                 outfit.getDisplayCount(),
                 outfit.getId());
     }
