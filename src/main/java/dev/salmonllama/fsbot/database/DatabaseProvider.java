@@ -11,6 +11,7 @@ import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.utilities.Constants;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
+import java.nio.file.Paths;
 import java.sql.*;
 
 public class DatabaseProvider {
@@ -20,7 +21,8 @@ public class DatabaseProvider {
 
     public DatabaseProvider(String dbName) {
         DB_NAME = dbName;
-        DB_ADDR = "jdbc:sqlite:".concat(Constants.BOT_FOLDER.toString()).concat(BotConfig.DB_ADDR);
+        String PATH = Paths.get(Constants.BOT_FOLDER.toString(), Constants.DB_NAME).toString();
+        DB_ADDR = "jdbc:sqlite:".concat(PATH);
     }
 
     private Connection createConnection() {
