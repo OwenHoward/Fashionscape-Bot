@@ -17,14 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class Main {
 
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        String configLocation = Constants.BOT_FOLDER.concat(Constants.CONFIG_NAME);
-        BotConfig.initConfig(configLocation, false);
+        BotConfig.initConfig(Constants.BOT_FOLDER, false);
 
         FSDB.init();
 

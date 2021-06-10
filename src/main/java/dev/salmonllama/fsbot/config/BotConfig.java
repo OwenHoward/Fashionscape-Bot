@@ -8,8 +8,11 @@ package dev.salmonllama.fsbot.config;
 
 import com.kaaz.configuration.ConfigurationBuilder;
 import com.kaaz.configuration.ConfigurationOption;
+import dev.salmonllama.fsbot.utilities.Constants;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class BotConfig {
     @ConfigurationOption
@@ -78,9 +81,9 @@ public class BotConfig {
     @ConfigurationOption
     public static String HOME_SERVER = "Home server here";
 
-    public static void initConfig(String filePath, boolean cleanfile) {
+    public static void initConfig(Path filePath, boolean cleanfile) {
         try {
-            new ConfigurationBuilder(BotConfig.class, new File(filePath)).build(cleanfile);
+            new ConfigurationBuilder(BotConfig.class, Paths.get(filePath.toString(), Constants.CONFIG_NAME) .toFile()).build(cleanfile);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

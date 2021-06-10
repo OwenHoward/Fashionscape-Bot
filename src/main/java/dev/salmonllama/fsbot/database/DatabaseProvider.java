@@ -20,7 +20,7 @@ public class DatabaseProvider {
 
     public DatabaseProvider(String dbName) {
         DB_NAME = dbName;
-        DB_ADDR = "jdbc:sqlite:".concat(Constants.BOT_FOLDER).concat(BotConfig.DB_ADDR);
+        DB_ADDR = "jdbc:sqlite:".concat(Constants.BOT_FOLDER.toString()).concat(BotConfig.DB_ADDR);
     }
 
     private Connection createConnection() {
