@@ -10,3 +10,4 @@ docker:
 	docker tag ${BUILD} ${LATEST}
 	docker push ${BUILD}
 	docker push ${LATEST}
+
