@@ -24,22 +24,8 @@ public class AddColorCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        // Command takes only a role mention.
-        ctx.getServer().ifPresentOrElse(server -> {
-            if (server.getIdAsString().equals(BotConfig.HOME_SERVER)) {
-                List<Role> roles = ctx.getMessage().getMentionedRoles();
-                roles.forEach(role -> {
-                    ColorRole colorRole = new ColorRole.ColorRoleBuilder(role.getId())
-                            .setColor(role.getName())
-                            .setServerId(server.getId())
-                            .build();
-
-                    ColorRoleController.insert(colorRole);
-                    ctx.reply("Added color role:" + colorRole.toString());
-                });
-            } else {
-                ctx.reply("This command can only be used in the fashionscape server");
-            }
-        }, () -> ctx.reply("This command can only be used in the fashionscape server"));
+        ctx.getApi().getOwner().thenAcceptAsync(owner -> {
+            ctx.reply("This command is no longer active. An alternative is currently being developed. For more information, please contact " + owner);
+        });
     }
 }
