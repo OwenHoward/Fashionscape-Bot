@@ -1,11 +1,26 @@
 /*
- * Developed by Alek Gryczewski on 10/18/18 1:39 PM
- * Last modified 9/25/18 7:33 PM
- * Copyright (c) 2018. All rights reserved.
+ Copyright (c) 2021 Aleksei Gryczewski
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy of
+ this software and associated documentation files (the "Software"), to deal in
+ the Software without restriction, including without limitation the rights to
+ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ the Software, and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 plugins {
-    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'org.springframework.boot' version '2.5.4'
     id 'application'
 }
 
@@ -14,7 +29,7 @@ apply plugin: 'io.spring.dependency-management'
 group 'dev.salmonllama'
 version '2.0.5'
 
-sourceCompatibility = 11
+sourceCompatibility = 16
 
 repositories {
     mavenCentral()
@@ -24,17 +39,17 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.xerial:sqlite-jdbc:3.30.1'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
     implementation 'com.github.Kaaz:ConfigurationBuilder:0.4'
-    implementation 'org.javacord:javacord:3.1.1'
-    implementation 'com.vdurmont:emoji-java:4.0.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.javacord:javacord:3.3.2'
+    implementation 'com.vdurmont:emoji-java:5.1.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'ch.qos.logback:logback-classic:1.2.5'
+    implementation 'com.google.code.gson:gson:2.8.8'
 
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.5.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.5.4'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.4'
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }

@@ -11,3 +11,5 @@ docker:
 	docker push ${BUILD}
 	docker push ${LATEST}
 
+run:
+	.\gradlew run
