@@ -5,7 +5,7 @@ WORKDIR /home/gradle/src
 RUN gradle clean --no-daemon
 RUN gradle build --no-daemon
 
-FROM openjdk:16-jre-slim
+FROM openjdk:16
 
 EXPOSE 8080
 

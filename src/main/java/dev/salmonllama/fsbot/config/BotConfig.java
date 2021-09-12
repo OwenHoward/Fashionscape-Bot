@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020. Aleksei Gryczewski
- * All rights reserved.
+ * Copyright (c) 2021 Aleksei Gryczewski
  */
 
 // Shoutout to Kaaz (again) for a kickass config service: https://github.com/Kaaz/ConfigurationBuilder
