@@ -5,6 +5,7 @@
 package dev.salmonllama.fsbot;
 
 import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.config.SecretManager;
 import dev.salmonllama.fsbot.database.FSDB;
 import dev.salmonllama.fsbot.guthix.Guthix;
 import dev.salmonllama.fsbot.listeners.*;
@@ -27,7 +28,7 @@ public class Main {
 
         FSDB.init();
 
-        new DiscordApiBuilder().setToken(BotConfig.TOKEN).login().thenAccept(api -> {
+        new DiscordApiBuilder().setToken(SecretManager.DISCORD_TOKEN.getPlainText()).login().thenAccept(api -> {
 
             @SuppressWarnings("unused")
             Guthix guthix = new Guthix(api);
