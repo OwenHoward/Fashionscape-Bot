@@ -12,7 +12,7 @@ public enum SecretManager {
 
     private final String resourceId;
 
-    private SecretManager(String resourceId) {
+    SecretManager(String resourceId) {
         this.resourceId = resourceId;
     }
 
@@ -20,7 +20,7 @@ public enum SecretManager {
         try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
             return client.accessSecretVersion(this.resourceId).getPayload().getData().toStringUtf8();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: Add plain text error message to log to console
             System.exit(1); // Secrets are integral to full operation, crash if not retrieved properly.
             return null;
         }
