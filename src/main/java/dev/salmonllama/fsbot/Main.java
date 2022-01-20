@@ -24,7 +24,7 @@ public class Main {
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        BotConfig.initConfig(Constants.BOT_FOLDER, false);
+        BotConfig.initConfig(Constants.BOT_FOLDER, false); // TODO: Sunset the bot config once and for all
 
         FSDB.init();
 

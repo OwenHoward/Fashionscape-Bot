@@ -19,8 +19,6 @@ public class ColorsCommand extends Command {
 
     @Override
     public void onCommand(CommandContext ctx) {
-        ctx.getApi().getOwner().thenAcceptAsync(owner -> {
-            ctx.reply("This command is no longer active. An alternative is currently being developed. For more information, please contact " + owner.getDiscriminatedName());
-        });
+        ctx.reply("This command is no longer active. An alternative is currently being developed. For more information, please contact Salmonllama#7233");
     }
 }
