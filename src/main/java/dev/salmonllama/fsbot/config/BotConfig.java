@@ -15,16 +15,13 @@ import java.nio.file.Paths;
 
 public class BotConfig {
     @ConfigurationOption
-    public static String TOKEN = "token-goes-here";
+    public static String DB_ADDR = "SQLite connection address here";
 
     @ConfigurationOption
-    public static String DB_ADDR = "fsbot.db";
+    public static String DB_NAME = "SQLite database name here";
 
     @ConfigurationOption
-    public static String DB_NAME = "fsbot";
-
-    @ConfigurationOption
-    public static String DEFAULT_PREFIX = "~";
+    public static String DEFAULT_PREFIX = "default prefix here";
 
     @ConfigurationOption
     public static String BOT_OWNER = "owner's id here";
@@ -67,12 +64,6 @@ public class BotConfig {
 
     @ConfigurationOption
     public static String MEMBER_ROLE = "member role id here";
-
-    @ConfigurationOption
-    public static String IMGUR_ID = "imgur_id_here";
-
-    @ConfigurationOption
-    public static String IMGUR_BEARER = "imgur bearer here";
 
     @ConfigurationOption
     public static String DEFAULT_REACTION = ":heartpulse:";

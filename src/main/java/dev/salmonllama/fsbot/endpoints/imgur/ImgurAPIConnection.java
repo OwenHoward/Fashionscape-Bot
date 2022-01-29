@@ -4,7 +4,7 @@
 
 package dev.salmonllama.fsbot.endpoints.imgur;
 
-import dev.salmonllama.fsbot.config.BotConfig;
+import dev.salmonllama.fsbot.config.SecretManager;
 import okhttp3.*;
 import org.json.JSONObject;
 
@@ -22,8 +22,8 @@ public class ImgurAPIConnection {
     private final Request.Builder requestBuilder;
 
     public ImgurAPIConnection() {
-        CLIENT_ID = BotConfig.IMGUR_ID;
-        BEARER_TOKEN = BotConfig.IMGUR_BEARER;
+        CLIENT_ID = SecretManager.IMGUR_ID.getPlainText();
+        BEARER_TOKEN = SecretManager.IMGUR_BEARER.getPlainText();
 
         client = new OkHttpClient().newBuilder().build();
         requestBuilder = new Request.Builder();
