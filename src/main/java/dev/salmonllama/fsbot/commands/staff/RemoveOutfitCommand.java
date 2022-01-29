@@ -72,6 +72,7 @@ public class RemoveOutfitCommand extends Command {
 
                         EmbedBuilder log = new EmbedBuilder()
                                 .setTitle("Outfit Marked as Deleted")
+                                .setFooter(outfit.getId())
                                 .setThumbnail(outfit.getLink())
                                 .setColor(Color.RED)
                                 .addField("Deleted By:", ctx.getAuthor().getDiscriminatedName());

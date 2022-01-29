@@ -73,6 +73,7 @@ public class RestoreOutfitCommand extends Command {
 
                         EmbedBuilder log = new EmbedBuilder()
                                 .setTitle("Outfit Restored as Active")
+                                .setFooter(outfit.getId())
                                 .setThumbnail(outfit.getLink())
                                 .setColor(Color.BLUE)
                                 .addField("Restored By:", ctx.getAuthor().getDiscriminatedName());
