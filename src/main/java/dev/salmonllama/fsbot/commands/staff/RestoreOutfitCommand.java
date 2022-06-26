@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021 Aleksei Gryczewski
+ */
+
 package dev.salmonllama.fsbot.commands.staff;
 
 import com.vdurmont.emoji.EmojiParser;
@@ -69,6 +73,7 @@ public class RestoreOutfitCommand extends Command {
 
                         EmbedBuilder log = new EmbedBuilder()
                                 .setTitle("Outfit Restored as Active")
+                                .setFooter(outfit.getId())
                                 .setThumbnail(outfit.getLink())
                                 .setColor(Color.BLUE)
                                 .addField("Restored By:", ctx.getAuthor().getDiscriminatedName());

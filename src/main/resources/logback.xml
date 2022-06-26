@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2020. Aleksei Gryczewski
-  ~ All rights reserved.
+  ~ Copyright (c) 2021 Aleksei Gryczewski
   -->
 <configuration debug="false">
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />

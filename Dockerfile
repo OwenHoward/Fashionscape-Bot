@@ -1,11 +1,11 @@
-FROM gradle:6.6.1-jdk11 AS build
+FROM gradle:7.2.0-jdk16 AS build
 
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle clean --no-daemon
 RUN gradle build --no-daemon
 
-FROM openjdk:11-jre-slim
+FROM openjdk:16
 
 EXPOSE 8080
 

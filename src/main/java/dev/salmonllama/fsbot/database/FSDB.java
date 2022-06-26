@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020. Aleksei Gryczewski
- * All rights reserved.
+ * Copyright (c) 2021 Aleksei Gryczewski
  */
 
 // Heavily inspired by Kaaz's Emily database connection: https://github.com/Kaaz/DiscordBot/tree/master/src/main/java/emily/db
@@ -39,7 +38,7 @@ public class FSDB {
     private static void prepareTables() {
         try {
             get().query(Outfit.schema());
-            get().query(ColorRole.schema());
+//            get().query(ColorRole.schema());
             get().query(GalleryChannel.schema());
             get().query(ServerConfig.schema());
             get().query(ServerBlacklist.schema());

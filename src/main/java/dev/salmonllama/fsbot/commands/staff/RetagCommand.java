@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020. Aleksei Gryczewski
- * All rights reserved.
+ * Copyright (c) 2021 Aleksei Gryczewski
  */
 
 package dev.salmonllama.fsbot.commands.staff;
@@ -77,6 +76,7 @@ public class RetagCommand extends Command {
 
                             EmbedBuilder log = new EmbedBuilder()
                                     .setTitle("Outfit Retagged")
+                                    .setFooter(outfit.getId())
                                     .setColor(Color.YELLOW)
                                     .setThumbnail(outfit.getLink())
                                     .addField("New tag:", newTag);

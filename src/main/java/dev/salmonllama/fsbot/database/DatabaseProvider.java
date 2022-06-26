@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020. Aleksei Gryczewski
- * All rights reserved.
+ * Copyright (c) 2021 Aleksei Gryczewski
  */
 
 // Heavily inspired by Kaaz's Emily database connection: https://github.com/Kaaz/DiscordBot/tree/master/src/main/java/emily/db
@@ -9,9 +8,12 @@ package dev.salmonllama.fsbot.database;
 import dev.salmonllama.fsbot.exceptions.UnknownParameterException;
 import dev.salmonllama.fsbot.config.BotConfig;
 import dev.salmonllama.fsbot.utilities.Constants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.sql.*;
 
 public class DatabaseProvider {
@@ -19,10 +21,15 @@ public class DatabaseProvider {
     private final String DB_NAME;
     private Connection c;
 
+    private final static Logger logger = LoggerFactory.getLogger(DatabaseProvider.class);
+
     public DatabaseProvider(String dbName) {
         DB_NAME = dbName;
-        String PATH = Paths.get(Constants.BOT_FOLDER.toString(), Constants.DB_NAME).toString();
-        DB_ADDR = "jdbc:sqlite:".concat(PATH);
+        Path addr = Path.of(Constants.BOT_FOLDER.toString(), BotConfig.DB_ADDR);
+        DB_ADDR = "jdbc:sqlite:".concat(addr.toString());
+
+        logger.info("Initializing database...");
+        logger.info(DB_ADDR);
     }
 
     private Connection createConnection() {
