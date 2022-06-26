@@ -5,7 +5,6 @@
 package dev.salmonllama.fsbot.database.controllers;
 
 import dev.salmonllama.fsbot.database.FSDB;
-import dev.salmonllama.fsbot.database.models.ColorRole;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +16,7 @@ import java.util.concurrent.CompletionException;
 
 public class ColorRoleController {
     // Need insert, get by color, exists by color, exists by role, get by server, count, and delete
-    public static CompletableFuture<Void> insert(ColorRole cr) {
+/*    public static CompletableFuture<Void> insert(ColorRole cr) {
         return CompletableFuture.runAsync(() -> {
             try {
                 insertExec(cr);
@@ -176,5 +175,5 @@ public class ColorRoleController {
                 .setServerId(rs.getLong("server_id"))
                 .setColor(rs.getString("color"))
                 .build();
-    }
+    }*/
 }
