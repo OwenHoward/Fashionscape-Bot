@@ -10,7 +10,7 @@ FROM openjdk:16
 EXPOSE 8080
 
 ENV ENVIRONMENT=PROD
-ENV GOOGLE_APPLICATION_CREDENTIALS=/root/.fsbot/google_application_credentials.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=~/root/.fsbot/google_application_credentials.json
 
 RUN mkdir /app
 
