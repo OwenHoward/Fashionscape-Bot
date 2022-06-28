@@ -232,13 +232,14 @@ public class OutfitController {
 
         FSDB.get().insert(
                     "INSERT INTO " +
-                        "outfits('id', 'link', 'submitter', 'tag', 'meta', 'created', 'updated', 'deleted', 'featured', 'display_count', 'delete_hash') " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        "outfits('id', 'link', 'submitter', 'tag', 'meta', 'discord_name', 'created', 'updated', 'deleted', 'featured', 'display_count', 'delete_hash') " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 outfit.getId(),
                 outfit.getLink(),
                 outfit.getSubmitter(),
                 outfit.getTag(),
                 outfit.getMeta(),
+                outfit.getDiscordName(),
                 outfit.getCreated(),
                 outfit.getUpdated(),
                 outfit.isDeleted(),
