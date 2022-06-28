@@ -10,7 +10,7 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group 'dev.salmonllama'
-version '2.0.5'
+version '2.1.1'
 
 sourceCompatibility = 16
 
