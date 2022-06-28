@@ -80,6 +80,7 @@ public class ImageListener implements MessageCreateListener {
             Outfit.OutfitBuilder outfitBuilder = new Outfit.OutfitBuilder()
                     .setId(upload.getId())
                     .setMeta(event.getMessageContent())
+                    .setDiscordName(event.getMessageAuthor().getDiscriminatedName())
                     .setLink(upload.getLink())
                     .setSubmitter(event.getMessageAuthor().getIdAsString())
                     .setDeleteHash(upload.getDeleteHash());
@@ -102,6 +103,7 @@ public class ImageListener implements MessageCreateListener {
         Outfit.OutfitBuilder outfitBuilder = new Outfit.OutfitBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setMeta(event.getMessageContent())
+                .setDiscordName(event.getMessageAuthor().getDiscriminatedName())
                 .setLink("DUMMY-LINK")
                 .setSubmitter(event.getMessageAuthor().getIdAsString())
                 .setDeleteHash("DUMMY-DELETE-HASH");
