@@ -77,6 +77,15 @@ public class RemoveOutfitCommand extends Command {
                                 .setColor(Color.RED)
                                 .addField("Deleted By:", ctx.getAuthor().getDiscriminatedName());
 
+                        // TODO: START ZAMMY
+                        if (outfit.getTag().equals("zammy"))
+                        {
+                            ctx.getApi().getServerTextChannelById(BotConfig.ZAMMY_LOG).ifPresent(
+                                    chnl -> chnl.sendMessage(log)
+                            );
+                        }
+                        // TODO: END ZAMMY
+
                         ctx.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresent(
                                 chnl -> chnl.sendMessage(log)
                         );

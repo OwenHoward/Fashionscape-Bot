@@ -118,6 +118,43 @@ public class ImageListener implements MessageCreateListener {
 
             OutfitController.insert(outfit).thenAcceptAsync((Void) -> {
                 // Log the outfit
+
+                // TODO: START ZAMMY LOG
+                if (outfit.getTag().equals("zammy"))
+                {
+                    event.getApi().getServerTextChannelById(BotConfig.ZAMMY_LOG).ifPresentOrElse(chnl ->
+                    {
+                        EmbedBuilder response = new EmbedBuilder()
+                                .setTitle("Outfit Added")
+                                .setAuthor(event.getMessageAuthor())
+                                .setThumbnail(outfit.getLink())
+                                .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
+                                .setUrl(outfit.getLink())
+                                .setColor(Color.GREEN)
+                                .addField("Uploaded:", outfit.getCreated().toString())
+                                .addField("Discord Name:", outfit.getDiscordName());
+
+                        if (!outfit.getMeta().equals("")) {
+                            response.addField("Meta:", outfit.getMeta());
+                        }
+
+                        chnl.sendMessage(response);
+                        logger.info(String.format("Outfit from %s successfully added to the zammy event.", event.getMessageAuthor().getDiscriminatedName()));
+
+                        // Add the reaction to the original message
+                        GalleryController.getEmoji(channel.getIdAsString()).thenAcceptAsync(
+                                emoji -> event.getMessage().addReaction(EmojiParser.parseToUnicode(emoji))
+                        ).exceptionally(ExceptionLogger.get());
+                    }, () ->
+                    {
+                        // Fallback error message to me
+                        event.getApi().getUserById(BotConfig.BOT_OWNER).thenAcceptAsync(
+                                user -> user.sendMessage("Could not find OUTFIT LOG")
+                        );
+                    });
+                }
+                // TODO: END ZAMMY LOG
+
                 event.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresentOrElse(chnl -> {
                     EmbedBuilder response = new EmbedBuilder()
                             .setTitle("Outfit Added")
