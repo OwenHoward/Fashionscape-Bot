@@ -104,7 +104,7 @@ public class ImageListener implements MessageCreateListener {
                 .setId(UUID.randomUUID().toString())
                 .setMeta(event.getMessageContent())
                 .setDiscordName(event.getMessageAuthor().getDiscriminatedName())
-                .setLink("DUMMY-LINK")
+                .setLink(event.getMessageAttachments().get(0).getUrl().toString())
                 .setSubmitter(event.getMessageAuthor().getIdAsString())
                 .setDeleteHash("DUMMY-DELETE-HASH");
 
@@ -126,7 +126,8 @@ public class ImageListener implements MessageCreateListener {
                             .setFooter(String.format("%s | %s", outfit.getTag(), outfit.getId()))
                             .setUrl(outfit.getLink())
                             .setColor(Color.GREEN)
-                            .addField("Uploaded:", outfit.getCreated().toString());
+                            .addField("Uploaded:", outfit.getCreated().toString())
+                            .addField("Discord Name:", outfit.getDiscordName());
 
                     if (!outfit.getMeta().equals("")) {
                         response.addField("Meta:", outfit.getMeta());
