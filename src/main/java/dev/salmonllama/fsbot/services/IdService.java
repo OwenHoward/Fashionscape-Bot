@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021 Aleksei Gryczewski
+ */
+
 package dev.salmonllama.fsbot.services;
 
 import java.util.UUID;

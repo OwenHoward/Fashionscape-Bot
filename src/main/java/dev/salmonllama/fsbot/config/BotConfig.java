@@ -57,6 +57,9 @@ public class BotConfig {
     public static String OUTFIT_LOG = "outfit log channel";
 
     @ConfigurationOption
+    public static String ZAMMY_LOG = "zammy log here";
+
+    @ConfigurationOption
     public static String ACTIVITY_LOG = "bot_log_channel";
 
     @ConfigurationOption

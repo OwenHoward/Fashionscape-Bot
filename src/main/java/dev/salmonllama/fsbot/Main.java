@@ -28,7 +28,17 @@ public class Main {
 
         FSDB.init();
 
-        new DiscordApiBuilder().setToken(SecretManager.DISCORD_TOKEN.getPlainText()).login().thenAccept(api -> {
+        String token;
+        if (System.getenv("ENVIRONMENT") != null)
+        {
+            token = SecretManager.DISCORD_TOKEN_PROD.getPlainText();
+        }
+        else
+        {
+            token = SecretManager.DISCORD_TOKEN.getPlainText();
+        }
+
+        new DiscordApiBuilder().setToken(token).login().thenAccept(api -> {
 
             @SuppressWarnings("unused")
             Guthix guthix = new Guthix(api);

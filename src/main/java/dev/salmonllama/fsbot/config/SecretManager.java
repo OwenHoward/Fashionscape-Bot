@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021 Aleksei Gryczewski
+ */
+
 package dev.salmonllama.fsbot.config;
 
 import java.io.IOException;
@@ -5,8 +9,8 @@ import java.io.IOException;
 import com.google.cloud.secretmanager.v1.SecretManagerServiceClient;
 
 public enum SecretManager {
-    // TODO: Change this to adapt to env
-    DISCORD_TOKEN   ("projects/fashionscapers-212707/secrets/fs_discord_token_prod/versions/1"),
+    DISCORD_TOKEN   ("projects/fashionscapers-212707/secrets/fs_discord_token/versions/1"),
+    DISCORD_TOKEN_PROD ("projects/fashionscapers-212707/secrets/fs_discord_token_prod/versions/1"),
     IMGUR_ID        ("projects/fashionscapers-212707/secrets/fs_imgur_client_id/versions/1"),
     IMGUR_BEARER    ("projects/fashionscapers-212707/secrets/fs_imgur_bearer_token/versions/1")
     ;

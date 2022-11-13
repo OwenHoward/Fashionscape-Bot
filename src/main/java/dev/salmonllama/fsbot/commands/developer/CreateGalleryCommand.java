@@ -35,6 +35,7 @@ public class CreateGalleryCommand extends Command {
         }
 
         String[] args = ctx.getArgs();
+        // TODO: Check if the tag already exists
         // Check if the channel is already a registered gallery channel.
         // Create a gallery channel of the current channel.
         // Store the gallery channel in the database.

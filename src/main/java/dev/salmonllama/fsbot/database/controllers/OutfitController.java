@@ -373,6 +373,7 @@ public class OutfitController {
                 "submitter = ?," +
                 "tag = ?," +
                 "meta = ?," +
+                "discord_name = ?," +
                 "updated = ?," +
                 "featured = ?," +
                 "deleted = ?," +
@@ -382,6 +383,7 @@ public class OutfitController {
                 outfit.getSubmitter(),
                 outfit.getTag(),
                 outfit.getMeta(),
+                outfit.getDiscordName(),
                 outfit.getUpdated(),
                 outfit.isFeatured(),
                 outfit.isDeleted(),
@@ -430,6 +432,7 @@ public class OutfitController {
                 .setSubmitter(rs.getString("submitter"))
                 .setTag(rs.getString("tag"))
                 .setMeta(rs.getString("meta"))
+                .setDiscordName(rs.getString("discord_name"))
                 .setCreated(new Timestamp(rs.getLong("created")))
                 .setUpdated(new Timestamp(rs.getLong("updated")))
                 .setDeleted(rs.getBoolean("deleted"))
