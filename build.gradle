@@ -7,6 +7,10 @@ plugins {
     id 'application'
 }
 
+jar {
+    archiveName = "fsbot.jar"
+}
+
 apply plugin: 'io.spring.dependency-management'
 
 group 'dev.salmonllama'
