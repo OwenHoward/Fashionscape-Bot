@@ -7,6 +7,10 @@ plugins {
     id 'application'
 }
 
+jar {
+    enabled = false
+}
+
 apply plugin: 'io.spring.dependency-management'
 
 group 'dev.salmonllama'

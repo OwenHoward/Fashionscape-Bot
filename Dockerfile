@@ -14,6 +14,6 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=/root/.fsbot/google_application_credentials.j
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/fashionscape-bot.jar
+COPY --from=build /home/gradle/src/build/libs/* /app/fashionscape-bot.jar
 
 ENTRYPOINT ["java","-jar","-Xmx800m","/app/fashionscape-bot.jar"]
