@@ -8,7 +8,7 @@ plugins {
 }
 
 jar {
-    archiveName = "fsbot.jar"
+    enabled = false
 }
 
 apply plugin: 'io.spring.dependency-management'
