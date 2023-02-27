@@ -81,7 +81,7 @@ public class RestoreOutfitCommand extends Command {
                         // TODO: START ZAMMY
                         if (outfit.getTag().equals("zammy"))
                         {
-                            ctx.getApi().getServerTextChannelById(BotConfig.OUTFIT_LOG).ifPresent(
+                            ctx.getApi().getServerTextChannelById(BotConfig.ZAMMY_LOG).ifPresent(
                                     chnl -> chnl.sendMessage(log)
                             );
                         }

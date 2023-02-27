@@ -12,6 +12,7 @@ import dev.salmonllama.fsbot.listeners.*;
 import org.javacord.api.DiscordApiBuilder;
 
 import dev.salmonllama.fsbot.utilities.Constants;
+import org.javacord.api.entity.intent.Intent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -38,7 +39,7 @@ public class Main {
             token = SecretManager.DISCORD_TOKEN.getPlainText();
         }
 
-        new DiscordApiBuilder().setToken(token).login().thenAccept(api -> {
+        new DiscordApiBuilder().addIntents(Intent.MESSAGE_CONTENT).setToken(token).login().thenAccept(api -> {
 
             @SuppressWarnings("unused")
             Guthix guthix = new Guthix(api);

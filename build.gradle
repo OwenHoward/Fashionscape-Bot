@@ -7,10 +7,14 @@ plugins {
     id 'application'
 }
 
+jar {
+    enabled = false
+}
+
 apply plugin: 'io.spring.dependency-management'
 
 group 'dev.salmonllama'
-version '2.0.5'
+version '2.1.1'
 
 sourceCompatibility = 16
 
@@ -25,7 +29,7 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
     implementation 'org.postgresql:postgresql:42.2.24'
     implementation 'com.github.Kaaz:ConfigurationBuilder:0.4'
-    implementation 'org.javacord:javacord:3.3.2'
+    implementation 'org.javacord:javacord:3.7.0'
     implementation 'com.vdurmont:emoji-java:5.1.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'ch.qos.logback:logback-classic:1.2.5'
