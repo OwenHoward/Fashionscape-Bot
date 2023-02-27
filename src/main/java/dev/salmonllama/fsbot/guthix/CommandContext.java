@@ -107,6 +107,14 @@ public class CommandContext {
         return channel.sendMessage(embed);
     }
 
+    public CompletableFuture<Message> reply(EmbedBuilder... embeds) {
+        return channel.sendMessage(embeds);
+    }
+
+    public CompletableFuture<Message> reply(String content, EmbedBuilder... embeds) {
+        return channel.sendMessage(content, embeds);
+    }
+
     public static class CommandContextBuilder {
         private MessageCreateEvent event;
         private DiscordApi api;
