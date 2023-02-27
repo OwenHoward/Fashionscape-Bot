@@ -12,13 +12,13 @@ import org.javacord.api.entity.user.User;
 import org.javacord.api.util.logging.ExceptionLogger;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 public class PermissionCommand extends Command {
     @Override public String name() { return "Permission"; }
     @Override public String description() { return "Manages a user's static permissions"; }
-    @Override public String usage() { return "permission <list|add|remove> <keyword>"; }
+    @Override public String usage() { return "permission <list|add|remove> <@user-mention> <keyword>"; }
     @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
     @Override public List<String> aliases() { return Arrays.asList("permission", "permissions", "perm", "perms"); }
@@ -27,21 +27,17 @@ public class PermissionCommand extends Command {
     public void onCommand(CommandContext ctx) {
         String[] args = ctx.getArgs();
 
-        switch(args[0]) {
-            case "list":
+        switch (args[0]) {
+            case "list" ->
                 // List all the static permissions
-                list(ctx);
-                break;
-            case "add":
+                    list(ctx);
+            case "add" ->
                 // Add a static permission to the mentioned user, if any
-                add(ctx);
-                break;
-            case "remove":
+                    add(ctx);
+            case "remove" ->
                 // Remove a static permission from the mentioned user, if any
-                remove(ctx);
-                break;
-            default:
-                // You don't know how to use this command LUL
+                    remove(ctx);
+            default -> ctx.reply("Incorrect usage, check ~help permission");
         }
     }
 
@@ -49,47 +45,73 @@ public class PermissionCommand extends Command {
         if (!ctx.getMessage().getMentionedUsers().isEmpty()) {
             User mentionedUser = ctx.getMessage().getMentionedUsers().get(0);
 
-            StaticPermissionController.getByUser(mentionedUser.getIdAsString()).thenAcceptAsync(possiblePerms -> {
-                possiblePerms.ifPresentOrElse(perms -> {
-                    EmbedBuilder embed = new EmbedBuilder()
-                            .setTitle(String.format("Permissions for %s", mentionedUser.getName()))
-                            .setFooter(String.format("User has %s total static permissions", perms.size()))
-                            .setColor(Color.GREEN);
+            StaticPermissionController
+                    .getByUser(mentionedUser.getIdAsString())
+                    .thenAcceptAsync(possiblePerms -> possiblePerms.ifPresentOrElse(perms -> {
+                EmbedBuilder embed = new EmbedBuilder()
+                        .setTitle(String.format("Permissions for %s", mentionedUser.getName()))
+                        .setFooter(String.format("User has %s total static permissions", perms.size()))
+                        .setColor(Color.GREEN);
 
-                    perms.forEach(perm -> {
-                        embed.addField(perm.getUserId(), perm.getPermission());
-                    });
+                perms.forEach(perm -> embed.addField(perm.getUserId(), perm.getPermission()));
 
-                    ctx.reply(embed);
-                }, () -> {
-                    EmbedBuilder embed = new EmbedBuilder()
-                            .setTitle("No Permissions Found")
-                            .setDescription(String.format("User %s has no static permissions", mentionedUser.getName()));
+                ctx.reply(embed);
+            }, () -> {
+                EmbedBuilder embed = new EmbedBuilder()
+                        .setTitle("No Permissions Found")
+                        .setDescription(String.format("User %s has no static permissions", mentionedUser.getName()));
 
-                    ctx.reply(embed);
+                ctx.reply(embed);
+            }));
+        } else { // Fetch and display all user permissions
+            StaticPermissionController
+                    .getAll()
+                    .thenAcceptAsync(possiblePerms -> possiblePerms.ifPresentOrElse(perms -> {
+                List<EmbedBuilder> embeds = new ArrayList<>();
+
+                EmbedBuilder embed = new EmbedBuilder()
+                        .setTitle("All static permissions")
+                        .setFooter(String.format("Found %s total static permissions", perms.size()))
+                        .setColor(Color.green);
+                embeds.add(embed);
+
+
+                List<String> permKeywords = new ArrayList<>();
+                perms.forEach(perm -> {
+                    if (!permKeywords.contains(perm.getPermission())) {
+                        permKeywords.add(perm.getPermission());
+                    }
                 });
-            });
-        } else {
-            StaticPermissionController.getAll().thenAcceptAsync(possiblePerms -> {
-                possiblePerms.ifPresentOrElse(perms -> {
-                    EmbedBuilder embed = new EmbedBuilder()
-                            .setTitle("All static permissions")
-                            .setFooter(String.format("Found %s total static permissions", perms.size()))
-                            .setColor(Color.green);
 
-                    perms.forEach(perm -> {
-                        embed.addField(perm.getUserId(), perm.getPermission());
-                    });
+                permKeywords.forEach(keyword -> {
+                    EmbedBuilder e = new EmbedBuilder().setTitle(keyword);
+                    StringBuilder text = new StringBuilder().append("```md").append(System.lineSeparator());
 
-                    ctx.reply(embed);
-                }, () -> {
-                    EmbedBuilder embed = new EmbedBuilder()
-                            .setTitle("No Permissions Found")
-                            .setDescription("No permissions have been added.");
-
-                    ctx.reply(embed);
+                    StaticPermissionController.getByPermission(keyword).thenAcceptAsync(
+                                    (optSp) -> optSp.ifPresent(
+                                            keywordPerms -> keywordPerms.forEach(
+                                                    perm -> ctx.getApi().getUserById(perm.getUserId()).thenAcceptAsync(
+                                                            (discordUser) -> text.append(perm.getUserId())
+                                                                    .append(" - ")
+                                                                    .append(discordUser.getDiscriminatedName())
+                                                                    .append(System.lineSeparator())
+                                                    ).join()
+                                            )
+                                    )
+                    ).join();
+                    text.append("```");
+                    e.setDescription(text.toString());
+                    embeds.add(e);
                 });
-            });
+                EmbedBuilder[] embedArray = embeds.toArray(new EmbedBuilder[0]);
+                ctx.reply(embedArray);
+            }, () -> {
+                EmbedBuilder embed = new EmbedBuilder()
+                        .setTitle("No Permissions Found")
+                        .setDescription("No permissions have been added.");
+
+                ctx.reply(embed);
+            }));
         }
     }
 
@@ -122,8 +144,6 @@ public class PermissionCommand extends Command {
 
         String userId = ctx.getMessage().getMentionedUsers().get(0).getIdAsString();
 
-        StaticPermissionController.delete(userId, ctx.getArgs()[2]).thenAcceptAsync((Void) -> {
-            System.out.println("Permission removed");
-        }).exceptionally(ExceptionLogger.get());
+        StaticPermissionController.delete(userId, ctx.getArgs()[2]).thenAcceptAsync((Void) -> System.out.println("Permission removed")).exceptionally(ExceptionLogger.get());
     }
 }
