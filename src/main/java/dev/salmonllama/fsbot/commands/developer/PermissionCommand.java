@@ -18,7 +18,7 @@ import java.util.List;
 public class PermissionCommand extends Command {
     @Override public String name() { return "Permission"; }
     @Override public String description() { return "Manages a user's static permissions"; }
-    @Override public String usage() { return "permission <list|add|remove> <keyword>"; }
+    @Override public String usage() { return "permission <list|add|remove> <@usermention> <keyword>"; }
     @Override public CommandCategory category() { return CommandCategory.DEVELOPER; }
     @Override public CommandPermission permission() { return new CommandPermission(PermissionType.OWNER); }
     @Override public List<String> aliases() { return Arrays.asList("permission", "permissions", "perm", "perms"); }
@@ -27,21 +27,19 @@ public class PermissionCommand extends Command {
     public void onCommand(CommandContext ctx) {
         String[] args = ctx.getArgs();
 
-        switch(args[0]) {
-            case "list":
+        switch (args[0]) {
+            case "list" ->
                 // List all the static permissions
-                list(ctx);
-                break;
-            case "add":
+                    list(ctx);
+            case "add" ->
                 // Add a static permission to the mentioned user, if any
-                add(ctx);
-                break;
-            case "remove":
+                    add(ctx);
+            case "remove" ->
                 // Remove a static permission from the mentioned user, if any
-                remove(ctx);
-                break;
-            default:
-                // You don't know how to use this command LUL
+                    remove(ctx);
+            default -> {
+            }
+            // You don't know how to use this command LUL
         }
     }
 
