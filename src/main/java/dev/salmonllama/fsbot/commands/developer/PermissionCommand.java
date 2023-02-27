@@ -37,9 +37,7 @@ public class PermissionCommand extends Command {
             case "remove" ->
                 // Remove a static permission from the mentioned user, if any
                     remove(ctx);
-            default -> {
-            }
-            // You don't know how to use this command LUL
+            default -> ctx.reply("Incorrect usage, check ~help permission");
         }
     }
 
