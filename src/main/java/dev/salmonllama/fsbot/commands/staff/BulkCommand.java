@@ -57,7 +57,7 @@ public class BulkCommand extends Command {
                     	EmbedBuilder response = new EmbedBuilder()
                     		.setTitle("Outfit not found")
                     		.setDescription(String.format("ID %s does not exist", outfitId));
-                		ctx.reply(response)
+                		ctx.reply(response);
                     }));
     			}
     			break;
@@ -91,7 +91,7 @@ public class BulkCommand extends Command {
                     	EmbedBuilder response = new EmbedBuilder()
                     		.setTitle("Outfit not found")
                     		.setDescription(String.format("ID %s does not exist", outfitId));
-                		ctx.reply(response)
+                		ctx.reply(response);
                     }));
 				}
 				break;
