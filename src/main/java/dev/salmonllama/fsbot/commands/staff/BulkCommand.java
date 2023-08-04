@@ -35,7 +35,7 @@ public class BulkCommand extends Command {
     	switch(args[0]) {
     		case "remove":
     			for (int i = 1; i < args.length; i++) {
-				String outfitId = args[i]
+				String outfitId = args[i];
     				OutfitController.findById(outfitId).thenAcceptAsync(possibleOutfit -> possibleOutfit.ifPresentOrElse(outfit -> {
     					OutfitController.delete(outfit.getId());
 
@@ -65,7 +65,7 @@ public class BulkCommand extends Command {
 			case "retag":
 				String newTag = args[2];
 				for (int i = 2; i < args.length; i++) {
-					String outfitId = args[i]
+					String outfitId = args[i];
 					OutfitController.findById(outfitId).thenAcceptAsync(possibleOutfit -> possibleOutfit.ifPresentOrElse(outfit -> {
 						Outfit newOutfit = new Outfit.OutfitBuilder(outfit)
 							.setTag(newTag)
