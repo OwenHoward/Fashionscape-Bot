@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
 
 public class BulkCommand extends Command {
 	@Override public String name() { return "Bulk remove/retag commands"; }
