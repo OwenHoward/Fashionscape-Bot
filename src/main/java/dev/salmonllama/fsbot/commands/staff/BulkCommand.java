@@ -64,7 +64,7 @@ public class BulkCommand extends Command {
     			}
     			break;
 			case "retag":
-				String newTag = args[2];
+				String newTag = args[1];
 				for (int i = 2; i < args.length; i++) {
 					String outfitId = args[i];
 					OutfitController.findById(outfitId).thenAcceptAsync(possibleOutfit -> possibleOutfit.ifPresentOrElse(outfit -> {
